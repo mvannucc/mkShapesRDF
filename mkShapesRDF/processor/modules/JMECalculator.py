@@ -12,10 +12,11 @@ class JMECalculator(Module):
         JEC_era,
         JER_era,
         jet_object,
-        met_collections=["PuppiMET", "MET", "RawMET"],
+        met_collections=["PuppiMET"],
         do_Jets=True,
         do_MET=True,
         do_JER=True,
+        do_Unclustered=True,
         store_nominal=True,
         store_variations=True,
     ):
@@ -51,6 +52,7 @@ class JMECalculator(Module):
         self.do_Jets = do_Jets
         self.do_MET = do_MET
         self.do_JER = do_JER
+        self.do_Unclustered = do_Unclustered
         self.store_nominal = store_nominal
         self.store_variations = store_variations
 
@@ -153,7 +155,7 @@ class JMECalculator(Module):
                 jesSources = jesSources[skip:-2][::2]
                 jesSources = list(map(lambda k: str(k)[3:-2], jesSources))
                 # jesSources = sorted(jesSources)
-                jesSources = list(map(lambda k: "JES_" + k, jesSources))
+                jesSources = list(map(lambda k: "JES" + k, jesSources))
                 print(jesSources)
 
                 # list of columns to be passed to myJetVarCal produce
@@ -231,10 +233,9 @@ class JMECalculator(Module):
                         _sources = [f"JER_{i}" for i in range(6)]
                     _sources += jesSources
                     sources = _sources.copy()
-
-                    METsources = _sources.copy() + [
-                        "MET"
-                    ]  # last one is the unclustered variation
+                    METsources = _sources.copy()
+                    if self.do_Unclustered:
+                        METsources += ["MET"]  # last one is the unclustered variation
 
                     for variable in [MET + "_pt", MET + "_phi"]:
                         for i, source in enumerate(METsources):
@@ -243,7 +244,7 @@ class JMECalculator(Module):
                             df = df.Vary(
                                 variable,
                                 "ROOT::RVecD{" + up + ", " + do + "}",
-                                ["up", "down"],
+                                ["up", "do"],
                                 source,
                             )
                 df = df.DropColumns(f"{MET}Vars")
@@ -278,14 +279,12 @@ class JMECalculator(Module):
                     3.0,  # decorrelate for different regions
                 )  # use hybrid recipe, matching parameters
             jesSources = calc.available()
-            print("DEBUG module")
             skip = 1
             if self.do_JER:
                 skip += 6 * 2
             jesSources = jesSources[skip:][::2]
             jesSources = list(map(lambda k: str(k)[3:-2], jesSources))
-            jesSources = list(map(lambda k: "JES_" + k, jesSources))
-            print(jesSources)
+            jesSources = list(map(lambda k: "JES" + k, jesSources))
 
             # list of columns to be passed to myJetVarCal produce
             cols = []
@@ -415,6 +414,7 @@ class JMECalculator(Module):
                             f"Take({JetColl}_eta, tmp_CleanJet_pt__JES_{source}_{tag}_sorting)"
                         )
 
+                    tags = ["up", "do"]
                     df = df.Vary(
                         "CleanJet_pt",
                         "ROOT::RVec<ROOT::RVecF>{"
@@ -422,7 +422,7 @@ class JMECalculator(Module):
                         + ", "
                         + variations_pt[1]
                         + "}",
-                        ["up", "down"],
+                        tags,
                         source,
                     )
 
@@ -433,7 +433,7 @@ class JMECalculator(Module):
                         + ", " + variations_jetIdx[1]
                         # + "CleanJet_jetIdx"
                         + "}",
-                        ["up", "down"],
+                        tags,
                         source,
                     )
 
@@ -444,7 +444,7 @@ class JMECalculator(Module):
                         + ", " + variations_mass[1]
                         # + "CleanJet_mass"
                         + "}",
-                        ["up", "down"],
+                        tags,
                         source,
                     )
 
@@ -455,7 +455,7 @@ class JMECalculator(Module):
                         + ", " + variations_phi[1]
                         # + "CleanJet_phi"
                         + "}",
-                        ["up", "down"],
+                        tags,
                         source,
                     )
 
@@ -466,7 +466,7 @@ class JMECalculator(Module):
                         + ", " + variations_eta[1]
                         # + "CleanJet_eta"
                         + "}",
-                        ["up", "down"],
+                        tags,
                         source,
                     )
 

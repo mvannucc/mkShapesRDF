@@ -26,7 +26,10 @@ Steps = {
         "subTargets": [
             "JES_modules_18UL",
             "l2Kin",
-            "finalSnapshot_Variations",
+            "l3Kin",
+            "l4Kin",
+            "formulasMC2018v9",
+            "finalSnapshot_JES_18",
         ],
     },
     "JES_18_test": {
@@ -200,7 +203,8 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.JMECalculator",
         "declare": 'jmeCalculator = lambda : JMECalculator("Summer19UL18_V5_MC", "Summer19UL18_JRV2_MC", \
-            jet_object="AK4PFchs", do_Jets=True, do_MET=True, do_JER=False, store_nominal=False, store_variations=True)',
+            jet_object="AK4PFchs", do_Jets=True, do_MET=True, do_Unclustered=False, met_collections = ["PuppiMET", "MET", "RawMET"],\
+            do_JER=False, store_nominal=False, store_variations=True)',
         "module": "jmeCalculator()",
     },
     "l2Kin": {
@@ -210,6 +214,30 @@ Steps = {
         "import": "mkShapesRDF.processor.modules.l2KinProducer",
         "declare": "l2Kin = lambda : l2KinProducer()",
         "module": "l2Kin()",
+    },
+    "l3Kin": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.l3KinProducer",
+        "declare": "l3Kin = lambda : l3KinProducer()",
+        "module": "l3Kin()",
+    },
+    "l4Kin": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.l4KinProducer",
+        "declare": "l4Kin = lambda : l4KinProducer()",
+        "module": "l4Kin()",
+    },
+    "formulasMC2018v9": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.GenericFormulaAdder",
+        "declare": "formulasMC2018v9 = lambda : GenericFormulaAdder(pathToConfigFile='RPLME_FW/processor/data/formulasToAdd_MC_Full2018v9.py')",
+        "module": "formulasMC2018v9()",
     },
     "leptonSF": {
         "isChain": False,
@@ -245,6 +273,27 @@ Steps = {
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=False, splitVariations=False, storeNominals=True )",
+        "module": "snapshot()",
+    },
+    "finalSnapshot_JES_18": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.Snapshot",
+        "declare": "snapshot = lambda : Snapshot( \
+                tmpOutputFilename='output.root', \
+                columns=['*'], \
+                eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
+                includeVariations=True, splitVariations=True, storeNominals=False,\
+                outputMap={\
+                    'JESAbsolute':['JESAbsolute', 'JESAbsolute_2018'],\
+                    'JESBBEC1':['JESBBEC1', 'JESBBEC1_2018'],\
+                    'JESEC2':['JESEC2', 'JESEC2_2018'],\
+                    'JESHF':['JESHF', 'JESHF_2018'],\
+                    'JESRelative':['JESRelativeBal', 'JESRelativeSample_2018'],\
+                    'JESFlavorQCD':['JESFlavorQCD'],\
+                    'JESTotal':['JESTotal'],\
+                    } )",
         "module": "snapshot()",
     },
     "finalSnapshot_Variations": {

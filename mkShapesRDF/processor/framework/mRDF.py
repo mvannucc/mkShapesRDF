@@ -18,8 +18,8 @@ class mRDF:
         """
         Naming convention for variations.
 
-        Given a variation name and a tag it will return ``variationName_variationTag``.
-        If a column name is provided, it will return ``col__variationName_variationTag``.
+        Given a variation name and a tag it will return ``{variationName}{variationTag}``.
+        If a column name is provided, it will return ``col_{variationName}{variationTag}``.
 
         Parameters
         ----------
@@ -36,9 +36,9 @@ class mRDF:
             formatted string
         """
         if col == "":
-            return variationName + "_" + variationTag
+            return variationName + variationTag
         else:
-            return col + "__" + variationName + "_" + variationTag
+            return col + "_" + variationName + variationTag
 
     def setNode(self, dfNode, cols, cols_d, variations):
         r"""Set internal variables of an ``mRDF`` object to the provided ones
@@ -132,13 +132,11 @@ class mRDF:
 
         c = self.Copy()
 
-        # store nominal value in a special temporary column
-        colName = a + "_tmp_SPECIAL_NOMINAL"
-        if colName not in (c.cols + c.cols_d):
-            c.df = c.df.Define(colName, b)
+        if a not in (c.cols + c.cols_d):
+            c.df = c.df.Define(a, b)
         else:
-            c.df = c.df.Redefine(colName, b)
-        c.cols = list(set(c.cols + [colName]))
+            c.df = c.df.Redefine(a, b)
+        c.cols = list(set(c.cols + [a]))
 
         # check variations
         depVars = ParseCpp.listOfVariables(ParseCpp.parse(b))
@@ -169,19 +167,11 @@ class mRDF:
                         mRDF.variationNaming(variationName, tag, variable),
                     )
                 varied_bs.append(ParseCpp.format(varied_b))
-            _type = c.df.GetColumnType(colName)
+            _type = c.df.GetColumnType(a)
             expression = (
                 ParseCpp.RVecExpression(_type) + " {" + ", ".join(varied_bs) + "}"
             )
             c = c.Vary(a, expression, variations[variationName]["tags"], variationName)
-
-        # move back nominal value to the right column name -> a
-        if a not in (c.cols + c.cols_d):
-            c.df = c.df.Define(a, colName)
-        else:
-            c.df = c.df.Redefine(a, colName)
-        c = c.DropColumns(colName, includeVariations=False)
-        c.cols = list(set(c.cols + [a]))
 
         return c
 
@@ -243,19 +233,12 @@ class mRDF:
             set(c.variations[variationName]["variables"] + [colName])
         )
 
-        # define a column that will contain the two variations in a vector of len 2
-        c = c.Define(
-            colName + "__" + variationName, expression, excludeVariations=["*"]
-        )
-
         for i, variationTag in enumerate(variationTags):
             c = c.Define(
                 mRDF.variationNaming(variationName, variationTag, colName),
-                colName + "__" + variationName + "[" + str(i) + "]",
+                expression + "[" + str(i) + "]",
                 excludeVariations=["*"],
             )
-
-        c = c.DropColumns(colName + "__" + variationName)
 
         return c
 
