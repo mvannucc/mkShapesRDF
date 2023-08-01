@@ -31,6 +31,7 @@ Steps = {
             "formulasMC2018v9",
             "finalSnapshot_JES_18",
         ],
+        "outputFolder": "MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9__RDF",
     },
     "JES_18_test": {
         "isChain": True,
@@ -275,6 +276,13 @@ Steps = {
                 includeVariations=False, splitVariations=False, storeNominals=True )",
         "module": "snapshot()",
     },
+    # 'JESAbsolute':['JESAbsolute', 'JESAbsolute_2018'],\
+    # 'JESBBEC1':['JESBBEC1', 'JESBBEC1_2018'],\
+    # 'JESEC2':['JESEC2', 'JESEC2_2018'],\
+    # 'JESHF':['JESHF', 'JESHF_2018'],\
+    # 'JESRelative':['JESRelativeBal', 'JESRelativeSample_2018'],\
+    # 'JESFlavorQCD':['JESFlavorQCD'],\
+    # 'JESTotal':['JESTotal'],\
     "finalSnapshot_JES_18": {
         "isChain": False,
         "do4MC": True,
@@ -286,13 +294,7 @@ Steps = {
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=False,\
                 outputMap={\
-                    'JESAbsolute':['JESAbsolute', 'JESAbsolute_2018'],\
-                    'JESBBEC1':['JESBBEC1', 'JESBBEC1_2018'],\
-                    'JESEC2':['JESEC2', 'JESEC2_2018'],\
-                    'JESHF':['JESHF', 'JESHF_2018'],\
-                    'JESRelative':['JESRelativeBal', 'JESRelativeSample_2018'],\
-                    'JESFlavorQCD':['JESFlavorQCD'],\
-                    'JESTotal':['JESTotal'],\
+                    'JES':['JESAbsolute', 'JESAbsolute_2018', 'JESBBEC1', 'JESBBEC1_2018', 'JESEC2', 'JESEC2_2018', 'JESRelativeBal', 'JESRelativeSample_2018', 'JESFlavorQCD', 'JESTotal']\
                     } )",
         "module": "snapshot()",
     },

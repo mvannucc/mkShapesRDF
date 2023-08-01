@@ -339,7 +339,8 @@ class Processor:
         self.fPy = self.fPy.replace("RPLME_FW", frameworkPath)
 
         #: folderPathEos is the output folder path (not ending with ``/`` so that is possible to add suffix to the folder)
-        folderPathEos = self.eosDir + "/" + self.prodName + "/" + self.step
+        folderPathEos = self.eosDir + "/" + self.prodName + "/"  # + self.step
+        folderPathEos += Steps[self.step].get("outputFolder", self.step)
         self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
 
         allSamples = []
@@ -372,7 +373,8 @@ class Processor:
                 files = self.searchFiles.searchFilesDAS(**files_cfg)
             else:
                 files = self.searchFiles.searchFiles(**files_cfg)
-            files = files[: self.limitFiles]
+            if self.limitFiles != -1:
+                files = files[: self.limitFiles]
 
             if len(files) == 0:
                 print("No files found for", sampleName, "and configuration", files_cfg)
@@ -415,12 +417,13 @@ class Processor:
                 allSamples.append(sampleName + "__part" + str(part))
 
         fJdl = dedent(
-            """
+            '''
         universe = vanilla
         executable = run.sh
         arguments = $(Folder)
 
         should_transfer_files = YES
+        transfer_output_files = ""
         transfer_input_files = $(Folder)/script.py
 
         output = $(Folder)/out.txt
@@ -428,9 +431,11 @@ class Processor:
         log    = $(Folder)/log.txt
 
         request_cpus   = 1
+        request_memory = 6GB
+        request_disk   = 2GB
         +JobFlavour = "workday"
 
-        queue 1 Folder in RPLME_ALLSAMPLES"""
+        queue 1 Folder in RPLME_ALLSAMPLES'''
         )
 
         fJdl = fJdl.replace("RPLME_ALLSAMPLES", " ".join(allSamples))
