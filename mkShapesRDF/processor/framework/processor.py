@@ -267,28 +267,13 @@ class Processor:
         if len(snapshots) != 0:
             ROOT.RDF.RunGraphs(snapshots)
 
-        histos = []
-        for val in values:
-            if val[0] == "variables":
-                h = val[2]
-                for var in h.GetKeys():
-                    variation = val[1] + '_' + str(var).replace(":", "")
-                    _h = h[var]
-                    _h.SetName(variation)
-                    histos.append( _h )
-
-        f = ROOT.TFile.Open("output.root", "UPDATE")
-        f.cd()
-        for h in histos:
-            h.Write()
-        f.Close()
 
         for destination in snapshot_destinations:
             copyFromInputFiles = destination[1]
             outputFilename = destination[0]
 
-            if copyFromInputFiles:
-                Snapshot.CopyFromInputFiles(outputFilename, files)
+            #if copyFromInputFiles:
+            #    Snapshot.CopyFromInputFiles(outputFilename, files)
 
             outputFolderPath = destination[2]
             outputFilenameEOS = destination[3]
@@ -378,7 +363,8 @@ class Processor:
 
             if len(files) == 0:
                 print("No files found for", sampleName, "and configuration", files_cfg)
-                sys.exit()
+                continue
+                #sys.exit()
 
             print(files[0])
 
