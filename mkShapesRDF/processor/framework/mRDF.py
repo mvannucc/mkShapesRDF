@@ -423,7 +423,27 @@ class mRDF:
         """
         return self.df.Sum(string)
 
-    def Snapshot(self, *args, **kwargs):
+    # def Snapshot(self, *args, **kwargs):
+    #     """
+    #     Produce a Snapshot of the mRDF and return it
+    #
+    #     Parameters
+    #     ----------
+    #     *args : list
+    #         list of arguments to be passed to the ``RDataFrame::Snapshot`` method
+    #
+    #     **kwargs : dict
+    #         dictionary of keyword arguments to be passed to the ``RDataFrame::Snapshot`` method
+    #
+    #
+    #     Returns
+    #     -------
+    #     `Snapshot` or `Proxy<Snapshot>`
+    #         The ``Snapshot`` object, or a ``Proxy<Snapshot>`` if ``lazy=True`` is passed as a keyword argument
+    #     """
+    #     return self.df.Snapshot(*args, **kwargs)
+    #
+    def Snapshot(self, treeName, fileName, columns, *args, **kwargs):
         """
         Produce a Snapshot of the mRDF and return it
 
@@ -441,4 +461,67 @@ class mRDF:
         `Snapshot` or `Proxy<Snapshot>`
             The ``Snapshot`` object, or a ``Proxy<Snapshot>`` if ``lazy=True`` is passed as a keyword argument
         """
-        return self.df.Snapshot(*args, **kwargs)
+        # events = ak.from_rdataframe(self.df, columns)
+        # def function(columns, ):
+        import uproot
+        import awkward as ak
+        from math import ceil
+        def call(df):
+            chunksize = 10_000
+            nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)
+            outFile = uproot.recreate(fileName)
+            branches = columns.copy()
+            _branches = branches.copy()
+            zips = {'CleanJet': [],
+                    'WH3l_dphilmet': [],
+                    'WH3l_mtlmet': [],
+            }
+            for zipName in zips:
+                zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
+                zips[zipName] = zipBranches
+                branches = list(set(branches).difference(zipBranches))
+            print(zips)
+            for i in range(nIterations):
+                _df = df.Range( i * chunksize, (i+1) * chunksize)
+                events = ak.from_rdataframe(_df, _branches)
+
+                def getBranch(events, branch):
+                    if 'float64' in str(events[branch].type):
+                        return ak.values_astype(events[branch],'float32')
+                    return events[branch]
+                d = {}
+                for zipName in zips:
+                    z = {}
+                    for branch in zips[zipName]:
+                        z[branch[len(zipName)+1:]] = getBranch(events, branch)
+
+                    if len(list(z.keys())) == 0:
+                        # print('No columns found to zip for collection', zipName)
+                        continue
+
+                    d[zipName] = ak.zip(z)
+                    #branches = list(set(branches).difference(zips[zipName]))
+
+                for branch in branches[:]:
+                    d[branch] = getBranch(events, branch)
+
+                _events = ak.Array(d)
+                if treeName not in outFile:
+                    if len(_events) == 0:
+                        dtypes = {}
+                        for branch in _events.fields:
+                            dtypes[branch] = _events[branch].type
+                        # print(dtypes)
+                        # print('Creating ttree')
+                        outFile.mktree(treeName, dtypes)
+                        continue
+                    else:
+                        # print('Creating ttree right way')
+                        outFile[treeName] = d
+                        continue
+
+                outFile[treeName].extend(d)
+
+            outFile.close()
+
+        return (call, columns)
