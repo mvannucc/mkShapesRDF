@@ -172,10 +172,13 @@ class JMECalculator(Module):
                     "newJet_pt",
                     "Take( CleanJet_pt / CleanJet_corr_JER, new_sorting)",
                 )
+                df = df.Define(
+                    "newJet_smearingFactor",
+                    "Take( CleanJet_corr_JER, new_sorting)",
+                )
                 df = df.Define("newJet_eta", "Take( CleanJet_eta , new_sorting)")
                 df = df.Define("newJet_phi", "Take( CleanJet_phi , new_sorting)")
                 df = df.Define("newJet_jetIdx", "Take( CleanJet_jetIdx , new_sorting)")
-
                 cols.append(f"{JetColl}_pt")
                 cols.append(f"{JetColl}_eta")
                 cols.append(f"{JetColl}_phi")
@@ -191,11 +194,11 @@ class JMECalculator(Module):
                 cols.append("fixedGridRhoFastjetAll")
 
                 cols.append(f"Take(Jet_partonFlavour, {JetColl}_jetIdx)")
-
                 # seed
                 cols.append(
                     f"(run<<20) + (luminosityBlock<<10) + event + 1 + int({JetColl}_eta.size()>0 ? {JetColl}_eta[0]/.01 : 0)"
                 )
+
 
                 # gen jet coll
                 cols.append("GenJet_pt")
@@ -203,20 +206,25 @@ class JMECalculator(Module):
                 cols.append("GenJet_phi")
                 cols.append("GenJet_mass")
 
-                RawMET = "RawMET" if "Puppi" not in MET else "RawPuppiMET"
+                #RawMET = "RawMET" if "Puppi" not in MET else "RawPuppiMET"
+                RawMET = MET
                 cols.append(f"{RawMET}_phi")
                 cols.append(f"{RawMET}_pt")
 
                 cols.append("MET_MetUnclustEnUpDeltaX")
                 cols.append("MET_MetUnclustEnUpDeltaY")
 
-                cols.append("CorrT1METJet_rawPt")
-                cols.append("CorrT1METJet_eta")
-                cols.append("CorrT1METJet_phi")
-                cols.append("CorrT1METJet_area")
-                cols.append("CorrT1METJet_muonSubtrFactor")
+                df = df.Define('EmptyLowPtJet', 'ROOT::RVecF{}')
+                for _ in range(5):
+                    cols.append('EmptyLowPtJet')
+                # cols.append("CorrT1METJet_rawPt")
+                # cols.append("CorrT1METJet_eta")
+                # cols.append("CorrT1METJet_phi")
+                # cols.append("CorrT1METJet_area")
+                # cols.append("CorrT1METJet_muonSubtrFactor")
                 cols.append("ROOT::RVecF {}")
                 cols.append("ROOT::RVecF {}")
+                cols.append(f"{JetColl}_smearingFactor")
 
                 df = df.Define(
                     f"{MET}Vars", f"my{MET}VarCalc.produce({', '.join(cols)})"
@@ -302,6 +310,11 @@ class JMECalculator(Module):
                 "newJet_pt",
                 "Take( CleanJet_pt / CleanJet_corr_JER, new_sorting)",
             )
+
+            df = df.Define(
+                "newJet_smearingFactor",
+                "Take( CleanJet_corr_JER, new_sorting)",
+            )
             df = df.Define("newJet_eta", "Take( CleanJet_eta , new_sorting)")
             df = df.Define("newJet_phi", "Take( CleanJet_phi , new_sorting)")
             df = df.Define("newJet_jetIdx", "Take( CleanJet_jetIdx , new_sorting)")
@@ -311,6 +324,7 @@ class JMECalculator(Module):
             cols.append(f"{JetColl}_phi")
             cols.append("Take(CleanJet_mass, new_sorting)")
             cols.append(f"Take(Jet_rawFactor, {JetColl}_jetIdx)")
+            cols.append(f"{JetColl}_smearingFactor")
             cols.append(f"Take(Jet_area, {JetColl}_jetIdx)")
             cols.append(f"Take(Jet_jetId, {JetColl}_jetIdx)")
 
@@ -333,30 +347,31 @@ class JMECalculator(Module):
             df = df.Define("jetVars", f'myJetVarCalc.produce({", ".join(cols)})')
 
             if self.store_nominal:
-                ROOT.gInterpreter.Declare(
-                    """
-                    using namespace ROOT;
-                    RVecF propagateVector(RVecI jetIdx, RVecF jetVar, RVecF jetVar_raw) {
-                        RVecF out(jetVar_raw);
-                        for (int i = 0; i < jetIdx.size(); i++) {
-                            out[jetIdx[i]] = jetVar[i];
-                        }
-                        return out;
-                    }
-                    """
-                )
+                # ROOT.gInterpreter.Declare(
+                #     """
+                #     using namespace ROOT;
+                #     RVecF propagateVector(RVecI jetIdx, RVecF jetVar, RVecF jetVar_raw) {
+                #         RVecF out(jetVar_raw);
+                #         for (int i = 0; i < jetIdx.size(); i++) {
+                #             out[jetIdx[i]] = jetVar[i];
+                #         }
+                #         return out;
+                #     }
+                #     """
+                # )
                 df = df.Define("CleanJet_pt", "jetVars.pt(0)")
 
                 df = df.Define(
                     "CleanJet_sorting",
                     "ROOT::VecOps::Reverse(ROOT::VecOps::Argsort(CleanJet_pt))",
                 )
+                df = df.Define("CleanJet_pt", "Take( CleanJet_pt, CleanJet_sorting)")
 
                 # stores the jet mass after JEC/JER and resorts it based on the new CleanJet_pt
-                df = df.Define(
-                    "Jet_mass",
-                    "propagateVector(CleanJet_jetIdx, Take(jetVars.mass(0), CleanJet_sorting), Jet_mass_raw)",
-                )
+                # df = df.Define(
+                #     "Jet_mass",
+                #     "propagateVector(CleanJet_jetIdx, Take(jetVars.mass(0), CleanJet_sorting), Jet_mass_raw)",
+                # )
 
             else:
                 df = df.Define(

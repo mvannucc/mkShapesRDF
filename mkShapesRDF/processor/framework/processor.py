@@ -154,6 +154,8 @@ class Processor:
         global fPy
         self.fPy = dedent(
             """
+        import sys
+        sys.path.insert(0, list(filter(lambda k: 'myenv' in k, sys.path))[0])
         import ROOT
         ROOT.gROOT.SetBatch(True)
         """
@@ -261,13 +263,17 @@ class Processor:
         snapshot_destinations = []
         for val in values:
             if "snapshot" == val[0]:
-                snapshots.append(val[1])
+                snapshots.append(val[1][0])
                 snapshot_destinations.append(val[2])
 
-        if len(snapshots) != 0:
-            ROOT.RDF.RunGraphs(snapshots)
+
+        import uproot
+        import awkward as ak
+        for snapshot in snapshots:
+            snapshot(df.df)
 
 
+        finalFiles = []
         for destination in snapshot_destinations:
             copyFromInputFiles = destination[1]
             outputFilename = destination[0]
@@ -285,6 +291,7 @@ class Processor:
             # Copy output file in output folder
             proc = subprocess.Popen(f"cp {outputFilename} {outputFolderPath}/{outputFilenameEOS}", shell=True)
             proc.wait()
+            finalFiles.append(f'{outputFolderPath}/{outputFilenameEOS}')
 
             # Remove the output file from local
             proc = subprocess.Popen(f"rm {outputFilename}", shell=True)
@@ -317,6 +324,13 @@ class Processor:
             out, err = proc.communicate()
             print(out.decode('utf-8'))
             print(err.decode('utf-8'), file=sys.stderr)
+
+        # check final file integrity
+        for finalFile in finalFiles:
+            f = uproot.open(finalFile)
+            branches = [k.name for k in f['Events'].branches]
+            print(f['Events'][branches[0]].array(entry_stop=10))
+            f.close()
 
         """
         )
