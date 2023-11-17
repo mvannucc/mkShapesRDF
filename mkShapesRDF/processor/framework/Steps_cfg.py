@@ -32,7 +32,7 @@ Steps = {
             "l2Kin",
             "l3Kin",
             "trigData22",
-            "formulasDATA",                                                                                                                                                                              
+            "formulasDATA",
             "finalSnapshot_DATA",
         ],
     },
@@ -147,10 +147,10 @@ Steps = {
             "l2Kin",
             "l3Kin",
             "puW",
-            #"JES_modules_22EE",
-            # "JetPUID_SF_UL",
+            "JES_modules_22EE",
             "formulasMC",
-            "finalSnapshot_MC",
+            #"finalSnapshot_MC",
+            "finalSnapshot_JES",
         ],
     },
     "MCCorr2018v9": {
@@ -341,7 +341,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.JMECalculator",
         "declare": 'jmeCalculator = lambda : JMECalculator("Summer22EEPrompt22_V1_MC", "Summer22EEPrompt22_JRV1_MC", \
-            jet_object="AK4PFPuppi", do_Jets=True, do_MET=True, do_Unclustered=False, met_collections = ["PuppiMET", "MET", "RawMET"],\
+            jet_object="AK4PFPuppi", do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],\
             do_JER=True, store_nominal=True, store_variations=True)',
         "module": "jmeCalculator()",
     },
@@ -491,6 +491,21 @@ Steps = {
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=False, storeNominals=True )",
+        "module": "snapshot()",
+    },
+    "finalSnapshot_JES": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.Snapshot",
+        "declare": "snapshot = lambda : Snapshot( \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
+                columns=['*'], \
+                eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
+                includeVariations=True, splitVariations=True, storeNominals=True,\
+                outputMap={\
+                    'JES':['JESAbsolute', 'JESAbsolute_2016', 'JESBBEC1', 'JESBBEC1_2016', 'JESEC2', 'JESEC2_2016', 'JESHF', 'JESHF_2016', 'JESRelativeBal', 'JESRelativeSample_2016', 'JESFlavorQCD', 'JESTotal']\
+                } )",
         "module": "snapshot()",
     },
     "histogram": {
