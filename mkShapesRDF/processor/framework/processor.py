@@ -260,7 +260,7 @@ class Processor:
         self.addDeclareLines(self.step)
 
         self.fPy += dedent(
-            
+            """
         snapshots = []
         snapshot_destinations = []
         for val in values:
