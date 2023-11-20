@@ -155,6 +155,8 @@ class Processor:
         global fPy
         self.fPy = dedent(
             """
+        import sys
+        sys.path.insert(0, list(filter(lambda k: 'myenv' in k, sys.path))[0])
         import ROOT
         ROOT.gROOT.SetBatch(True)
         """
