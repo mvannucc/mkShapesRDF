@@ -19,6 +19,23 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
+    "DATAl1loose2022EEv12": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "lumiMask22",
+            "leptonMaker",
+            "lepSel2022",
+            "jetSel2022",
+            "l2Kin",
+            "l3Kin",
+            "trigData22",
+            "formulasDATA",
+            "finalSnapshot_DATA",
+        ],
+    },
     "DATAl1loose2022EEv11": {
         "isChain": True,
         "do4MC": False,
@@ -59,6 +76,17 @@ Steps = {
             "formulasMCnoSF",
             "fakeSelMC",
             "finalSnapshot_MC",
+        ],
+    },
+    "fakeW": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"(Lepton_pt.size()>0)"',
+        "subTargets": [
+            "fakeW_2022EE",
+            "formulasFAKE_2022EE",
+            "finalSnapshot_DATA",
         ],
     },
     "l2loose": {
@@ -437,6 +465,14 @@ Steps = {
         "declare": "formulasMC = lambda : formulasToAdd_MCnoSF_Full2022EEv11()",
         "module": "formulasMC()",
     },
+    "formulasFAKE_2022EE": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.formulasToAdd_FAKE_Full2022EEv11",
+        "declare": "formulasFAKE = lambda : formulasToAdd_FAKE_Full2022EEv11()",
+        "module": "formulasFAKE()",
+    },
     "btagPerJet_DeepCSV_2018UL": {
         "isChain": False,
         "do4MC": True,
@@ -484,6 +520,14 @@ Steps = {
         "import": "mkShapesRDF.processor.modules.TrigMaker",
         "declare": 'trigData = lambda : TrigMaker("Full2022EEv11", isData=True, keepRunP=False)',
         "module": "trigData()",
+    },
+    "fakeW_2022EE": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.LeptonFakeWMaker",
+        "declare": "fakeW = lambda : LeptonFakeWMaker('Full2022EEv11')",
+        "module": "fakeW()",
     },
     "finalSnapshot_MC": {
         "isChain": False,
