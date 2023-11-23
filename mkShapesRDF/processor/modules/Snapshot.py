@@ -94,7 +94,10 @@ class Snapshot(Module):
         trees = list(set(trees).difference(set(["Events"])))
         f2.cd()
         for key in trees:
-            f.Get(key).Write()
+            if 'tag' in key:
+                f.Get(key).Clone().Write()
+            else:
+                f.Get(key).CloneTree().Write()
         f2.Close()
         f.Close()
 
@@ -118,6 +121,7 @@ class Snapshot(Module):
             The ``mRDF`` object to use for snapshot
 
         """
+
         # create separate files for each variation and tag
         if self.outputMap != {}:
             for variationName in self.outputMap.keys():
@@ -125,11 +129,13 @@ class Snapshot(Module):
                     tmp_varied_cols = []
 
                     for variationNameSpecific in self.outputMap[variationName]:
+
                         tmp_varied_cols.extend(
                             df.GetVariedColumns_oneVariation(
                                 self.saveColumns, variationNameSpecific, tag
                             )
                         )
+
                     outputFilename = self.tmpOutputFilename.split(".")
                     outputFilename[-2] += "__" + variationName + "_" + tag
                     outputFilename = ".".join(outputFilename)
@@ -282,8 +288,11 @@ class Snapshot(Module):
             self.StoreNominalsAndVariations(df)
 
         for snapshot in self.snapshots:
+            if "nominal" in snapshot[0]:
+                isNominal = True
+            else:
+                isNominal = False
             _cols = sorted(list(set(snapshot[1])))
-            print("Final list of variables for snapshot", snapshot[0], _cols)
             opts = ROOT.RDF.RSnapshotOptions()
             opts.fLazy = True
             opts.fMode = "UPDATE"
@@ -293,7 +302,7 @@ class Snapshot(Module):
             values.append(
                 [
                     "snapshot",
-                    df.Snapshot("Events", snapshot[2], _cols, opts),
+                    df.Snapshot("Events", snapshot[2], _cols, isNominal, opts),
                     snapshot[2:],
                 ]
             )

@@ -18,8 +18,8 @@ class mRDF:
         """
         Naming convention for variations.
 
-        Given a variation name and a tag it will return ``variationName_variationTag``.
-        If a column name is provided, it will return ``col__variationName_variationTag``.
+        Given a variation name and a tag it will return ``{variationName}{variationTag}``.
+        If a column name is provided, it will return ``col_{variationName}{variationTag}``.
 
         Parameters
         ----------
@@ -99,13 +99,10 @@ class mRDF:
             The ``mRDF`` object with the new RDataFrame object stored
 
         """
-        try:
-            self.df = ROOT.RDataFrame(*ar, **kw).Define("CUT", "true")
-        except:
-            self.df = ROOT.RDataFrame(*ar, **kw).Redefine("CUT", "true")
+        self.df = ROOT.RDataFrame(*ar, **kw).Define("CUT", "true")
         self.cols = list(map(lambda k: str(k), self.df.GetColumnNames()))
         return self
-    
+
     def Define(self, a, b, excludeVariations=[]):
         r"""Define a new column, if the column already exists redefine it.
 
@@ -426,7 +423,27 @@ class mRDF:
         """
         return self.df.Sum(string)
 
-    def Snapshot(self, treeName, fileName, columns, *args, **kwargs):
+    # def Snapshot(self, *args, **kwargs):
+    #     """
+    #     Produce a Snapshot of the mRDF and return it
+    #
+    #     Parameters
+    #     ----------
+    #     *args : list
+    #         list of arguments to be passed to the ``RDataFrame::Snapshot`` method
+    #
+    #     **kwargs : dict
+    #         dictionary of keyword arguments to be passed to the ``RDataFrame::Snapshot`` method
+    #
+    #
+    #     Returns
+    #     -------
+    #     `Snapshot` or `Proxy<Snapshot>`
+    #         The ``Snapshot`` object, or a ``Proxy<Snapshot>`` if ``lazy=True`` is passed as a keyword argument
+    #     """
+    #     return self.df.Snapshot(*args, **kwargs)
+    #
+    def Snapshot(self, treeName, fileName, columns, isNominal=True, *args, **kwargs):
         """
         Produce a Snapshot of the mRDF and return it
 
@@ -444,35 +461,46 @@ class mRDF:
         `Snapshot` or `Proxy<Snapshot>`
             The ``Snapshot`` object, or a ``Proxy<Snapshot>`` if ``lazy=True`` is passed as a keyword argument
         """
-        
         # events = ak.from_rdataframe(self.df, columns)
         # def function(columns, ):
         import uproot
         import awkward as ak
         from math import ceil
+
         def call(df):
             chunksize = 10_000
             nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)
             outFile = uproot.recreate(fileName)
             branches = columns.copy()
             _branches = branches.copy()
-            zips = {'CleanJet': [],
-                    'WH3l_dphilmet': [],
-                    'WH3l_mtlmet': [],
-            }
-            for zipName in zips:
-                zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
-                zips[zipName] = zipBranches
-                branches = list(set(branches).difference(zipBranches))
-            print(zips)
+            if not isNominal:
+                zips = {'CleanJet': [],
+                        'WH3l_dphilmet': [],
+                        'WH3l_mtlmet': [],
+                    }
+                for zipName in zips:
+                    zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
+                    zips[zipName] = zipBranches
+                    branches = list(set(branches).difference(zipBranches))
+                print(zips)
+            else:
+                zips = {}
+            #####
+            ##### Temporal fix / remove branches with type: string -> incompatbility with awkward/uproot
+            if "BeamSpot_type" in branches:
+                branches.remove("BeamSpot_type")
+            if "Photon_seediEtaOriX" in branches:
+                branches.remove("Photon_seediEtaOriX")
+            if "Electron_seediEtaOriX" in branches:
+                branches.remove("Electron_seediEtaOriX")
             for i in range(nIterations):
                 _df = df.Range( i * chunksize, (i+1) * chunksize)
                 events = ak.from_rdataframe(_df, _branches)
-
                 def getBranch(events, branch):
                     if 'float64' in str(events[branch].type):
                         return ak.values_astype(events[branch],'float32')
                     return events[branch]
+                    
                 d = {}
                 for zipName in zips:
                     z = {}
@@ -485,7 +513,7 @@ class mRDF:
 
                     d[zipName] = ak.zip(z)
                     #branches = list(set(branches).difference(zips[zipName]))
-
+                
                 for branch in branches[:]:
                     d[branch] = getBranch(events, branch)
 
@@ -500,7 +528,6 @@ class mRDF:
                         outFile.mktree(treeName, dtypes)
                         continue
                     else:
-                        # print('Creating ttree right way')
                         outFile[treeName] = d
                         continue
 
@@ -510,17 +537,15 @@ class mRDF:
 
         return (call, columns)
         
-
     def Histo1D(self, *args):
-        
         """
-        Produce a TH1D of the mRDF and return it
+        Produce a TH1D of the mRDF and return it 
         Parameters 
-        ----------  
-        *args : list
-        list of arguments to be passed to the ``RDataFrame::Histo1D`` method 
+        ----------
+        *args : list 
+            list of arguments to be passed to the ``RDataFrame::Histo1D`` method  
         Returns
-        -------
-        `Proxy<TH1D>
+        -------   
+        `Proxy<TH1D>` 
         """
         return self.df.Histo1D(*args)

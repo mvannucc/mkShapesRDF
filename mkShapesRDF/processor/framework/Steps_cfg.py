@@ -97,6 +97,34 @@ Steps = {
             "finalSnapshot_MC",
         ],
     },
+    "MCl1loose2022EEv12__MCCorr2022EEv12": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "leptonMaker",
+            "lepSel2022",
+            "jetSel2022",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "baseW",
+            #"btagPerJet_DeepJet_2018UL", ## To be computed on-the-fly
+            "trigMC",
+            "leptonSF",
+            "puW",
+            "JES_modules_22EE",
+            "l2Kin",
+            "l3Kin",
+            "formulasMC",
+            "finalSnapshot_JES",
+        ]
+    },
     "MCl1loose2022EEv11": {
         "isChain": True,
         "do4MC": True,
@@ -463,7 +491,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=False, storeNominals=True )",
@@ -475,7 +503,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=False )",
@@ -487,7 +515,7 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=False, storeNominals=True )",
@@ -499,13 +527,11 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=True,\
-                outputMap={\
-                    'JES':['JESAbsolute', 'JESAbsolute_2016', 'JESBBEC1', 'JESBBEC1_2016', 'JESEC2', 'JESEC2_2016', 'JESHF', 'JESHF_2016', 'JESRelativeBal', 'JESRelativeSample_2016', 'JESFlavorQCD', 'JESTotal']\
-                } )",
+                outputMap={'JES':['JER_0', 'JER_1', 'JER_2', 'JER_3', 'JER_4', 'JER_5', 'JESCorrelationGroupbJES', 'JESCorrelationGroupIntercalibration', 'JESFlavorPureQuark', 'JESFlavorPureGluon', 'JESFlavorPhotonJet', 'JESFlavorZJet', 'JESTotalNoFlavorNoTime', 'JESCorrelationGroupFlavor', 'JESTotalNoTime', 'JESTotalNoFlavor', 'JESTotal', 'JESSubTotalMC', 'JESSubTotalAbsolute', 'JESSubTotalScale', 'JESFlavorPureCharm', 'JESSubTotalPt', 'JESSubTotalPileUp', 'JESPileUpMuZero', 'JESCorrelationGroupUncorrelated', 'JESPileUpEnvelope', 'JESRelativeJERHF', 'JESRelativePtHF', 'JESRelativeJEREC2','JESSubTotalRelative', 'JESRelativeStatFSR', 'JESRelativeJEREC1', 'JESTimePtEta', 'JESFragmentation', 'JESFlavorQCD', 'JESAbsoluteMPFBias', 'JESRelativePtEC1', 'JESAbsoluteFlavMap', 'JESSinglePionECAL', 'JESAbsoluteScale', 'JESSinglePionHCAL', 'JESRelativeFSR', 'JESFlavorPureBottom', 'JESPileUpPtEC1', 'JESPileUpDataMC', 'JESAbsoluteStat', 'JESRelativePtEC2', 'JESPileUpPtEC2', 'JESRelativeBal', 'JESAbsoluteSample', 'JESRelativeSample', 'JESRelativePtBB', 'JESRelativeStatEC', 'JESRelativeStatHF', 'JESPileUpPtRef', 'JESCorrelationGroupMPFInSitu', 'JESPileUpPtBB', 'JESPileUpPtHF'], 'MET':['JER_0', 'JER_1', 'JER_2', 'JER_3', 'JER_4', 'JER_5', 'JESCorrelationGroupbJES', 'JESCorrelationGroupIntercalibration', 'JESFlavorPureQuark', 'JESFlavorPureGluon', 'JESFlavorPhotonJet', 'JESFlavorZJet', 'JESTotalNoFlavorNoTime', 'JESCorrelationGroupFlavor', 'JESTotalNoTime', 'JESTotalNoFlavor', 'JESTotal', 'JESSubTotalMC', 'JESSubTotalAbsolute', 'JESSubTotalScale', 'JESFlavorPureCharm', 'JESSubTotalPt', 'JESSubTotalPileUp', 'JESPileUpMuZero', 'JESCorrelationGroupUncorrelated', 'JESPileUpEnvelope', 'JESRelativeJERHF', 'JESRelativePtHF', 'JESRelativeJEREC2', 'JESSubTotalRelative', 'JESRelativeStatFSR', 'JESRelativeJEREC1', 'JESTimePtEta', 'JESFragmentation', 'JESFlavorQCD', 'JESAbsoluteMPFBias', 'JESRelativePtEC1', 'JESAbsoluteFlavMap', 'JESSinglePionECAL', 'JESAbsoluteScale', 'JESSinglePionHCAL', 'JESRelativeFSR', 'JESFlavorPureBottom', 'JESPileUpPtEC1', 'JESPileUpDataMC', 'JESAbsoluteStat', 'JESRelativePtEC2', 'JESPileUpPtEC2', 'JESRelativeBal', 'JESAbsoluteSample', 'JESRelativeSample', 'JESRelativePtBB', 'JESRelativeStatEC', 'JESRelativeStatHF', 'JESPileUpPtRef', 'JESCorrelationGroupMPFInSitu', 'JESPileUpPtBB', 'JESPileUpPtHF'],} )",
         "module": "snapshot()",
     },
     "histogram": {
