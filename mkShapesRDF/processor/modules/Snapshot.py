@@ -75,8 +75,12 @@ class Snapshot(Module):
 
         """
         # copy other information from inputFiles into the outputfile
-        mergedOutput = f"merged_{outputFilename}"
-
+        file_name = outputFilename.split('/')[-1]
+        if outputFilename.split(file_name)[0] != "":
+            mergedOutput = outputFilename.split(file_name)[0]+f"merged_{file_name}"
+        else:
+            mergedOutput = f"merged_{file_name}"
+            
         proc = subprocess.Popen(
             f'hadd -fk {mergedOutput} {" ".join(inputFiles)}',
             shell=True,

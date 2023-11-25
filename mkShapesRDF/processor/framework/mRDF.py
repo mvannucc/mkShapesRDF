@@ -472,19 +472,6 @@ class mRDF:
             nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)
             outFile = uproot.recreate(fileName)
             branches = columns.copy()
-            _branches = branches.copy()
-            if not isNominal:
-                zips = {'CleanJet': [],
-                        'WH3l_dphilmet': [],
-                        'WH3l_mtlmet': [],
-                    }
-                for zipName in zips:
-                    zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
-                    zips[zipName] = zipBranches
-                    branches = list(set(branches).difference(zipBranches))
-                print(zips)
-            else:
-                zips = {}
             #####
             ##### Temporal fix / remove branches with type: string -> incompatbility with awkward/uproot
             if "BeamSpot_type" in branches:
@@ -493,6 +480,23 @@ class mRDF:
                 branches.remove("Photon_seediEtaOriX")
             if "Electron_seediEtaOriX" in branches:
                 branches.remove("Electron_seediEtaOriX")
+            _branches = branches.copy()
+            if not isNominal:
+                zips = {'CleanJet': [],
+                        'WH3l_dphilmet': [],
+                        'WH3l_mtlmet': [],
+                        'MET': [],
+                        'Jet': [],
+                        'PuppiMET':[]
+                    }
+                #zips = {'JES':[]}
+                for zipName in zips:
+                    zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
+                    zips[zipName] = zipBranches
+                    branches = list(set(branches).difference(zipBranches))
+                print(zips)
+            else:
+                zips = {}
             for i in range(nIterations):
                 _df = df.Range( i * chunksize, (i+1) * chunksize)
                 events = ak.from_rdataframe(_df, _branches)
@@ -530,7 +534,7 @@ class mRDF:
                     else:
                         outFile[treeName] = d
                         continue
-
+                
                 outFile[treeName].extend(d)
 
             outFile.close()
@@ -549,3 +553,18 @@ class mRDF:
         `Proxy<TH1D>` 
         """
         return self.df.Histo1D(*args)
+
+    def Range(self, nEvents):
+        """
+        Filter the dataframe to get a subset of events
+        Parameters
+        ----------
+        *args : list
+        list of arguments to be passed to the ``RDataFrame::Range`` method
+        Returns
+        -------
+        The mRDF objects with a new range of events
+        """
+        c = self.Copy()
+        c.df = c.df.Range(nEvents)
+        return c

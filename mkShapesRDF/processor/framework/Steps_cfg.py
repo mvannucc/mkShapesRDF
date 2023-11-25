@@ -535,7 +535,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=False, storeNominals=True )",
@@ -547,7 +547,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=False )",
@@ -559,7 +559,7 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=False, storeNominals=True )",
@@ -571,7 +571,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='RPLME_OUTPUTFILENAME', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=True,\
