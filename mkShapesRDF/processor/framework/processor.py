@@ -422,23 +422,25 @@ class Processor:
 
         fJdl = dedent(
             """
-        universe = vanilla
-        executable = run.sh
-        arguments = $(Folder)
+universe = vanilla
+executable = run.sh
+arguments = $(Folder)
 
-        should_transfer_files = YES
-        transfer_input_files = $(Folder)/script.py
+should_transfer_files = YES
+transfer_input_files = $(Folder)/script.py
 
-        output = $(Folder)/out.txt
-        error  = $(Folder)/err.txt
-        log    = $(Folder)/log.txt
+output = $(Folder)/out.txt
+error  = $(Folder)/err.txt
+log    = $(Folder)/log.txt
 
-        request_cpus   = 1
-        request_memory = 6GB
-        request_disk   = 2GB
-        +JobFlavour = "workday"
+request_cpus   = 1
+request_memory = 6GB
+request_disk   = 2GB
+requirements = (OpSysAndVer =?= "AlmaLinux9")
++JobFlavour = "workday"
 
-        queue 1 Folder in RPLME_ALLSAMPLES"""
+queue 1 Folder in RPLME_ALLSAMPLES
+"""
         )
 
         fJdl = fJdl.replace("RPLME_ALLSAMPLES", " ".join(allSamples))

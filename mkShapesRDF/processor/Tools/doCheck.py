@@ -67,6 +67,8 @@ def run(production, step, initialStep="", submit=False):
     path = prePath + "/condor/" + production + "/" + step + "/"
     output_path = Sites["eosDir"] + production + "/" + initialStep + step
     jobDir = path
+    print(output_path)
+
 
     cmd = "find {} -type d -name '*'".format(path)
     
@@ -138,8 +140,9 @@ error  = $(Folder)/err.txt
 log    = $(Folder)/log.txt
 
 request_cpus   = 1
-request_memory = 4500
-request_disk = 10000000
+request_memory = 6GB
+request_disk   = 2GB
+requirements = (OpSysAndVer =?= "AlmaLinux9")
 +JobFlavour = "workday"
 
 queue 1 Folder in RPLME_ALLSAMPLES"""
