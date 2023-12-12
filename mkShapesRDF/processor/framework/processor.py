@@ -414,7 +414,7 @@ class Processor:
                     outputFilename = _files[0].split("/")[-1]
 
                 if eosTmpPath=="USEDAS":
-                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", "$TMPDIR/"+outputFilename)
+                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", os.environ['TMPDIR']+"/"+outputFilename)
                 else:
                     _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", eosTmpPath+outputFilename)
                 _fPy = _fPy.replace("RPLME_OUTPUTFILENAME", outputFilename)
