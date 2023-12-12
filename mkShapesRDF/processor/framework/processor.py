@@ -158,6 +158,7 @@ class Processor:
         import sys
         sys.path.insert(0, list(filter(lambda k: 'myenv' in k, sys.path))[0])
         import ROOT
+        import os
         ROOT.gROOT.SetBatch(True)
         """
         )
@@ -414,9 +415,11 @@ class Processor:
                     outputFilename = _files[0].split("/")[-1]
 
                 if eosTmpPath=="USEDAS":
-                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", os.environ['TMPDIR']+"/"+outputFilename)
+                    #if not os.path.exists(os.environ['TMPDIR']):
+                    #    os.mkdir(os.environ['TMPDIR'])
+                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", "os.environ['TMPDIR']")
                 else:
-                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", eosTmpPath+outputFilename)
+                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", eosTmpPath)
                 _fPy = _fPy.replace("RPLME_OUTPUTFILENAME", outputFilename)
 
                 jobDirPart = jobDir + sampleName + "__part" + str(part) + "/"
