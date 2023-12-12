@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # sourceCommand="source /root/.bashrc && mamba activate cern"
-sourceCommand="source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos9-gcc11-opt/setup.sh"
+sourceCommand="source /cvmfs/sft.cern.ch/lcg/views/LCG_104a/x86_64-el9-gcc11-opt/setup.sh"
 
 eval "$sourceCommand"
 python -m venv --system-site-packages myenv
