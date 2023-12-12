@@ -232,8 +232,11 @@ class Processor:
         self.fPy += dedent(
             """
         files = []
-        eosTmpPath = '"""+eosTmpPath+"""'
+        eosTmpPath = '"""+eosTmpPath+"""'        
         for f in _files:
+            if eosTmpPath=="USEDAS":
+                files.append(f)
+                continue
             filename = f.split('/')[-1]
             filename = eosTmpPath + 'input__' + filename
             files.append(filename)
