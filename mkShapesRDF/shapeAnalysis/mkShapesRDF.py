@@ -128,6 +128,8 @@ def main():
     configFile = args.configFile
     resubmit = int(args.resubmit)
 
+    global jdlconfigfile
+    
     global batchFolder
     global outputFolder
 
@@ -226,6 +228,8 @@ def main():
             outputPath = os.path.abspath(outputFolder)
 
             batch = BatchSubmission(
+                folder,
+                jdlconfigfile,
                 outputPath,
                 batchFolder,
                 headersPath,

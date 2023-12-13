@@ -116,60 +116,141 @@ class BatchSubmission:
             self.createBatch(sample)
 
     def submit(self, dryRun=0, queue='workday'):
+        
+
         txtsh = ""
-        with open(os.environ['STARTPATH']) as file:
-            txtsh += file.read()
 
-        mE = self.d.get("mountEOS", [])
-        for line in mE:
-            txtsh += line
+        try:
+            
 
-        txtsh += "time python runner.py\n"
+            print(self.project_folder+"/"+self.jdlconfigfile)
+            
+            exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
 
-        outputFileTrunc = ".".join(self.d["outputFile"].split(".")[:-1])
+            for key in executable:
+                if executable[key]!="":
 
-        print("\n\nReal output path:", os.path.realpath(self.outputPath), "\n\n")
+                    txtsh +=executable[key]+"\n"
 
-        if os.path.realpath(self.outputPath).startswith("/eos"):
+        except Exception as e:    
+
+
+            print("An error occurred, the file you are trying to open does not exist. Warning, some options will be omitted from the final jdl file",e)
+        
+            with open(os.environ['STARTPATH']) as file:
+                txtsh += file.read()
+
+            mE = self.d.get("mountEOS", [])
+            for line in mE:
+                txtsh += line
+
+            txtsh += "time python runner.py\n"
+
+            outputFileTrunc = ".".join(self.d["outputFile"].split(".")[:-1])
+
+            print("\n\nReal output path:", os.path.realpath(self.outputPath), "\n\n")
+
+            if os.path.realpath(self.outputPath).startswith("/eos"):
             # eos is not supported -> use xrdcp
-            fullOutfile = f"{os.path.realpath(self.outputPath)}/"
-        else:
-            fullOutfile = f"{self.outputPath}/"
+                fullOutfile = f"{os.path.realpath(self.outputPath)}/"
+            else:
+                fullOutfile = f"{self.outputPath}/"
 
-        fullOutfile += f"{outputFileTrunc}__ALL__" + "${1}.root"
-        txtsh += f"cp output.root {fullOutfile}\n"
-        txtsh += "rm output.root\n"
-        txtsh += "rm script.py\n"
+            fullOutfile += f"{outputFileTrunc}__ALL__" + "${1}.root"
+            txtsh += f"cp output.root {fullOutfile}\n"
+            txtsh += "rm output.root\n"
+            txtsh += "rm script.py\n"
 
         # write the run.sh file
         with open(f"{self.batchFolder}/{self.tag}/run.sh", "w") as file:
             file.write(txtsh)
         # make it executable
         process = subprocess.Popen(
-            f"chmod +x {self.batchFolder}/{self.tag}/run.sh", shell=True
-        )
+            f"chmod +x {self.batchFolder}/{self.tag}/run.sh", shell=True)
         process.wait()
 
-        txtjdl = "universe = vanilla \n"
-        txtjdl += "executable = run.sh\n"
-        txtjdl += "arguments = $(Folder)\n"
 
-        txtjdl += "should_transfer_files = YES\n"
-        txtjdl += f"transfer_input_files = $(Folder)/script.py, {self.headersPath}, {self.runnerPath}\n"
 
-        txtjdl += "output = $(Folder)/out.txt\n"
-        txtjdl += "error  = $(Folder)/err.txt\n"
-        txtjdl += "log    = $(Folder)/log.txt\n"
+        try:
 
-        txtjdl += "request_cpus   = 1\n"
-        txtjdl += f'+JobFlavour = "{queue}"\n'
+            exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
 
-        txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
+            for key in jdl_dict:
+                if jdl_dict[key]!="":
+
+                    txtjdl += key+" = "+jdl_dict[key]+"\n"
+
+
+
+
+
+         txtjdl += "output = $(Folder)/out.txt\n"
+         txtjdl += "error  = $(Folder)/err.txt\n"
+         txtjdl += "log    = $(Folder)/log.txt\n"        
+         txtjdl += "request_cpus   = 1\n"
+         txtjdl += f'+JobFlavour = "{queue}"\n'
+         
+        except Exception as e:            
+
+        
+            txtjdl = "universe = vanilla \n"
+            txtjdl += "executable = run.sh\n"
+            txtjdl += "arguments = $(Folder)\n"
+
+            txtjdl += "should_transfer_files = YES\n"
+            txtjdl += f"transfer_input_files = $(Folder)/script.py, {self.headersPath}, {self.runnerPath}\n"
+
+            txtjdl += "output = $(Folder)/out.txt\n"
+            txtjdl += "error  = $(Folder)/err.txt\n"
+            txtjdl += "log    = $(Folder)/log.txt\n"
+
+            txtjdl += "request_cpus   = 1\n"
+            txtjdl += f'+JobFlavour = "{queue}"\n'
+
+            txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
+
+
+
         with open(f"{self.batchFolder}/{self.tag}/submit.jdl", "w") as file:
             file.write(txtjdl)
         if dryRun != 1:
             process = subprocess.Popen(
-                f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl; cd -",
+                f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl -spool; cd -",
                 shell=True,
             )
             process.wait()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
