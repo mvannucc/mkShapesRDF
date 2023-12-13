@@ -40,6 +40,8 @@ class BatchSubmission:
 
     def __init__(
         self,
+        folder,
+        jdlconfigfile,    
         outputPath,
         batchFolder,
         headersPath,
@@ -49,6 +51,8 @@ class BatchSubmission:
         d,
         batchVars,
     ):
+        self.jdlconfigfile = jdlconfigfile
+        self.project_folder = folder
         self.outputPath = outputPath
         self.batchFolder = batchFolder
         self.headersPath = headersPath
