@@ -140,10 +140,10 @@ error  = $(Folder)/err.txt
 log    = $(Folder)/log.txt
 
 request_cpus   = 1
-request_memory = 6GB
-request_disk   = 2GB
+request_memory = 12GB
+request_disk   = 8GB
 requirements = (OpSysAndVer =?= "AlmaLinux9")
-+JobFlavour = "workday"
++JobFlavour = "testmatch"
 
 queue 1 Folder in RPLME_ALLSAMPLES"""
         

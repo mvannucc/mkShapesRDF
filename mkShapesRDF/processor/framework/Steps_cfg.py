@@ -30,7 +30,6 @@ Steps = {
             "lepSel2022",
             "jetSel2022",
             "l2Kin",
-            "l3Kin",
             "trigData22",
             "formulasDATA",
             "finalSnapshot_DATA",

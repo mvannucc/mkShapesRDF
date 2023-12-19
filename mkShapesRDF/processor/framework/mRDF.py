@@ -494,7 +494,7 @@ class mRDF:
                     zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
                     zips[zipName] = zipBranches
                     branches = list(set(branches).difference(zipBranches))
-                print(zips)
+                print(zips) 
             else:
                 zips = {}
             for i in range(nIterations):
