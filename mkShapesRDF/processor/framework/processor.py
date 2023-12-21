@@ -323,25 +323,27 @@ class Processor:
         from tabulate import tabulate
 
         print(tabulate(data, headers=["desc.", "value"]))
+            """)
 
+        if self.inputFolder != "" and eosTmpPath!="USEDAS":
+            self.fPy += dedent("""
         for f in files:
             print('Removing input file', f)
             proc = subprocess.Popen(f"rm {f}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = proc.communicate()
             print(out.decode('utf-8'))
             print(err.decode('utf-8'), file=sys.stderr)
+            """)
 
+        self.fPy += dedent("""
         # check final file integrity
         for finalFile in finalFiles:
             f = uproot.open(finalFile)
             branches = [k.name for k in f['Events'].branches]
             print(f['Events'][branches[0]].array(entry_stop=10))
             f.close()
-
-            """
-        )
-
-
+        """)
+        
         self.fPy = self.fPy.replace("RPLME_FW", frameworkPath)
 
         #: folderPathEos is the output folder path (not ending with ``/`` so that is possible to add suffix to the folder)
