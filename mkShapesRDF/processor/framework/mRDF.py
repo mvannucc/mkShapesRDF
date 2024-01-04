@@ -468,12 +468,13 @@ class mRDF:
         # def function(columns, ):
         import uproot
         import awkward as ak
+        import numpy as np
         from math import ceil
 
         def call(df):
             chunksize = 10_000
             nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)
-            outFile = uproot.recreate(fileName)
+            outFile = uproot.recreate(fileName, compression=uproot.LZMA(9))
             branches = columns.copy()
             #####
             ##### Temporal fix / remove branches with type: string -> incompatbility with awkward/uproot
@@ -484,22 +485,19 @@ class mRDF:
             if "Electron_seediEtaOriX" in branches:
                 branches.remove("Electron_seediEtaOriX")
             _branches = branches.copy()
-            if not isNominal:
-                zips = {'CleanJet': [],
-                        'WH3l_dphilmet': [],
-                        'WH3l_mtlmet': [],
-                        'MET': [],
-                        'Jet': [],
-                        'PuppiMET':[]
-                    }
-                #zips = {'JES':[]}
-                for zipName in zips:
-                    zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
-                    zips[zipName] = zipBranches
-                    branches = list(set(branches).difference(zipBranches))
-                print(zips) 
-            else:
-                zips = {}
+            CollectionsToZip = ['CleanJet','WH3l_dphilmet','WH3l_mtlmet','MET','Jet','PuppiMET','Lepton_tightMuon','Lepton_tightElectron','Lepton_isTightElectron','Lepton_isTightMuon','Lepton',
+                                'Muon','Electron','Photon','Gen','LHE','HLT','L1','Tau','IsoTrack','GenPart','LHEPart','TrigObj','LepCut2l','LepCut3l','LepCut4l','NeutrinoGen','SubJet',
+                                'ChsMET','LeptonGen','FatJet','LepSF2l','LepSF3l','LepSF4l','PhotonGen','DressedLepton','GenDressedLepton','SubGenJetAK8','LowPtElectron','VetoLepton',
+                                'BeamSpot','LHEWeight','GenIsolatedPhoton','RawMET','TkMET','CorrT1METJet','boostedTau','newJet','GenJet','TriggerEffWeight','TriggerSFWeight',
+                                'GenJetAK8','Flag','puWeight','Pileup','GenProton','HTXS', 'GenVtx','Generator','Trigger','GenVisTau','RawPuppiMET','SoftActivityJet',
+                                'CaloMET','Rho','FsrPhoton','DeepMETResponseTune','PV','SV','GenMET','DeepMETResolutionTune','gen','OtherPV']
+
+            zips = {}            
+            for zipName in CollectionsToZip:
+                zipBranches = list(filter(lambda k: k.startswith(zipName + '_'), branches))
+                zips[zipName] = zipBranches
+                branches = list(set(branches).difference(zipBranches))
+
             for i in range(nIterations):
                 _df = df.Range( i * chunksize, (i+1) * chunksize)
                 events = ak.from_rdataframe(_df, _branches)
@@ -507,7 +505,7 @@ class mRDF:
                     if 'float64' in str(events[branch].type):
                         return ak.values_astype(events[branch],'float32')
                     return events[branch]
-                    
+                
                 d = {}
                 for zipName in zips:
                     z = {}
@@ -519,14 +517,14 @@ class mRDF:
                         continue
 
                     d[zipName] = ak.zip(z)
-                    #branches = list(set(branches).difference(zips[zipName]))
-                
-                for branch in branches[:]:
-                    d[branch] = getBranch(events, branch)
 
-                _events = ak.Array(d)
+                for branch in branches:
+                    d[branch] = getBranch(events, branch).to_list()
+
+                _events = ak.Array(d)                
                 if treeName not in outFile:
                     if len(_events) == 0:
+                        print("Not needed!!!")
                         dtypes = {}
                         for branch in _events.fields:
                             dtypes[branch] = _events[branch].type
@@ -537,7 +535,7 @@ class mRDF:
                     else:
                         outFile[treeName] = d
                         continue
-                
+
                 outFile[treeName].extend(d)
 
             outFile.close()

@@ -147,7 +147,7 @@ requirements = (OpSysAndVer =?= "AlmaLinux9")
 
 queue 1 Folder in RPLME_ALLSAMPLES"""
         
-        resubmit = resubmit.replace("RPLME_ALLSAMPLES", " ".join(failed_jobs[0:300]))
+        resubmit = resubmit.replace("RPLME_ALLSAMPLES", " ".join(failed_jobs[0:900]))
         
         with open(jobDir + "submit_failed.jdl", "w") as f:
             f.write(resubmit)
