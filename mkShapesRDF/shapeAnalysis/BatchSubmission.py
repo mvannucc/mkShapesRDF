@@ -184,11 +184,11 @@ class BatchSubmission:
 
 
 
-         txtjdl += "output = $(Folder)/out.txt\n"
-         txtjdl += "error  = $(Folder)/err.txt\n"
-         txtjdl += "log    = $(Folder)/log.txt\n"        
-         txtjdl += "request_cpus   = 1\n"
-         txtjdl += f'+JobFlavour = "{queue}"\n'
+            txtjdl += "output = $(Folder)/out.txt\n"
+            txtjdl += "error  = $(Folder)/err.txt\n"
+            txtjdl += "log    = $(Folder)/log.txt\n"        
+            txtjdl += "request_cpus   = 1\n"
+            txtjdl += f'+JobFlavour = "{queue}"\n'
          
         except Exception as e:            
 
