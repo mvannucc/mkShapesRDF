@@ -198,7 +198,9 @@ class BatchSubmission:
          
         except Exception as e:            
 
-        
+            print("An error occurred, the file you are trying to open does not exist. Warning, some options will be omitted from the final jdl fi\
+le",e)
+            
             txtjdl = "universe = vanilla \n"
             txtjdl += "executable = run.sh\n"
             txtjdl += "arguments = $(Folder)\n"
