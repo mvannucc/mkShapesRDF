@@ -195,7 +195,9 @@ class BatchSubmission:
             txtjdl += "log    = $(Folder)/log.txt\n"        
             txtjdl += "request_cpus   = 1\n"
             txtjdl += f'+JobFlavour = "{queue}"\n'
-         
+            txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
+            
+            
         except Exception as e:            
 
             print("An error occurred, the file you are trying to open does not exist. Warning, some options will be omitted from the final jdl fi\
