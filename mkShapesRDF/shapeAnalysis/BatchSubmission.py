@@ -170,18 +170,24 @@ class BatchSubmission:
         process.wait()
 
 
+        txtjdl = ""
 
         try:
 
+
+            txtjdl = "universe = vanilla \n"
+            txtjdl += "executable = run.sh\n"
+            txtjdl += "arguments = $(Folder)\n"
+
+            txtjdl += "should_transfer_files    = YES\n"
+
+            
             exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
 
             for key in jdl_dict:
                 if jdl_dict[key]!="":
 
                     txtjdl += key+" = "+jdl_dict[key]+"\n"
-
-
-
 
 
             txtjdl += "output = $(Folder)/out.txt\n"
