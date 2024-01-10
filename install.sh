@@ -7,13 +7,28 @@ substring="lxplus"
 if [[ $env == *$substring* ]]; then
     echo "Installing on $substring."
 
-    sourceCommand="source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh"
+    OS=$(hostnamectl | grep "CPE OS Name")
+    echo $OS
+
+    if [[ "$OS" == *"centos:7"* ]]; then
+
+	echo centos7
+
+    	sourceCommand="source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh"
+    fi
+
+    if [[ "$OS" == *"enterprise_linux:9"* ]]; then
+	echo el9
+	
+	sourceCommand="source /cvmfs/sft.cern.ch/lcg/views/LCG_104/x86_64-el9-gcc11-opt/setup.sh"	
+
+    fi			
 
     eval "$sourceCommand"
     python -m venv --system-site-packages myenv
     source myenv/bin/activate
 
-    python -m pip install -e .
+    python -m pip install -e .[docs,dev]
 
     python -m pip install --no-binary=correctionlib correctionlib
 
@@ -22,6 +37,7 @@ if [[ $env == *$substring* ]]; then
 #!/bin/bash
 $sourceCommand
 source `pwd`/myenv/bin/activate
+export STARTPATH=`pwd`/start.sh 
 EOF
 
 
