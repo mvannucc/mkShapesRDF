@@ -14,26 +14,107 @@ Steps = {
             "l2Kin",
             # "l3Kin",
             # "l4Kin",
-            # "trigData",
-            # "formulasDATA",
+            "trigData",
+            #"formulasDATA",
             "finalSnapshot_DATA",
         ],
     },
-    "JES_18": {
+    "DATAl1loose2022EEv11": {
         "isChain": True,
-        "do4MC": True,
-        "do4Data": False,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((nElectron+nMuon)>0)"',
         "subTargets": [
-            "JES_modules_18UL",
+            "lumiMask22",
+            "leptonMaker",
+            "lepSel2022",
+            "jetSel2022",
             "l2Kin",
-            "finalSnapshot_Variations",
+            "l3Kin",
+            "trigData22",
+            "formulasDATA",                                                                                                                                                                              
+            "finalSnapshot_DATA",
         ],
     },
-    "JES_18_test": {
+    "fakeSel": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((MET_pt < 20 || PuppiMET_pt < 20) && mtw1 < 20)"',
+        "subTargets": [
+            "finalSnapshot_DATA",
+        ],
+    },
+    "fakeSelKinMC": {
         "isChain": True,
         "do4MC": True,
         "do4Data": False,
-        "subTargets": ["JES_modules_18UL", "l2Kin", "histogram"],
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "baseW",
+            "trigMCnoSF",
+            "l2Kin",
+            "l3Kin",
+            "puW",
+            "formulasMCnoSF",
+            "fakeSelMC",
+            "finalSnapshot_MC",
+        ],
+    },
+    "l2loose": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": True,
+        "selection": '"(Lepton_pt.size()>1)"',
+        "subTargets": [
+            "finalSnapshot_MC",
+        ],
+    },
+    "l2tightOR2022v11": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": True,
+        "selection": '"(Lepton_pt.size()>1 && Lepton_pt[0]>18 && Lepton_pt[1]>8) && \
+        (Lepton_isTightElectron_cut_Tight_HWWW[0] > 0.5    \
+        || Lepton_isTightElectron_cut_Tight_HWWW_tthmva70[0] > 0.5  \
+        || Lepton_isTightElectron_cut_Medium_HWWW[0] > 0.5   \
+        || Lepton_isTightElectron_mvaWinter22V2Iso_WP90[0] > 0.5   \
+        || Lepton_isTightElectron_mvaWinter22V2Iso_WP90_tthmva70[0] > 0.5  \
+        || Lepton_isTightMuon_cut_Tight_HWWW[0] > 0.5   \
+        || Lepton_isTightMuon_cut_Medium_HWWW[0] > 0.5  \
+        || Lepton_isTightMuon_cut_Tight_HWWW_tthmva_80[0] > 0.5   \
+        || Lepton_isTightMuon_cut_Medium_HWWW_tthmva_80[0] > 0.5) && \
+        (Lepton_isTightElectron_cut_Tight_HWWW[1] > 0.5   \
+        || Lepton_isTightElectron_cut_Tight_HWWW_tthmva70[1] > 0.5  \
+        || Lepton_isTightElectron_cut_Medium_HWWW[1] > 0.5   \
+        || Lepton_isTightElectron_mvaWinter22V2Iso_WP90[1] > 0.5   \
+        || Lepton_isTightElectron_mvaWinter22V2Iso_WP90_tthmva70[1] > 0.5  \
+        || Lepton_isTightMuon_cut_Tight_HWWW[1] > 0.5   \
+        || Lepton_isTightMuon_cut_Medium_HWWW[1] > 0.5  \
+        || Lepton_isTightMuon_cut_Tight_HWWW_tthmva_80[1] > 0.5   \
+        || Lepton_isTightMuon_cut_Medium_HWWW_tthmva_80[1] > 0.5 ) "',
+        "subTargets": [
+            "finalSnapshot_MC",
+        ],
+    },
+    "MCl1loose2022EEv11": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "leptonMaker",
+            "lepSel2022",
+            "jetSel2022",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "finalSnapshot_MC",
+        ]
     },
     "MCl1loose2018v9": {
         "isChain": True,
@@ -54,6 +135,24 @@ Steps = {
         ]
         # 'wwNLL','ggHTheoryUncertainty', 'qqHTheoryUncertainty', 'EFTGen'],
     },
+    "MCCorr2022EEv11": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "subTargets": [
+            "baseW",
+            "btagPerJet_DeepJet_2018UL",
+            "trigMC",
+            "leptonSF",
+            "l2Kin",
+            "l3Kin",
+            "puW",
+            #"JES_modules_22EE",
+            # "JetPUID_SF_UL",
+            "formulasMC",
+            "finalSnapshot_MC",
+        ],
+    },
     "MCCorr2018v9": {
         "isChain": True,
         "do4MC": True,
@@ -67,7 +166,7 @@ Steps = {
             "btagPerJet_DeepJet_2018UL",
             # "JetPUID_SF_UL",
             # "rochesterMC",
-            # "trigMC",
+            "trigMC",
             # "leptonSF",
             # "puW",
             "l2Kin",
@@ -110,7 +209,15 @@ Steps = {
         "do4MC": True,
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LeptonSel",
-        "declare": 'leptonSel = lambda : LeptonSel("Loose", 1)',
+        "declare": 'leptonSel = lambda : LeptonSel("Loose", 1, "Full2018v9")',
+        "module": "leptonSel()",
+    },
+    "lepSel2022":{
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.LeptonSel",
+        "declare": 'leptonSel = lambda : LeptonSel("Loose", 1, "Full2022EEv11")',
         "module": "leptonSel()",
     },
     "jetSelUL": {
@@ -122,12 +229,37 @@ Steps = {
         "declare": 'jetSel = lambda : JetSel(2,"loose",15.0,4.7,False)',
         "module": "jetSel()",
     },
+    "jetSel2022": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.JetSel",
+        # jetid=2,pujetid='loose',minpt=15.0,maxeta=4.7, UL2016fix=False "                                                                                                                                 
+        "declare": 'jetSel = lambda : JetSel(2,"loose",15.0,4.7,False)',
+        "module": "jetSel()",
+    },
+    "fakeSelMC": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import":  "mkShapesRDF.processor.modules.FakeSelMC",
+        "declare": "fakeSel = lambda : FakeSelMC()",
+        "module":  "fakeSel()",
+    },
     "lumiMask": {
         "isChain": False,
         "do4MC": False,
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LumiMask",
         "declare": "lumiMask = lambda : LumiMask(lumiFile)",
+        "module": "lumiMask()",
+    },
+    "lumiMask22": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.LumiMask",
+        "declare": "lumiMask = lambda : LumiMask('/afs/cern.ch/work/s/sblancof/private/Run3Analysis/mkShapesRDF/mkShapesRDF/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
         "module": "lumiMask()",
     },
     "PromptParticlesGenVars": {
@@ -203,6 +335,16 @@ Steps = {
             jet_object="AK4PFchs", do_Jets=True, do_MET=True, do_JER=False, store_nominal=False, store_variations=True)',
         "module": "jmeCalculator()",
     },
+    "JES_modules_22EE": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.JMECalculator",
+        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22EEPrompt22_V1_MC", "Summer22EEPrompt22_JRV1_MC", \
+            jet_object="AK4PFPuppi", do_Jets=True, do_MET=True, do_Unclustered=False, met_collections = ["PuppiMET", "MET", "RawMET"],\
+            do_JER=True, store_nominal=True, store_variations=True)',
+        "module": "jmeCalculator()",
+    },
     "l2Kin": {
         "isChain": False,
         "do4MC": True,
@@ -211,13 +353,61 @@ Steps = {
         "declare": "l2Kin = lambda : l2KinProducer()",
         "module": "l2Kin()",
     },
+    "l3Kin": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.l3KinProducer",
+        "declare": "l3Kin = lambda : l3KinProducer()",
+        "module": "l3Kin()",
+    },
+    "l4Kin": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.l4KinProducer",
+        "declare": "l4Kin = lambda : l4KinProducer()",
+        "module": "l4Kin()",
+    },
+    "puW": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.runDependentPuWRun3",
+        "declare": "puWeight = lambda : runDependentPuWRun3('Full2022EEv11', files)",
+        "module": "puWeight()",
+    },
     "leptonSF": {
         "isChain": False,
         "do4MC": False,
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LeptonSF",
-        "declare": "leptonSF = lambda : LeptonSF(('RPLME_FW/processor/data/scale_factor/Full2018v9/electron.json.gz'))",
+        "declare": "leptonSF = lambda : LeptonSF('Full2022EEv11')",
         "module": "leptonSF()",
+    },
+    "formulasDATA": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.formulasToAdd_DATA_Full2022EEv11",
+        "declare": "formulasDATA = lambda : formulasToAdd_DATA_Full2022EEv11()",
+        "module": "formulasDATA()",
+    },
+    "formulasMC": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.formulasToAdd_MC_Full2022EEv11",
+        "declare": "formulasMC = lambda : formulasToAdd_MC_Full2022EEv11()",
+        "module": "formulasMC()",
+    },
+    "formulasMCnoSF": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.formulasToAdd_MCnoSF_Full2022EEv11",
+        "declare": "formulasMC = lambda : formulasToAdd_MCnoSF_Full2022EEv11()",
+        "module": "formulasMC()",
     },
     "btagPerJet_DeepCSV_2018UL": {
         "isChain": False,
@@ -235,16 +425,48 @@ Steps = {
         "declare": 'btagPerJet_DeepJet_2018UL = lambda : btagSFProducerLatinos(2018, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/jsonpog-integration/POG/BTV/2018_UL/btagging.json.gz", ["jes","jesAbsolute","jesAbsolute_2018","jesBBEC1","jesBBEC1_2018","jesEC2","jesEC2_2018","jesFlavorQCD","jesHF","jesHF_2018","jesRelativeBal","jesRelativeSample_2018"])',
         "module": "btagPerJet_DeepJet_2018UL()",
     },
+    "trigMC": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv11", isData=False, keepRunP=False)',
+        "module": "trigMC()",
+    },
+    "trigMCnoSF": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv11", isData=True, keepRunP=False)',
+        "module": "trigMC()",
+    },
+    "trigData": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigData = lambda : TrigMaker("Full2018v9", isData=True, keepRunP=False)',
+        "module": "trigData()",
+    },
+    "trigData22": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigData = lambda : TrigMaker("Full2022EEv11", isData=True, keepRunP=False)',
+        "module": "trigData()",
+    },
     "finalSnapshot_MC": {
         "isChain": False,
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='output.root', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
-                includeVariations=False, splitVariations=False, storeNominals=True )",
+                includeVariations=True, splitVariations=False, storeNominals=True )",
         "module": "snapshot()",
     },
     "finalSnapshot_Variations": {
@@ -253,7 +475,7 @@ Steps = {
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='output.root', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
                 includeVariations=True, splitVariations=True, storeNominals=False )",
@@ -265,10 +487,10 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.Snapshot",
         "declare": "snapshot = lambda : Snapshot( \
-                tmpOutputFilename='output.root', \
+                tmpOutputFilename='RPLME_OUTPUTFILENAMETMP', \
                 columns=['*'], \
                 eosPath='RPLME_EOSPATH', outputFilename='RPLME_OUTPUTFILENAME', \
-                includeVariations=False, splitVariations=False, storeNominals=True )",
+                includeVariations=True, splitVariations=False, storeNominals=True )",
         "module": "snapshot()",
     },
     "histogram": {

@@ -1,6 +1,7 @@
 import sys
 import subprocess
 from mkShapesRDF.processor.framework.Steps_cfg import Steps
+from mkShapesRDF.processor.framework.Sites_cfg import Sites
 from mkShapesRDF.processor.framework.Productions_cfg import Productions
 from mkShapesRDF.lib.search_files import SearchFiles
 import os
@@ -219,6 +220,8 @@ class Processor:
 
         os.system("chmod +x " + jobDir + "run.sh")
 
+        eosTmpPath = Sites["eosTmpWorkDir"]
+        
         frameworkPath = getFrameworkPath() + "mkShapesRDF"
 
         self.fPy += "sampleName = 'RPLME_SAMPLENAME'\n"
@@ -227,9 +230,10 @@ class Processor:
         self.fPy += dedent(
             """
         files = []
+        eosTmpPath = '"""+eosTmpPath+"""'
         for f in _files:
             filename = f.split('/')[-1]
-            filename = 'input__' + filename
+            filename = eosTmpPath + 'input__' + filename
             files.append(filename)
             proc = 0
             if "root://" in f:
@@ -339,7 +343,13 @@ class Processor:
         self.fPy = self.fPy.replace("RPLME_FW", frameworkPath)
 
         #: folderPathEos is the output folder path (not ending with ``/`` so that is possible to add suffix to the folder)
-        folderPathEos = self.eosDir + "/" + self.prodName + "/" + self.step
+        if self.inputFolder == "":
+            folderPathEos = self.eosDir + "/" + self.prodName + "/" + self.step
+            self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
+        else:
+            folderPathEos = self.inputFolder + "__" + self.step
+            self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
+            
         self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
 
         allSamples = []
@@ -372,7 +382,9 @@ class Processor:
                 files = self.searchFiles.searchFilesDAS(**files_cfg)
             else:
                 files = self.searchFiles.searchFiles(**files_cfg)
-            files = files[: self.limitFiles]
+
+            if self.limitFiles!=-1:
+                files = files[: self.limitFiles]
 
             if len(files) == 0:
                 print("No files found for", sampleName, "and configuration", files_cfg)

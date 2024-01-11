@@ -1,4 +1,5 @@
 import ROOT
+import uproot
 from fnmatch import fnmatch
 from mkShapesRDF.processor.framework.module import Module
 import sys
@@ -92,7 +93,10 @@ class Snapshot(Module):
         trees = list(set(trees).difference(set(["Events"])))
         f2.cd()
         for key in trees:
-            f.Get(key).Write()
+            if 'tag' in key:
+                f.Get(key).Clone().Write()
+            else:
+                f.Get(key).CloneTree().Write()
         f2.Close()
         f.Close()
 

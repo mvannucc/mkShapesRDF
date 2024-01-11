@@ -99,7 +99,10 @@ class mRDF:
             The ``mRDF`` object with the new RDataFrame object stored
 
         """
-        self.df = ROOT.RDataFrame(*ar, **kw).Define("CUT", "true")
+        try:
+            self.df = ROOT.RDataFrame(*ar, **kw).Define("CUT", "true")
+        except:
+            self.df = ROOT.RDataFrame(*ar, **kw).Redefine("CUT", "true")
         self.cols = list(map(lambda k: str(k), self.df.GetColumnNames()))
         return self
 
@@ -459,3 +462,18 @@ class mRDF:
             The ``Snapshot`` object, or a ``Proxy<Snapshot>`` if ``lazy=True`` is passed as a keyword argument
         """
         return self.df.Snapshot(*args, **kwargs)
+
+    def Histo1D(self, *args):
+        """                                                                                                                                                                                                                                                                   
+        Produce a TH1D of the mRDF and return it                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                              
+        Parameters                                                                                                                                                                                                                                                            
+        ----------                                                                                                                                                                                                                                                            
+        *args : list                                                                                                                                                                                                                                                          
+            list of arguments to be passed to the ``RDataFrame::Histo1D`` method                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                              
+        Returns                                                                                                                                                                                                                                                               
+        -------                                                                                                                                                                                                                                                               
+        `Proxy<TH1D>`                                                                                                                                                                                                                                                         
+        """
+        return self.df.Histo1D(*args)
