@@ -219,7 +219,7 @@ le",e)
 
             txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
 
-            condor_args=""
+        condor_args=""
 
 
         with open(f"{self.batchFolder}/{self.tag}/submit.jdl", "w") as file:
@@ -234,8 +234,10 @@ le",e)
                     if condor_config[key]!="":
 
                         condor_args +=condor_config[key]+" "
+
+                print(f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -")
                 
-                process = subprocess.Popen(
+                process = subprocess.Popen(        
                     f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -",
                     shell=True,
                 )
