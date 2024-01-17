@@ -220,7 +220,7 @@ class mRDF:
         even if not used here (not compatible with ``Snapshot``).
 
         """
-
+        
         c = self.Copy()
         if variationName not in c.variations.keys():
             c.variations[variationName] = {"tags": variationTags, "variables": []}
@@ -235,8 +235,9 @@ class mRDF:
         c.variations[variationName]["variables"] = list(
             set(c.variations[variationName]["variables"] + [colName])
         )
-
+        
         for i, variationTag in enumerate(variationTags):
+            
             c = c.Define(
                 mRDF.variationNaming(variationName, variationTag, colName),
                 expression + "[" + str(i) + "]",
@@ -471,6 +472,8 @@ class mRDF:
         import numpy as np
         from math import ceil
 
+        print(columns)
+        
         def call(df):
             chunksize = 10_000
             nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)

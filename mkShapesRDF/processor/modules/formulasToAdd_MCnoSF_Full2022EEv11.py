@@ -33,8 +33,8 @@ class formulasToAdd_MCnoSF_Full2022EEv11(Module):
         df = df.Define("_4lepOk", "Lepton_pt.size() > 3")
 
 
-        muWPlist = [wp for wp in MuonWP["Full2022EEv11"]["TightObjWP"]]
-        eleWPlist = [wp for wp in ElectronWP["Full2022EEv11"]["TightObjWP"]]
+        muWPlist = [wp for wp in MuonWP["Full2022EEv12"]["TightObjWP"]]
+        eleWPlist = [wp for wp in ElectronWP["Full2022EEv12"]["TightObjWP"]]
 
         for eleWP in eleWPlist:
             for muWP in muWPlist:

@@ -131,7 +131,8 @@ executable = run.sh
 arguments = $(Folder)
 
 should_transfer_files = YES
-transfer_input_files = $(Folder)/script.py
+Proxy_path = /afs/cern.ch/user/s/sblancof/.proxy
+transfer_input_files = $(Folder)/script.py,$(Proxy_path)
 max_transfer_input_mb = 4000
 max_transfer_output_mb = 4000
 

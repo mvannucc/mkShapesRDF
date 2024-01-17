@@ -12,7 +12,9 @@ class LeptonSF(Module):
     def __init__(self, era):
         super().__init__("LeptonSF")
         self.era = era
-
+        if ("Full2022EEv11" in era) or ("Full2022EEv12" in era):
+            self.egamma_era = "2022FG"
+        
         self.mu_maxPt = 199.9
         self.mu_minPt = 15.001
         self.mu_maxEta = 2.3999
@@ -42,6 +44,7 @@ class LeptonSF(Module):
                 if SFkey == "tkSF":
                     self.SF_dict["electron"][wp]["hasTrk"] = True
                     self.SF_dict["electron"][wp]["tkSF"]["data"] = []
+                    self.SF_dict["electron"][wp]["tkSF"]["key"] = []
                     self.SF_dict["electron"][wp]["tkSF"]["beginRP"] = []
                     self.SF_dict["electron"][wp]["tkSF"]["endRP"] = []
                     for rpr in self.ElectronWP[self.era]["TightObjWP"][wp]["tkSF"]:
@@ -54,9 +57,12 @@ class LeptonSF(Module):
                         temp_file = (
                             self.cfg_path
                             + "/processor/"
-                            + self.ElectronWP[self.era]["TightObjWP"][wp]["tkSF"][rpr]
+                            + self.ElectronWP[self.era]["TightObjWP"][wp]["tkSF"][rpr][1]
                         )
                         self.SF_dict["electron"][wp]["tkSF"]["data"].append(temp_file)
+                        self.SF_dict["electron"][wp]["tkSF"]["key"].append(
+                            self.ElectronWP[self.era]["TightObjWP"][wp]["tkSF"][rpr][0]
+                        )
                 if SFkey == "wpSF":
                     self.SF_dict["electron"][wp]["wpSF"]["data"] = []
                     self.SF_dict["electron"][wp]["wpSF"]["key"] = []
@@ -177,18 +183,21 @@ class LeptonSF(Module):
             if self.SF_dict["electron"][wp]["hasTrk"] and not did_reco:
                 interpret_runP = """"""
 
-                for i in range(len(self.SF_dict["electron"][wp]["hasTrk"]["data"])):
+                for i in range(len(self.SF_dict["electron"][wp]["tkSF"]["data"])):
                     if os.path.exists(self.SF_dict["electron"][wp]["tkSF"]["data"][i]):
+                        
                         pathToJson = self.SF_dict["electron"][wp]["tkSF"]["data"][i]
 
                         beginRP = self.SF_dict["electron"][wp]["tkSF"]["beginRP"][i]
                         endRP = self.SF_dict["electron"][wp]["tkSF"]["endRP"][i]
 
+                        key = self.SF_dict["electron"][wp]["tkSF"]["key"][i]
+
                         ROOT.gROOT.ProcessLine(
                             f'auto csetEl_Reco_{beginRP}_{endRP} = correction::CorrectionSet::from_file("{pathToJson}");'
                         )
                         ROOT.gROOT.ProcessLine(
-                            f'correction::Correction::Ref cset_electron_Reco_{beginRP}_{endRP} = (correction::Correction::Ref) csetEl_Reco_{beginRP}_{endRP}->at("UL-Electron-ID-SF");'
+                            f'correction::Correction::Ref cset_electron_Reco_{beginRP}_{endRP} = (correction::Correction::Ref) csetEl_Reco_{beginRP}_{endRP}->at("{key}");'
                         )
 
                         interpret_runP = (
@@ -199,11 +208,15 @@ class LeptonSF(Module):
                             + """ && runP<="""
                             + str(endRP)
                             + """){
-                            cset_electron_Reco = cset_electron_Reco_{beginRP}_{endRP};
+                            cset_electron_Reco = cset_electron_Reco_%s_%s;
                         }
-                        """
+                        """ % (beginRP, endRP)
                         )
 
+                    else:
+                        print("Path does not exist for " + wp + " at:")
+                        print(self.SF_dict["electron"][wp]["tkSF"]["data"][i])
+                
                 ROOT.gInterpreter.Declare(
                     """
                     std::vector<ROOT::RVecF> getSF_Reco(ROOT::RVecF ele_pt, ROOT::RVecF ele_eta, ROOT::RVecI ele_pdgId, int runP){
@@ -235,14 +248,20 @@ class LeptonSF(Module):
                                 + str(self.el_minEta)
                                 + """});
                                     
-                                if (ele_pt< 20){
+                                if (pt< 20){
+                                    pt = ROOT::VecOps::Min(ROOT::RVecF{pt, 19.99});
                                     sf     = cset_electron_Reco->evaluate({"%s", "sf", "RecoBelow20", eta, pt});
                                     sfup   = cset_electron_Reco->evaluate({"%s", "sfup", "RecoBelow20", eta, pt});
                                     sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "RecoBelow20", eta, pt});
+                                }else if (pt>20.0 && pt<=75.0){
+                                    pt = ROOT::VecOps::Min(ROOT::RVecF{pt, 74.99});
+                                    sf = cset_electron_Reco->evaluate({"%s", "sf", "Reco20to75", eta, pt});
+                                    sfup = cset_electron_Reco->evaluate({"%s", "sfup", "Reco20to75", eta, pt});
+                                    sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "Reco20to75", eta, pt});
                                 }else{
-                                    sf     = cset_electron_Reco->evaluate({"%s", "sf", "RecoAbove20", eta, pt});
-                                    sfup   = cset_electron_Reco->evaluate({"%s", "sfup", "RecoAbove20", eta, pt});
-                                    sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "RecoAbove20", eta, pt});
+                                    sf     = cset_electron_Reco->evaluate({"%s", "sf", "RecoAbove75", eta, pt});
+                                    sfup   = cset_electron_Reco->evaluate({"%s", "sfup", "RecoAbove75", eta, pt});
+                                    sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "RecoAbove75", eta, pt});
                                 }
                                     
                                 SF.push_back(sf);
@@ -261,7 +280,7 @@ class LeptonSF(Module):
                         return SFTot;
                     }
                     """
-                    % (self.era, self.era, self.era, self.era, self.era, self.era)
+                    % (self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era, self.egamma_era)
                 )
 
                 df = df.Define(
@@ -284,8 +303,10 @@ class LeptonSF(Module):
                 did_reco = True
 
             interpret_runP = """"""
+            isPOGFormat = False
             for i in range(len(self.SF_dict["electron"][wp]["wpSF"]["data"])):
                 if os.path.exists(self.SF_dict["electron"][wp]["wpSF"]["data"][i]):
+                    
                     pathToJson = self.SF_dict["electron"][wp]["wpSF"]["data"][i]
                     key = self.SF_dict["electron"][wp]["wpSF"]["key"][i]
 
@@ -299,6 +320,21 @@ class LeptonSF(Module):
                         f'correction::Correction::Ref cset_electron_{wp}_wpSF_{beginRP}_{endRP} = (correction::Correction::Ref) csetEl{wp}_wpSF_{beginRP}_{endRP}->at("{key}");'
                     )
 
+                    evaluator = """"""
+                    if "POG" in pathToJson:
+                        isPOGFormat = True
+                        evaluator = """
+                        sf     = cset_electron_""" + wp + """_wpSF->evaluate({"%s", "sf", "%s", eta, pt});
+                        sfstat = cset_electron_""" % (self.egamma_era, wp) + wp + """_wpSF->evaluate({"%s", "sfup", "%s", eta, pt}); 
+                        sfsyst = cset_electron_""" % (self.egamma_era, wp) + wp + """_wpSF->evaluate({"%s", "sfdown", "%s", eta, pt}); """ % (self.egamma_era, wp)
+                        
+                    else:
+                        evaluator = """
+                        sf     = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "nominal"});
+                        sfstat = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "stat"});
+                        sfsyst = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "syst"});
+                        """
+                        
                     interpret_runP = (
                         interpret_runP
                         + """ 
@@ -315,6 +351,10 @@ class LeptonSF(Module):
                         % (wp, beginRP, endRP)
                     )
 
+                else:
+                    print("Path does not exist for " + wp + " at:")
+                    print(self.SF_dict["electron"][wp]["wpSF"]["data"][i])
+                    
             ROOT.gInterpreter.Declare(
                 """
                     std::vector<ROOT::RVecF> getSF_"""
@@ -351,15 +391,9 @@ class LeptonSF(Module):
                                 + str(self.el_minEta)
                                 + """});
 
-                                sf     = cset_electron_"""
-                                + wp
-                                + """_wpSF->evaluate({eta, pt, "nominal"});
-                                sfstat = cset_electron_"""
-                                + wp
-                                + """_wpSF->evaluate({eta, pt, "stat"});
-                                sfsyst = cset_electron_"""
-                                + wp
-                                + """_wpSF->evaluate({eta, pt, "syst"});
+                                """
+                                + evaluator
+                                + """
                                 
                                 SF.push_back(sf);
                                 SFstat.push_back(sfstat);
@@ -384,55 +418,78 @@ class LeptonSF(Module):
             )
 
             columnsToDrop.append(f"ElewpSF_{wp}")
-
+            
             df = df.Define(f"Lepton_tightElectron_{wp}_IdIsoSF", f"ElewpSF_{wp}[0]")
-
-            df = df.Define(
-                f"Lepton_tightElectron_{wp}_IdIsoSF_Up",
-                f"ElewpSF_{wp}[0] + ElewpSF_{wp}[1]",
-            )
-
-            df = df.Define(
-                f"Lepton_tightElectron_{wp}_IdIsoSF_Down",
-                f"ElewpSF_{wp}[0] - ElewpSF_{wp}[1]",
-            )
-
-            df = df.Define(
-                f"Lepton_tightElectron_{wp}_IdIsoSF_Syst",
-                f"ElewpSF_{wp}[0] + ElewpSF_{wp}[2]",
-            )
+            
+            if isPOGFormat:
+                df = df.Define(
+                    f"Lepton_tightElectron_{wp}_IdIsoSF_Up",
+                    f"ElewpSF_{wp}[1]",
+                )
+                df = df.Define(
+                    f"Lepton_tightElectron_{wp}_IdIsoSF_Down",
+                    f"ElewpSF_{wp}[2]",
+                )
+            else:
+                df = df.Define(
+                    f"Lepton_tightElectron_{wp}_IdIsoSF_Up",
+                    f"ElewpSF_{wp}[0] + ElewpSF_{wp}[1]",
+                )
+                df = df.Define(
+                    f"Lepton_tightElectron_{wp}_IdIsoSF_Down",
+                    f"ElewpSF_{wp}[0] - ElewpSF_{wp}[1]",
+                )
+                df = df.Define(
+                    f"Lepton_tightElectron_{wp}_IdIsoSF_Syst",
+                    f"ElewpSF_{wp}[0] + ElewpSF_{wp}[2]",
+                )
 
             if self.SF_dict["electron"][wp]["hasTrk"]:
                 df = df.Define(
                     f"Lepton_tightElectron_{wp}_TotSF",
                     f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF",
                 )
-
-                df = df.Define(
-                    f"Lepton_tightElectron_{wp}_TotSF_Up",
-                    f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF + sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2] + EleRecoSF_tmp[1]*EleRecoSF_tmp[1])",
-                )
-
-                df = df.Define(
-                    f"Lepton_tightElectron_{wp}_TotSF_Down",
-                    f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF - sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2] + EleRecoSF_tmp[2]*EleRecoSF_tmp[2])",
-                )
-
+                if isPOGFormat:
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Up",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF + sqrt((ElewpSF_{wp}[1]-ElewpSF_{wp}[0])*(ElewpSF_{wp}[1]-ElewpSF_{wp}[0]) + EleRecoSF_tmp[1]*EleRecoSF_tmp[1])",
+                    )
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Down",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF + sqrt((ElewpSF_{wp}[0]-ElewpSF_{wp}[2])*(ElewpSF_{wp}[0]-ElewpSF_{wp}[2]) + EleRecoSF_tmp[1]*EleRecoSF_tmp[1])",
+                    )
+                else:
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Up",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF + sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2] + EleRecoSF_tmp[1]*EleRecoSF_tmp[1])",
+                    )
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Down",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF * Lepton_RecoSF - sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2] + EleRecoSF_tmp[2]*EleRecoSF_tmp[2])",
+                    )
             else:
                 df = df.Define(
                     f"Lepton_tightElectron_{wp}_TotSF",
                     f"Lepton_tightElectron_{wp}_IdIsoSF",
                 )
-
-                df = df.Define(
-                    f"Lepton_tightElectron_{wp}_TotSF_Up",
-                    f"Lepton_tightElectron_{wp}_IdIsoSF + sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2])",
-                )
-
-                df = df.Define(
-                    f"Lepton_tightElectron_{wp}_TotSF_Down",
-                    f"Lepton_tightElectron_{wp}_IdIsoSF - sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2])",
-                )
+                if isPOGFormat:
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Up",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF_Up",
+                    )
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Down",
+			f"Lepton_tightElectron_{wp}_IdIsoSF_Down",
+		    )
+                else:
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Up",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF + sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2])",
+                    )
+                    df = df.Define(
+                        f"Lepton_tightElectron_{wp}_TotSF_Down",
+                        f"Lepton_tightElectron_{wp}_IdIsoSF - sqrt(ElewpSF_{wp}[1]*ElewpSF_{wp}[1] + ElewpSF_{wp}[2]*ElewpSF_{wp}[2])",
+                    )
 
         ### Muons
         for wp in self.SF_dict["muon"]:
@@ -471,6 +528,10 @@ class LeptonSF(Module):
                         % (wp, beginRP, endRP)
                     )
 
+                else:
+                    print("Path does not exist for " + wp + " at:")
+                    print(self.SF_dict["muon"][wp]["idSF"]["data"][i])
+                    
             ### Iso SF
             interpret_isoSF = """"""
             for i in range(len(self.SF_dict["muon"][wp]["isoSF"]["data"])):
@@ -503,7 +564,10 @@ class LeptonSF(Module):
                     """
                         % (wp, beginRP, endRP)
                     )
-
+                else:
+                    print("Path does not exist for " + wp + " at:")
+                    print(self.SF_dict["muon"][wp]["isoSF"]["data"][i])
+                    
             ### TTH mva
             interpret_tthSF = """"""
             if self.SF_dict["muon"][wp]["hastthMvaSF"]:
@@ -537,6 +601,9 @@ class LeptonSF(Module):
                         """
                             % (wp, beginRP, endRP)
                         )
+                    else:
+                        print("Path does not exist for " + wp + " at:")
+                        print(self.SF_dict["muon"][wp]["tthMvaSF"]["data"][i])
             else:
                 interpret_tthSF = (
                     interpret_tthSF

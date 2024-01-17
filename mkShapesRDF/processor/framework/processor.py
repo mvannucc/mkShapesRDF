@@ -255,7 +255,7 @@ class Processor:
                 sys.exit(1)\n
         """
         )
-
+        
         self.fPy += f"ROOT.gInterpreter.Declare('#include \"{frameworkPath}/include/headers.hh\"')\n"
 
         self.fPy += "df = mRDF()\n"

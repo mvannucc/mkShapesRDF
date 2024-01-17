@@ -86,6 +86,8 @@ class JMECalculator(Module):
         JEC_era = self.JEC_era
         JER_era = self.JER_era
 
+        print("Version for JEC: ", self.JEC_era)
+        
         txtL1JEC = jecDBCache.getPayload(JEC_era, "L1FastJet", self.jet_object)
 
         txtJECs = []
