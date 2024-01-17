@@ -113,10 +113,10 @@ ElectronWP = {
                     ],
                 },
                 'tkSF':  {
-                    '1-2' : ["2022FG-Electron-ID-SF", "data/scale_factor/Full2022v12/electron_POG.json"]
+                    '1-1' : ["Electron-ID-SF", "data/scale_factor/Full2022v12/electron_POG.json"]
                 } ,
                 'wpSF':  {
-                    '1-2' : ["2022FG-Electron-ID-SF", 'data/scale_factor/Full2022v12/electron_POG.json'],
+                    '1-1' : ["Electron-ID-SF", 'data/scale_factor/Full2022v12/electron_POG.json'],
                 } ,
                 'fakeW' : 'data/fake_prompt_rates/Full2022v12/mvaWinter22Iso_WP90_POG/',
             },
@@ -138,7 +138,7 @@ ElectronWP = {
                     ],
                 },
                 'tkSF':  {
-                    '1-1' : ["2022CD-Electron-ID-SF", "data/scale_factor/Full2022v12/electron_POG.json"]
+                    '1-1' : ["Electron-ID-SF", "data/scale_factor/Full2022v12/electron_POG.json"]
                 } ,
                 'wpSF':  {
                     '1-1' : ["NUM_Electron_mvaWinter22V2IsoWP90_DEN_ElectronTrack", 'data/scale_factor/Full2022v12/electron_scale.json'],
