@@ -39,6 +39,13 @@ Productions = {
         "cmssw": "Full2022v11",
         "year": "2022",
     },
+    "Run2022_ReReco_nAODv12_Full2022v12": {
+        "isData": True,
+        "jsonFile": "../data/certification/Cert_Collisions2022_355100_362760_Golden.json",
+        "samples": "../framework/samples/Run2022_ReReco_nAODv12.py",
+        "cmssw": "Full2022v12",
+        "year": "2022",
+    },
     "Run2022EE_Prompt_nAODv12_Full2022v12": {
         "isData": True,
         "jsonFile": "../data/certification/Cert_Collisions2022_355100_362760_Golden.json",
@@ -91,6 +98,15 @@ Productions = {
         "isData": False,
         "samples": "../framework/samples/Summer22EE_126x_nAODv11.py",
         "cmssw": "Full2022v11",
+        "year": "2022",
+        "xsFile": "../framework/samples/samplesCrossSections_13p6TeV.py",
+        "YRver": ["YR4", "13p6TeV"],
+    },
+    # ------- 2022 MC Summer22 v12 
+    "Summer22_130x_nAODv12_Full2022v12": {
+        "isData": False,
+        "samples": "../framework/samples/Summer22_130x_nAODv12.py",
+        "cmssw": "Full2022v12",
         "year": "2022",
         "xsFile": "../framework/samples/samplesCrossSections_13p6TeV.py",
         "YRver": ["YR4", "13p6TeV"],

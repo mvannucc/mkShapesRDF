@@ -52,6 +52,23 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
+    "DATAl1loose2022EEv12__fakeSel": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "lumiMask22",
+            "leptonMaker",
+            "lepSel_Summer22",
+            "jetSelMask2022EE",
+            "l2Kin",
+            "trigData2022EE",
+            "formulasDATA",
+            "fakeSelMC",
+            "finalSnapshot_DATA",
+        ],
+    },
     "DATAl1loose2022v12__fakeSel": {
         "isChain": True,
         "do4MC": False,
@@ -172,7 +189,7 @@ Steps = {
     ###
     ### Full set of corrections for Run2022FG Prompt : Summer22EE MC campaing
     ###
-    "MCl1loose2022EEv12__MCCorr2022EEv12_PromptFG": {
+    "MCl1loose2022EEv12__MCCorr2022EEv12_ReRecoE_PromptFG": {
         "isChain": True,
         "do4MC": True,
         "do4Data": False,
@@ -192,7 +209,7 @@ Steps = {
             "btagPerJet_Summer22EE_DeepJet_shape",
             "btagPerJet_Summer22EE_PNet_shape",
             "btagPerJet_Summer22EE_PTransformer_shape",
-            "trigMC",
+            "trigMC_2022EE",
             "leptonSF_Summer22",
             "puW_Summer22",
             "JES_modules_Summer22EE",
@@ -221,6 +238,31 @@ Steps = {
             "trigMCnoSF_2022",
             "l2Kin",
             "puW_2022",
+            "formulasMCnoSF_2022",
+            "fakeSelMC",
+            "finalSnapshot_MC",
+        ]
+    },
+    "MCl1loose2022EEv12__fakeSelKinMC": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "leptonMaker",
+            "lepSel_Summer22",
+            "jetSelMask2022EE",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "baseW",
+            "trigMCnoSF_2022EE",
+            "l2Kin",
+            "puW_Summer22",
             "formulasMCnoSF_2022",
             "fakeSelMC",
             "finalSnapshot_MC",
@@ -396,7 +438,7 @@ Steps = {
         "do4MC": True,
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.JetSelMaskBCD",
-        "declare": 'jetSelMask = lambda : JetSelMask(2,"loose",15.0,4.7,False,"RPLME_FW/processor/data/jetvetomaps/Run2022/jetvetomaps.json","Summer22_23Sep2023_RunCD_V1")',
+        "declare": 'jetSelMask = lambda : JetSelMaskBCD(2,"loose",15.0,4.7,False,"RPLME_FW/processor/data/jetvetomaps/Run2022/jetvetomaps.json","Summer22_23Sep2023_RunCD_V1")',
         "module": "jetSelMask()",
     },
     "fakeSelMC": {
@@ -742,6 +784,22 @@ Steps = {
         "declare": 'trigMC = lambda : TrigMaker("Full2022v12", isData=True, keepRunP=False)',
         "module": "trigMC()",
     },
+    "trigMC_2022EE": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv12", isData=False, keepRunP=False)',
+        "module": "trigMC()",
+    },
+    "trigMCnoSF_2022EE": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv12", isData=True, keepRunP=False)',
+        "module": "trigMC()",
+    },
     "trigData": {
         "isChain": False,
         "do4MC": False,
@@ -764,6 +822,14 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.TrigMaker",
         "declare": 'trigData = lambda : TrigMaker("Full2022v12", isData=True, keepRunP=False)',
+        "module": "trigData()",
+    },
+    "trigData2022EE": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.TrigMaker",
+        "declare": 'trigData = lambda : TrigMaker("Full2022EEv12", isData=True, keepRunP=False)',
         "module": "trigData()",
     },
     "fakeW_2022EE": {

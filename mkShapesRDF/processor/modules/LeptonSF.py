@@ -14,6 +14,8 @@ class LeptonSF(Module):
         self.era = era
         if ("Full2022EEv11" in era) or ("Full2022EEv12" in era):
             self.egamma_era = "2022FG"
+        elif ("Full2022v12" in era):
+            self.egamma_era = "2022Re-recoBCD"
         
         self.mu_maxPt = 199.9
         self.mu_minPt = 15.001
