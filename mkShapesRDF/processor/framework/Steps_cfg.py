@@ -187,7 +187,39 @@ Steps = {
         ]
     },
     ###
-    ### Full set of corrections for Run2022FG Prompt : Summer22EE MC campaing
+    ### Full set of corrections for Run2022BCD ReReco : Summer22 campaing
+    ###
+    "MCl1loose2022v12__MCCorr2022v12_NoJER": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "leptonMaker",
+            "lepSel_Summer22BCD",
+            "jetSelMask_2022BCD",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "baseW",
+            "btagPerJet_Summer22_DeepJet_shape",
+            "btagPerJet_Summer22_PNet_shape",
+            "btagPerJet_Summer22_PTransformer_shape",
+            "trigMC_2022",
+            "leptonSF_22BCD",
+            "puW_2022",
+            "JES_modules_Summer22_NoJER",
+            "l2Kin",
+            "formulasMC_2022",
+            "finalSnapshot_JES",
+        ]
+    },
+    ###
+    ### Full set of corrections for Run2022E+FG Prompt : Summer22EE MC campaing
     ###
     "MCl1loose2022EEv12__MCCorr2022EEv12_ReRecoE_PromptFG": {
         "isChain": True,
@@ -548,6 +580,15 @@ Steps = {
             do_JER=True, store_nominal=True, store_variations=True)',
         "module": "jmeCalculator()",
     },
+    "JES_modules_Summer22_NoJER": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.JMECalculator",
+        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "",jet_object="AK4PFPuppi", \
+            do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],do_JER=False, store_nominal=True, store_variations=True)',
+        "module": "jmeCalculator()",
+    },
     "JES_modules_Summer22EE": {
         "isChain": False,
         "do4MC": True,
@@ -611,6 +652,14 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LeptonSF",
         "declare": "leptonSF = lambda : LeptonSF('Full2022EEv11')",
+        "module": "leptonSF()",
+    },
+    "leptonSF_22BCD": {
+        "isChain": False,
+        "do4MC": False,
+        "do4Data": True,
+        "import": "mkShapesRDF.processor.modules.LeptonSF",
+        "declare": "leptonSF = lambda : LeptonSF('Full2022v12')",
         "module": "leptonSF()",
     },
     "leptonSF_Summer22": {
@@ -703,6 +752,30 @@ Steps = {
     },
     ######## Full2022EE Prompt btagging
     ## Shape
+    "btagPerJet_Summer22_DeepJet_shape": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
+        "declare": 'btagPerJet_DeepJet_shape = lambda : btagSFProducerLatinos(2022, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "module": "btagPerJet_DeepJet_shape()",
+    },
+    "btagPerJet_Summer22_PNet_shape": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
+        "declare": 'btagPerJet_PNet_shape = lambda : btagSFProducerLatinos(2022, "particleNet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "module": "btagPerJet_PNet_shape()",
+    },
+    "btagPerJet_Summer22_PTransformer_shape": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
+        "declare": 'btagPerJet_PTransformer_shape = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "module": "btagPerJet_PTransformer_shape()",
+    },
     "btagPerJet_Summer22EE_DeepJet_shape": {
         "isChain": False,
         "do4MC": True,
@@ -765,7 +838,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.TrigMaker",
-        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv11", isData=True, keepRunP=False)',
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv11", isData=False, keepRunP=False, computeSF=False)',
         "module": "trigMC()",
     },
     "trigMC_2022": {
@@ -781,7 +854,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.TrigMaker",
-        "declare": 'trigMC = lambda : TrigMaker("Full2022v12", isData=True, keepRunP=False)',
+        "declare": 'trigMC = lambda : TrigMaker("Full2022v12", isData=False, keepRunP=False, computeSF=False)',
         "module": "trigMC()",
     },
     "trigMC_2022EE": {
@@ -797,7 +870,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.TrigMaker",
-        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv12", isData=True, keepRunP=False)',
+        "declare": 'trigMC = lambda : TrigMaker("Full2022EEv12", isData=False, keepRunP=False, computeSF=False)',
         "module": "trigMC()",
     },
     "trigData": {

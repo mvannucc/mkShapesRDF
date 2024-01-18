@@ -274,10 +274,7 @@ class runDependentPuW(Module):
             }
             """
         )
-
-        df = df.Define("run_period", "1")
         
-
         df = df.Define(
             name,
             "puWeights("+nvtxVar+", run_period, "+str(doSysVar).lower()+", "+str(fixLargeWeights).lower()+", "+str(norm).lower()+", "+str(verbose).lower()+")[0]"
