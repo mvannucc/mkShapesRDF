@@ -326,12 +326,18 @@ class LeptonSF(Module):
                     if "POG" in pathToJson:
                         isPOGFormat = True
                         evaluator = """
+                        pt = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_pt[i], """ + str(self.el_maxPt) + """}), """ + str(self.el_minPt) + """});
+                        eta = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_eta[i], """ + str(self.el_maxEta) + """}), """ + str(self.el_minEta) + """});  
+
                         sf     = cset_electron_""" + wp + """_wpSF->evaluate({"%s", "sf", "%s", eta, pt});
                         sfstat = cset_electron_""" % (self.egamma_era, wp) + wp + """_wpSF->evaluate({"%s", "sfup", "%s", eta, pt}); 
                         sfsyst = cset_electron_""" % (self.egamma_era, wp) + wp + """_wpSF->evaluate({"%s", "sfdown", "%s", eta, pt}); """ % (self.egamma_era, wp)
                         
                     else:
                         evaluator = """
+                        pt = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_pt[i], """ + str(self.mu_maxPt) + """}), """ + str(self.mu_minPt) + """});
+                        eta = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_eta[i], """ + str(self.mu_maxEta) + """}), """ + str(self.mu_minEta) + """});  
+
                         sf     = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "nominal"});
                         sfstat = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "stat"});
                         sfsyst = cset_electron_""" + wp + """_wpSF->evaluate({eta, pt, "syst"});
@@ -381,18 +387,6 @@ class LeptonSF(Module):
                         for (int i=0; i<ele_pt.size(); i++){
                             if (abs(ele_pdgId[i])==11){
                                 
-                                pt = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_pt[i], """
-                                + str(self.el_maxPt)
-                                + """}), """
-                                + str(self.el_minPt)
-                                + """});                                                                                                                                                                   
-
-                                eta = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{ele_eta[i], """
-                                + str(self.el_maxEta)
-                                + """}), """
-                                + str(self.el_minEta)
-                                + """});
-
                                 """
                                 + evaluator
                                 + """

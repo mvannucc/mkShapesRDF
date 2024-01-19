@@ -31,7 +31,7 @@ class TrigMaker(Module):
         self.firstEvent = True
         self.computeSF = computeSF
         
-        self.mu_maxPt = 199.9
+        self.mu_maxPt = 149.9
         self.mu_minPt = 9.999
         self.mu_maxEta = 2.3999
         self.mu_minEta = -2.3999
