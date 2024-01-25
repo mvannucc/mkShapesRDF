@@ -28,11 +28,10 @@ RUN cd /code/ && \
     cd .. 
     
 
+RUN cd /code/ && \
+    mv condor_settings/10-local.config /etc/condor/config.d/ && \
+    cd ..
 
-RUN useradd -m myuser && \
-    echo "myuser ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/myuser && \	
-    chmod 0440 /etc/sudoers.d/myuser
 
-
-USER myuser	
+	
 	
