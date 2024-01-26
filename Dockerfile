@@ -28,9 +28,7 @@ RUN cd /code/ && \
     cd .. 
     
 
-RUN cd /code/ && \
-    mv condor_settings/10-local.config /etc/condor/config.d/ && \
-    cd ..
+
 
 
 	
