@@ -1157,6 +1157,7 @@ class RunAnalysis:
 
         if len(snapshots) != 0:
             print("using run graphs")
+            print(snapshots[0])
             ROOT.RDF.RunGraphs(snapshots)
 
         for count in counts:
