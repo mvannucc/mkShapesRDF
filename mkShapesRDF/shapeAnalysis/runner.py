@@ -1145,7 +1145,7 @@ class RunAnalysis:
             for var in self.variables.keys():
                 if (
                     len(self.results[cut].get(var, [])) == 0
-                    or "tree" not in self.variables[var].keys()
+                    #or "tree" not in self.variables[var].keys()
                 ):
                     # no snapshots for this combination of cut variable
                     continue
@@ -1156,6 +1156,7 @@ class RunAnalysis:
                         snapshots.append(self.results[cut][var][sampleName][index])
 
         if len(snapshots) != 0:
+            print("using run graphs")
             ROOT.RDF.RunGraphs(snapshots)
 
         for count in counts:
