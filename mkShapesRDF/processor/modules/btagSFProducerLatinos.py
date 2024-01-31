@@ -28,7 +28,7 @@ class btagSFProducerLatinos(Module):
         self.mode = mode
 
         self.max_abs_eta = """2.49999"""
-        self.min_pt = """19.99999"""
+        self.min_pt = """20.0001"""
 
         self.inputFileName = pathToJson
         self.measurement_types = None
