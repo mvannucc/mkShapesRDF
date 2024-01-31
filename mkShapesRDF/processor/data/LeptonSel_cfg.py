@@ -118,7 +118,7 @@ ElectronWP = {
                 'wpSF':  {
                     '1-1' : ["Electron-ID-SF", 'data/scale_factor/Full2022v12/electron_POG.json'],
                 } ,
-                'fakeW' : 'data/fake_prompt_rates/Full2022v12/mvaWinter22Iso_WP90_POG/',
+                'fakeW' : 'data/fake_prompt_rates/Full2022v12/wp90iso/',
             },
             "mvaWinter22V2Iso_WP90": {
                 "cuts": {
@@ -196,7 +196,7 @@ ElectronWP = {
                 'wpSF':  {
                     '1-2' : ["2022FG-Electron-ID-SF", 'data/scale_factor/Full2022EEv12/electron_POG.json'],
                 } ,
-                'fakeW' : 'data/fake_prompt_rates/Full2022EEv11/mvaWinter22Iso_WP90_POG/',
+                'fakeW' : 'data/fake_prompt_rates/Full2022EEv12/wp90iso/',
             },
             # ----- MVA                                                                                                                                                 
             "mvaWinter22V2Iso_WP90": {
@@ -226,7 +226,7 @@ ElectronWP = {
                     '1-1' : ["NUM_Electron_mvaWinter22V2IsoWP90_DEN_ElectronTrack", 'data/scale_factor/Full2022EEv12/electron_IsoWinter22_Run2022E.json'],
                     '2-2' : ["NUM_Electron_mvaWinter22V2IsoWP90_DEN_ElectronTrack", 'data/scale_factor/Full2022EEv12/electron_IsoWinter22.json'],
                 } ,
-                'fakeW' : 'data/fake_prompt_rates/Full2022EEv11/mvaWinter22V2Iso_WP90/',
+                'fakeW' : 'data/fake_prompt_rates/Full2022EEv12/mvaWinter22V2Iso_WP90/',
             },
         },
     },
@@ -536,7 +536,7 @@ MuonWP = {
                 "isoSF": {
                     "1-1": ["NUM_TightPFIso_DEN_TightID", "data/scale_factor/Full2022v12/muon_POG.json"],
                 },
-                "fakeW": "data/fake_prompt_rates/Full2022v12/cut_Tight_HWW/",
+                "fakeW": "data/fake_prompt_rates/Full2022v12/cut_TightID_POG/",
             },
             "cut_Tight_HWW": {
                 "cuts": {
@@ -639,7 +639,7 @@ MuonWP = {
                 "isoSF": {
                     "1-2": ["NUM_TightPFIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_POG.json"],
                 },
-                "fakeW": "data/fake_prompt_rates/Full2022EEv11/cut_Tight_HWW/",
+                "fakeW": "data/fake_prompt_rates/Full2022EEv12/cut_TightID_POG/",
             },
             "cut_Tight_HWW": {
                 "cuts": {
@@ -667,7 +667,7 @@ MuonWP = {
                     "1-1": ["NUM_TightIDIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale_Run2022E.json"],
                     "2-2": ["NUM_TightIDIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale.json"],
                 },
-                "fakeW": "data/fake_prompt_rates/Full2022EEv11/cut_Tight_HWW/",
+                "fakeW": "data/fake_prompt_rates/Full2022EEv12/cut_Tight_HWW/",
             },
             "cut_TightMiniIso_HWW": {
                 "cuts": {
@@ -692,7 +692,7 @@ MuonWP = {
                     "1-1": ["NUM_TightIDMiniIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale_Run2022E.json"],
                     "2-2": ["NUM_TightIDMiniIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale.json"],
                 },
-                "fakeW": "data/fake_prompt_rates/Full2022EEv11/cut_TightMiniIso_HWW/",
+                "fakeW": "data/fake_prompt_rates/Full2022EEv12/cut_TightMiniIso_HWW/",
             },
             "cut_Tight_HWW_tthmva_80": {
                 "cuts": {
@@ -722,7 +722,7 @@ MuonWP = {
                     "1-1": ["NUM_TightIDIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale_Run2022E.json"],
                     "2-2": ["NUM_TightIDIso_DEN_TightID", "data/scale_factor/Full2022EEv12/muon_scale.json"],
                 },
-                "fakeW": "data/fake_prompt_rates/Full2022EEv11/cut_Tight_HWW_tthmva_80/",
+                "fakeW": "data/fake_prompt_rates/Full2022EEv12/cut_Tight_HWW_tthmva_80/",
             },
         },
     },
