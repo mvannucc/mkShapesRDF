@@ -257,7 +257,7 @@ class btagSFProducerLatinos(Module):
                     + self.min_pt
                     + """ || abs(eta[i])>"""
                     + self.max_abs_eta
-                    + """ || btag[i]<0.0 || isnan(btag[i])){continue;}
+                    + """ || btag[i]<0.0 || isnan(btag[i]) || btag[i]>19.999){continue;}
                                 if (syst.find("jes") != std::string::npos && flav[i]!=0){continue;}
                                 if (syst.find("cferr") != std::string::npos){
                                         if (flav[i]==4){

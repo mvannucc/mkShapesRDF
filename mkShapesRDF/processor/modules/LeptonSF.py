@@ -255,8 +255,8 @@ class LeptonSF(Module):
                                     sf     = cset_electron_Reco->evaluate({"%s", "sf", "RecoBelow20", eta, pt});
                                     sfup   = cset_electron_Reco->evaluate({"%s", "sfup", "RecoBelow20", eta, pt});
                                     sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "RecoBelow20", eta, pt});
-                                }else if (pt>20.0 && pt<=75.0){
-                                    pt = ROOT::VecOps::Min(ROOT::RVecF{pt, 74.99});
+                                }else if (pt>=20.0 && pt<=75.0){
+                                    pt = ROOT::VecOps::Max(ROOT::RVecF{ROOT::VecOps::Min(ROOT::RVecF{pt, 74.99}), 20.0001});
                                     sf = cset_electron_Reco->evaluate({"%s", "sf", "Reco20to75", eta, pt});
                                     sfup = cset_electron_Reco->evaluate({"%s", "sfup", "Reco20to75", eta, pt});
                                     sfdown = cset_electron_Reco->evaluate({"%s", "sfdown", "Reco20to75", eta, pt});

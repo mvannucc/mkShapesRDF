@@ -472,13 +472,12 @@ class mRDF:
         import numpy as np
         from math import ceil
 
-        print(columns)
-        
         def call(df):
             chunksize = 10_000
             nIterations = max(ceil(df.Count().GetValue() / chunksize), 1)
             outFile = uproot.recreate(fileName, compression=uproot.LZMA(9))
             branches = columns.copy()
+            print(branches)
             #####
             ##### Temporal fix / remove branches with type: string -> incompatbility with awkward/uproot
             if "BeamSpot_type" in branches:
