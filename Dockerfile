@@ -19,7 +19,8 @@ RUN apt-get update && \
 COPY ./ /code/
 
 RUN cd /code/ && \
-    ./install.sh && \
+    python -m pip install --upgrade pip && \
+    ./install.sh docker && \
     mkdir xrdfs_locallib && \
     cd xrdfs_locallib && \
     rsync -ar --exclude 'python3.9' --exclude 'libROO*' --exclude 'libRoo*' /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-ubuntu2004-gcc9-opt/lib ./ && \
