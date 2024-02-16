@@ -19,7 +19,6 @@ RUN apt-get update && \
 COPY ./ /code/
 
 RUN cd /code/ && \
-    python -m pip install --upgrade pip && \
     ./install.sh docker && \
     mkdir xrdfs_locallib && \
     cd xrdfs_locallib && \
