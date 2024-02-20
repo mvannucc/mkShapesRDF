@@ -13,8 +13,8 @@ RUN apt-get update && \
     apt-get -y install python3.8-venv && \
     echo "deb http://archive.ubuntu.com/ubuntu/ jammy main universe" >> /etc/apt/sources.list.d/xrootd.list && \
     apt-get update && \
-    apt-get install -y xrootd-client
-    
+    apt-get install -y xrootd-client && \
+    DEBIAN_FRONTEND=noninteractive apt install krb5-user -y libkrb5-dev libauthen-krb5-perl   
 
 COPY ./ /code/
 
