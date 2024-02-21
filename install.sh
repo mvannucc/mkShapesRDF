@@ -9,17 +9,20 @@ echo "OS ""$OS"
 
 echo "Custom install ""$1"
 
-if [ -z "$1" ]; then 
+
+if [ -z "$1" ]; then
     if [[ "$OS" == *"centos:7"* ]]; then
         echo centos7
-        sourceCommand="$sourceCommand""; source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh"
+        sourceCommand+="source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh"
     elif [[ "$OS" == *"enterprise_linux:9"* ]]; then
         echo el9
-        sourceCommand="$sourceCommand""; source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos9-gcc11-opt/setup.sh"	
+        sourceCommand+="source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos9-gcc11-opt/setup.sh"
     else
-        echo "$OS"" not supported"
+        echo "$OS not supported"
         exit 1
     fi
+
+
 elif [ "$1" == "docker" ]; then
     sourceCommand="export LD_LIBRARY_PATH=$(root-config --libdir):$(pwd)/xrdfs_locallib/lib:/.singularity.d/libs"
 else
