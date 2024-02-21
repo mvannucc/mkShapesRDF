@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-sourceCommand=""
+sourceCommand="echo 'first source of start.sh'"
 
 env=$(hostname)
 
