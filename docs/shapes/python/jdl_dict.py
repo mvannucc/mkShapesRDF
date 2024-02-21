@@ -34,9 +34,7 @@ Examples
 >>> 
 >>> executable = [
 >>>     "#!/bin/bash",
->>>     "source /code/myenv/bin/activate",
->>>     "export STARTPATH=/code/start.sh",
->>>     "source /code/fix_xrdfs.sh",
+>>>     "source /code/start.sh",
 >>>     "export X509_USER_PROXY=myproxy",
 >>>     "export X509_CERT_DIR=/cvmfs/cms.cern.ch/grid/etc/grid-security/certificates",
 >>>     "time python runner.py",
