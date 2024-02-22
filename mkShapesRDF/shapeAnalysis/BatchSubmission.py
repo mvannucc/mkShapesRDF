@@ -41,7 +41,6 @@ class BatchSubmission:
     def __init__(
         self,
         folder,
-        jdlconfigfile,    
         outputPath,
         batchFolder,
         headersPath,
@@ -50,8 +49,8 @@ class BatchSubmission:
         samples,
         d,
         batchVars,
+        jdlconfigfile="",
     ):
-        self.jdlconfigfile = jdlconfigfile
         self.project_folder = folder
         self.outputPath = outputPath
         self.batchFolder = batchFolder
@@ -62,6 +61,7 @@ class BatchSubmission:
         self.samples = samples
         self.d = d
         self.batchVars = batchVars
+        self.jdlconfigfile = jdlconfigfile
 
         self.folders = []
 
@@ -115,29 +115,27 @@ class BatchSubmission:
         for sample in self.samples:
             self.createBatch(sample)
 
-    def submit(self, dryRun=0, queue='workday'):
-        
+    def submit(self, dryRun=0, queue="workday"):
 
         txtsh = ""
+        use_jdlconfigfile = self.jdlconfigfile != ""
 
-        try:
-            
+        if use_jdlconfigfile:
+            try:
+                print("Opening jdlconfigfile")
+                print(self.project_folder + "/" + self.jdlconfigfile)
+                exec(
+                    open(self.project_folder + "/" + self.jdlconfigfile).read(),
+                    globals(),
+                )
+            except Exception as e:
+                print('could not parse jdlconfigfile "', self.jdlconfigfile, '"\n', e)
+                use_jdlconfigfile = False
 
-            print(self.project_folder+"/"+self.jdlconfigfile)
-            
-            exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
-
-            for key in executable:
-                if executable[key]!="":
-
-                    txtsh +=executable[key]+"\n"
-
-        except Exception as e:    
-
-
-            print("An error occurred, the file you are trying to open does not exist. Warning, some options will be omitted from the final jdl file",e)
-        
-            with open(os.environ['STARTPATH']) as file:
+        if use_jdlconfigfile:
+            txtsh += "\n".join(executable)
+        else:
+            with open(os.environ["STARTPATH"]) as file:
                 txtsh += file.read()
 
             mE = self.d.get("mountEOS", [])
@@ -151,7 +149,7 @@ class BatchSubmission:
             print("\n\nReal output path:", os.path.realpath(self.outputPath), "\n\n")
 
             if os.path.realpath(self.outputPath).startswith("/eos"):
-            # eos is not supported -> use xrdcp
+                # eos is not supported -> use xrdcp
                 fullOutfile = f"{os.path.realpath(self.outputPath)}/"
             else:
                 fullOutfile = f"{self.outputPath}/"
@@ -166,123 +164,51 @@ class BatchSubmission:
             file.write(txtsh)
         # make it executable
         process = subprocess.Popen(
-            f"chmod +x {self.batchFolder}/{self.tag}/run.sh", shell=True)
+            f"chmod +x {self.batchFolder}/{self.tag}/run.sh", shell=True
+        )
         process.wait()
 
-
         txtjdl = ""
+        txtjdl = "universe = vanilla \n"
+        txtjdl += "executable = run.sh\n"
+        txtjdl += "arguments = $(Folder)\n"
 
-        try:
+        txtjdl += "should_transfer_files    = YES\n"
 
-
-            txtjdl = "universe = vanilla \n"
-            txtjdl += "executable = run.sh\n"
-            txtjdl += "arguments = $(Folder)\n"
-
-            txtjdl += "should_transfer_files    = YES\n"
-
-            
-            exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
+        if use_jdlconfigfile:
 
             for key in jdl_dict:
-                if jdl_dict[key]!="":
+                if jdl_dict[key] != "":
 
-                    txtjdl += key+" = "+jdl_dict[key]+"\n"
+                    txtjdl += key + " = " + jdl_dict[key] + "\n"
+        else:
 
-
-            txtjdl += "output = $(Folder)/out.txt\n"
-            txtjdl += "error  = $(Folder)/err.txt\n"
-            txtjdl += "log    = $(Folder)/log.txt\n"        
-            txtjdl += "request_cpus   = 1\n"
-            txtjdl += f'+JobFlavour = "{queue}"\n'
-            txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
-            
-            
-        except Exception as e:            
-
-            print("An error occurred, the file you are trying to open does not exist. Warning, some options will be omitted from the final jdl fi\
-le",e)
-            
-            txtjdl = "universe = vanilla \n"
-            txtjdl += "executable = run.sh\n"
-            txtjdl += "arguments = $(Folder)\n"
-
-            txtjdl += "should_transfer_files = YES\n"
             txtjdl += f"transfer_input_files = $(Folder)/script.py, {self.headersPath}, {self.runnerPath}\n"
 
-            txtjdl += "output = $(Folder)/out.txt\n"
-            txtjdl += "error  = $(Folder)/err.txt\n"
-            txtjdl += "log    = $(Folder)/log.txt\n"
+        txtjdl += "output = $(Folder)/out.txt\n"
+        txtjdl += "error  = $(Folder)/err.txt\n"
+        txtjdl += "log    = $(Folder)/log.txt\n"
 
-            txtjdl += "request_cpus   = 1\n"
-            txtjdl += f'+JobFlavour = "{queue}"\n'
+        txtjdl += "request_cpus   = 1\n"
+        txtjdl += f'+JobFlavour = "{queue}"\n'
 
-            txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
-
-        condor_args=""
-
-
+        txtjdl += f'queue 1 Folder in {", ".join(self.folders)}\n'
         with open(f"{self.batchFolder}/{self.tag}/submit.jdl", "w") as file:
             file.write(txtjdl)
+
+        condor_args = ""
         if dryRun != 1:
 
-            try:
+            if use_jdlconfigfile:
+                condor_args += " ".join(condor_config)
 
-                exec(open(self.project_folder+"/"+self.jdlconfigfile).read(),globals())
- 
-                for key in condor_config:
-                    if condor_config[key]!="":
+            print(
+                f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -"
+            )
 
-                        condor_args +=condor_config[key]+" "
+            process = subprocess.Popen(
+                f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -",
+                shell=True,
+            )
 
-                print(f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -")
-                
-                process = subprocess.Popen(        
-                    f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl {condor_args}; cd -",
-                    shell=True,
-                )
-
-    
-
-            except Exception as e:
-
-                process = subprocess.Popen(
-                    f"cd {self.batchFolder}/{self.tag}; condor_submit submit.jdl; cd -",
-                    shell=True,
-                )
             process.wait()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
