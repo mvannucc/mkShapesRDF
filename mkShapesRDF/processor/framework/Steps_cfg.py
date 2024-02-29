@@ -254,6 +254,38 @@ Steps = {
             "finalSnapshot_JESnoJER",
         ]
     },
+    ### 
+    ### Full set of corrections for Run2022BCD ReReco : Summer22 campaing     
+    ###
+    "MCl1loose2022v12__MCCorr2022v12": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>0)"',
+        "subTargets": [
+            "leptonMaker",
+            "lepSel_Summer22BCD",
+            "jetSelMask_2022BCD",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "baseW",
+            "btagPerJet_Summer22_DeepJet_shape",
+            "btagPerJet_Summer22_PNet_shape",
+            "btagPerJet_Summer22_PTransformer_shape",
+            "trigMC_2022",
+            "leptonSF_22BCD",
+            "puW_2022",
+            "JES_modules_Summer22",
+            "l2Kin",
+            "formulasMC_2022",
+            "finalSnapshot_JESnoJER",
+        ]
+    },
     ###
     ### Full set of corrections for Run2022E+FG Prompt : Summer22EE MC campaing
     ###
@@ -623,6 +655,15 @@ Steps = {
         "import": "mkShapesRDF.processor.modules.JMECalculator",
         "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "JR_Winter22Run3_V1_MC",jet_object="AK4PFPuppi", \
             do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],do_JER=False, store_nominal=True, store_variations=True)',
+        "module": "jmeCalculator()",
+    },
+    "JES_modules_Summer22": {
+        "isChain": False,
+        "do4MC": True,
+        "do4Data": False,
+        "import": "mkShapesRDF.processor.modules.JMECalculator",
+        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "JR_Winter22Run3_V1_MC",jet_object="AK4PFPuppi",\
+            do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],do_JER=True, store_nominal=True, store_variations=True)',
         "module": "jmeCalculator()",
     },
     "JES_modules_Summer22EE": {

@@ -46,7 +46,7 @@ xs_db["ZZTo2L2Nu"] = ["xsec=1.1341", "kfact=1.000", "ref=E"]
 xs_db["ZZTo2Q2Nu"] = ["xsec=4.67", "kfact=1.000", "ref=E"]
 xs_db["ZZTo2L2Q"] = ["xsec=7.4668", "kfact=1.000", "ref=E"]
 xs_db["ZZTo4L"] = ["xsec=1.5290", "kfact=1.000", "ref=E"]
-xs_db["WWTo2L2Nu"] = ["xsec=12.98", "kfact=1.000", "ref=E"]  ### Incremented to take into account missing ggWW : 122.3 * 0.1086 * 0.1086 * 9
+xs_db["WWTo2L2Nu"] = ["xsec=12.98", "kfact=1.000", "ref=E"]  ### 122.3 * 0.1086 * 0.1086 * 9
 xs_db["WW"] = ["xsec=122.3", "kfact=1.000", "ref=E"]   ## 13 TeV values with 4% expected increase with MCFM
 #xs_db["QCD_Pt_15to20"] = ["xsec=", "kfact=1.000", "ref=E"]
 #xs_db["QCD_Pt_30to50"] = ["xsec=", "kfact=1.000", "ref=E"]

@@ -9,7 +9,7 @@ class JetSelMask(Module):
         self.puJetId = puJetId
         self.minPt = minPt
         self.maxEta = maxEta
-        self.doMask = False
+        self.doMask = True
         self.UL2016fix = UL2016fix
         if pathToJson!="":
             self.doMask = True
@@ -35,20 +35,10 @@ class JetSelMask(Module):
                 "medium": "(1<<1)",
                 "tight": "(1<<0)",
             }
-
-        df = df.Define(
-            "CleanJetMask",
-            "(CleanJet_pt <= 50 \
-                && (Take(Jet_puId, CleanJet_jetIdx) \
-                && ROOT::RVecI (CleanJet_pt.size(), {})) \
-                ) || (CleanJet_pt > 50)".format(
-                wp_dict[self.puJetId]
-            ),
-        )
         
         df = df.Define(
             "CleanJetMask",
-            f"CleanJetMask && CleanJet_pt >= {self.minPt} && CleanJet_eta <= {self.maxEta} && Take(Jet_jetId, CleanJet_jetIdx) >= {self.jetId}",
+            f"CleanJet_pt >= {self.minPt} && CleanJet_eta <= {self.maxEta} && Take(Jet_jetId, CleanJet_jetIdx) >= {self.jetId}",
         )
 
         if self.doMask:
@@ -56,7 +46,7 @@ class JetSelMask(Module):
             ROOT.gROOT.ProcessLine(
                 f"""
                 auto jetMaskFile = correction::CorrectionSet::from_file("{self.pathToJson}");
-                correction::Correction::Ref cset_jetMask = (correction::Correction::Ref) jetMaskFile->at("{self.globalTag}");
+                correction::Correction::Ref cset_jet_Map = (correction::Correction::Ref) jetMaskFile->at("{self.globalTag}");
                 """
             )
 
@@ -104,12 +94,12 @@ class JetSelMask(Module):
                 """
             )
 
-            df.Define(
+            df = df.Define(
                 "CleanJetMask",
                 "CleanJetMask && getJetMask(CleanJet_pt,CleanJet_eta,CleanJet_phi,Jet_neEmEF,Jet_chEmEF,CleanJet_jetIdx)"
             )
 
-            df.Define(
+            df = df.Define(
                 "CleanEventMask",
                 "getEventMask(CleanJet_pt,CleanJet_eta,CleanJet_phi,Jet_neEmEF,Jet_chEmEF,CleanJet_jetIdx)"
             )

@@ -112,7 +112,7 @@ class LeptonSel(Module):
                 #df = df.Redefine("comb", "comb && !(tmp1 && !tmp2)")
                 df = df.Redefine("comb", "comb && (! tmp1 || tmp2)")
 
-            df = df.Define("isLoose_Ele", "propagateMask(Lepton_electronIdx, comb, true)")
+            df = df.Define("isLoose_Ele", "propagateMask(Lepton_electronIdx, comb, false)")
 
             df = df.Redefine("comb", "ROOT::RVecB(Muon_pt.size(), true)")
 
@@ -124,7 +124,7 @@ class LeptonSel(Module):
                 #df = df.Redefine("comb", "comb && !(tmp1 && !tmp2)")
                 df = df.Redefine("comb", "comb && (! tmp1 || tmp2)")
 
-            df = df.Define("isLoose_Mu", "propagateMask(Lepton_muonIdx, comb, true)")
+            df = df.Define("isLoose_Mu", "propagateMask(Lepton_muonIdx, comb, false)")
             df = df.Define("isLoose", "isLoose_Ele || isLoose_Mu")
 
             columnsToDrop.append("isLoose_Ele")
@@ -145,7 +145,7 @@ class LeptonSel(Module):
                 #df = df.Redefine("comb", "comb && !( tmp1 && !tmp2)")
                 df = df.Redefine("comb", "comb && (! tmp1 || tmp2)")
                 
-            df = df.Define("Lepton_isTightElectron_"+ids, "propagateMask(Lepton_electronIdx, comb, true)")
+            df = df.Define("Lepton_isTightElectron_"+ids, "propagateMask(Lepton_electronIdx, comb, false)")
             
 
         ### Muons
@@ -162,7 +162,7 @@ class LeptonSel(Module):
                 #df = df.Redefine("comb", "comb && !( tmp1 && !tmp2)")
                 df = df.Redefine("comb", "comb && (! tmp1 || tmp2)")
 
-            df = df.Define("Lepton_isTightMuon_"+ids, "propagateMask(Lepton_muonIdx, comb, true)")
+            df = df.Define("Lepton_isTightMuon_"+ids, "propagateMask(Lepton_muonIdx, comb, false)")
 
 
 

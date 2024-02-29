@@ -143,9 +143,9 @@ class JMECalculator(Module):
                         txtPtRes,
                         txtSF,
                         True,
-                        True,
-                        0.2,
-                        3.0,  # decorrelate for different regions
+                        False,
+                        -1.0,
+                        -1.0,  # decorrelate for different regions
                     )  # use hybrid recipe, matching parameters
                     calcMET.setIsT1SmearedMET(True)
 
@@ -276,9 +276,9 @@ class JMECalculator(Module):
                     txtPtRes,
                     txtSF,
                     True,
-                    True,
-                    0.2,
-                    3.0,  # decorrelate for different regions
+                    False,
+                    -1.0,
+                    -1.0,  # decorrelate for different regions
                 )  # use hybrid recipe, matching parameters
             jesSources = calc.available()
             skip = 1
