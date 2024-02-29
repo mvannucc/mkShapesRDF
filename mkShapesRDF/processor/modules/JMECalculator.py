@@ -137,7 +137,7 @@ class JMECalculator(Module):
                     jcp_unc = ROOT.JetCorrectorParameters(txtUnc, s)
                     calcMET.addJESUncertainty(s, jcp_unc)
 
-                if self.do_JER and "Puppi" not in MET:
+                if self.do_JER and "Puppi" in MET:
                     # Smear jets, with JER uncertainty
                     calcMET.setSmearing(
                         txtPtRes,
@@ -152,7 +152,7 @@ class JMECalculator(Module):
                 jesSources = calcMET.available()
                 print("DEBUG module")
                 skip = 1
-                if self.do_JER and "Puppi" not in MET:
+                if self.do_JER and "Puppi" in MET:
                     skip += 6 * 2
                 # first are JERs, last two are unclustered unc.
                 jesSources = jesSources[skip:-2][::2]
