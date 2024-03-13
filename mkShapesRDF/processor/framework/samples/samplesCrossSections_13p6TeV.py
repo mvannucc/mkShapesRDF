@@ -37,6 +37,28 @@
 xs_db = {}
 
 
+# https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR
+# BR (H-->WW) = 0.2152
+# BR (H-->tt) = 0.06256
+# BR (H-->ZZ) = 0.02641
+
+# Higgs xs at 125.38 GeV from https://twiki.cern.ch/twiki/bin/view/LHCPhysics/LHCHWG136TeVxsec_extrap
+# ggH - XS = 51.96 pb
+# VBF - XS = 4.067 pb 
+# 51.96*0.2152*(3*0.108)*(3*0.108)
+xs_db["GluGluHToWWTo2L2Nu_M125"] = ["xsec=1.1738", "kfact=1.000", "ref=E"]
+xs_db["VBFHToWWTo2L2Nu_M125"] = ["xsec=0.9187", "kfact=1.000", "ref=E"]
+
+xs_db["GluGlutoContintoWWtoENuENu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoENuMuNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoENuTauNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoMuNuENu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoMuNuMuNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoMuNuTauNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoTauNuENu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoTauNuMuNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+xs_db["GluGlutoContintoWWtoTauNuTauNu"] = ["xsec=0.0688", "kfact=1.000", "ref=E"]
+
 xs_db["WZ"] = ["xsec=54.3", "kfact=1.000", "ref=E"]   ### MATRIX, SMP-22-017
 xs_db["WZG"] = ["xsec=0.08425", "kfact=1.000", "ref=E"]
 xs_db["WZtoLNu2Q"] = ["xsec=6.44", "kfact=1.000", "ref=E"]
