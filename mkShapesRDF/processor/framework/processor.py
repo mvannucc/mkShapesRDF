@@ -155,7 +155,10 @@ class Processor:
         global fPy
         self.fPy = dedent(
             """
+        import sys
+        sys.path.insert(0, list(filter(lambda k: 'myenv' in k, sys.path))[0])
         import ROOT
+        import os
         ROOT.gROOT.SetBatch(True)
         """
         )
@@ -230,8 +233,11 @@ class Processor:
         self.fPy += dedent(
             """
         files = []
-        eosTmpPath = '"""+eosTmpPath+"""'
+        eosTmpPath = '"""+eosTmpPath+"""'        
         for f in _files:
+            if eosTmpPath=="USEDAS":
+                files.append(f)
+                continue
             filename = f.split('/')[-1]
             filename = eosTmpPath + 'input__' + filename
             files.append(filename)
@@ -249,7 +255,7 @@ class Processor:
                 sys.exit(1)\n
         """
         )
-
+        
         self.fPy += f"ROOT.gInterpreter.Declare('#include \"{frameworkPath}/include/headers.hh\"')\n"
 
         self.fPy += "df = mRDF()\n"
@@ -265,28 +271,15 @@ class Processor:
         snapshot_destinations = []
         for val in values:
             if "snapshot" == val[0]:
-                snapshots.append(val[1])
+                snapshots.append(val[1][0])
                 snapshot_destinations.append(val[2])
 
-        if len(snapshots) != 0:
-            ROOT.RDF.RunGraphs(snapshots)
+        import uproot
+        import awkward
+        for snapshot in snapshots:
+            snapshot(df.df)
 
-        histos = []
-        for val in values:
-            if val[0] == "variables":
-                h = val[2]
-                for var in h.GetKeys():
-                    variation = val[1] + '_' + str(var).replace(":", "")
-                    _h = h[var]
-                    _h.SetName(variation)
-                    histos.append( _h )
-
-        f = ROOT.TFile.Open("output.root", "UPDATE")
-        f.cd()
-        for h in histos:
-            h.Write()
-        f.Close()
-
+        finalFiles = []
         for destination in snapshot_destinations:
             copyFromInputFiles = destination[1]
             outputFilename = destination[0]
@@ -304,15 +297,16 @@ class Processor:
             # Copy output file in output folder
             proc = subprocess.Popen(f"cp {outputFilename} {outputFolderPath}/{outputFilenameEOS}", shell=True)
             proc.wait()
+            finalFiles.append(f'{outputFolderPath}/{outputFilenameEOS}')
 
             # Remove the output file from local
             proc = subprocess.Popen(f"rm {outputFilename}", shell=True)
             proc.wait()
-
+            
         def sciNot(value):
             # scientific notation
             return "{:.3e}".format(value)
-
+        
         data = []
         reservedValuesNames = ["snapshot", "variables"]
         for val in values:
@@ -329,29 +323,39 @@ class Processor:
         from tabulate import tabulate
 
         print(tabulate(data, headers=["desc.", "value"]))
+            """)
 
+        if self.inputFolder != "" and eosTmpPath!="USEDAS":
+            self.fPy += dedent("""
         for f in files:
             print('Removing input file', f)
             proc = subprocess.Popen(f"rm {f}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = proc.communicate()
             print(out.decode('utf-8'))
             print(err.decode('utf-8'), file=sys.stderr)
+            """)
 
-        """
-        )
-
+        self.fPy += dedent("""
+        # check final file integrity
+        for finalFile in finalFiles:
+            f = uproot.open(finalFile)
+            branches = [k.name for k in f['Events'].branches]
+            print(f['Events'][branches[0]].array(entry_stop=10))
+            f.close()
+        """)
+        
         self.fPy = self.fPy.replace("RPLME_FW", frameworkPath)
 
         #: folderPathEos is the output folder path (not ending with ``/`` so that is possible to add suffix to the folder)
         if self.inputFolder == "":
-            folderPathEos = self.eosDir + "/" + self.prodName + "/" + self.step
-            self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
+            folderPathEos = self.eosDir + "/" + self.prodName + "/"  # + self.step
+            folderPathEos += Steps[self.step].get("outputFolder", self.step)
         else:
-            folderPathEos = self.inputFolder + "__" + self.step
-            self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
+            folderPathEos = self.inputFolder + "__"
+            folderPathEos += Steps[self.step].get("outputFolder", self.step)
             
         self.fPy = self.fPy.replace("RPLME_EOSPATH", folderPathEos)
-
+        
         allSamples = []
 
         samplesToProcess = self.Samples.keys()
@@ -417,6 +421,12 @@ class Processor:
                 if self.inputFolder != "":
                     outputFilename = _files[0].split("/")[-1]
 
+                if eosTmpPath=="USEDAS":
+                    #if not os.path.exists(os.environ['TMPDIR']):
+                    #    os.mkdir(os.environ['TMPDIR'])
+                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", "os.environ['TMPDIR']")
+                else:
+                    _fPy = _fPy.replace("RPLME_OUTPUTFILENAMETMP", eosTmpPath)
                 _fPy = _fPy.replace("RPLME_OUTPUTFILENAME", outputFilename)
 
                 jobDirPart = jobDir + sampleName + "__part" + str(part) + "/"
@@ -428,21 +438,25 @@ class Processor:
 
         fJdl = dedent(
             """
-        universe = vanilla
-        executable = run.sh
-        arguments = $(Folder)
+universe = vanilla
+executable = run.sh
+arguments = $(Folder)
 
-        should_transfer_files = YES
-        transfer_input_files = $(Folder)/script.py
+should_transfer_files = YES
+transfer_input_files = $(Folder)/script.py
 
-        output = $(Folder)/out.txt
-        error  = $(Folder)/err.txt
-        log    = $(Folder)/log.txt
+output = $(Folder)/out.txt
+error  = $(Folder)/err.txt
+log    = $(Folder)/log.txt
 
-        request_cpus   = 1
-        +JobFlavour = "workday"
+request_cpus   = 1
+request_memory = 12GB
+request_disk   = 10GB
+requirements = (OpSysAndVer =?= "AlmaLinux9")
++JobFlavour = "testmatch"
 
-        queue 1 Folder in RPLME_ALLSAMPLES"""
+queue 1 Folder in RPLME_ALLSAMPLES
+"""
         )
 
         fJdl = fJdl.replace("RPLME_ALLSAMPLES", " ".join(allSamples))

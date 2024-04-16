@@ -4,15 +4,19 @@ Getting Started
 Installation
 ------------
 
-Git clone the project and work with the `v0.0.1`
+Git clone the project and work with the `master` branch
 
 .. code:: bash
 
-   git clone https://github.com/giorgiopizz/mkShapesRDF.git
-   git checkout v0.0.1
+   git clone https://github.com/latinos/mkShapesRDF.git
 
 Lxplus is currently the suggested machine to work with. In general one should need
-``cvmfs`` with ``sft.cern.ch`` and ``cms.cern.ch``.
+``cvmfs`` with ``sft.cern.ch`` and ``cms.cern.ch``. 
+
+A docker image is also provided at ``/cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/cms-analysis/general/mkshapesrdf:master``.
+The latter should be used on the INFN Analysis Facility.
+
+
 
 Automatic installation
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -21,6 +25,8 @@ mkShapesRDF has its own install script: ``install.sh``: it first sources the cor
 python environment (it should contain a recent python3 and ROOT bindings) and then
 proceeds with the creation of a virtual environment `myenv` where all the needed
 packages and the framework scripts will be installed.
+
+Be careful to have a clean environment before running the install script! E.g. not after a cmsenv
 
 You're free to change the environment with conda/mamba insted of a LCG release inside
 ``install.sh``.
@@ -60,7 +66,7 @@ Now you can proceed to the simple installation:
 
 .. code:: bash
 
-   pip install -e .[docs,dev]
+   pip install -e ".[docs,dev,processor]"
 
 Now to work with ``mkShapes.processor`` one should also install correctionlib and
 compile it:
@@ -90,7 +96,7 @@ Another step needed when using the ``processor`` is to download the ``jsonpog-in
 Shape analysis: Run the analysis with the provided example
 -----------------------------------------------------------------------
 
-Configure the configuration folder (e.g. ``examples/2016Real``)
+Configure the configuration folder (e.g. ``examples/Full2018_v9``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Documentation on the configuration folder structure at :doc:`the configuration folder
@@ -111,12 +117,12 @@ Run the analysis
 
 .. code:: bash
 
-   mkShapesRDF -o 0 -f . -b 1
+   mkShapesRDF -o 0 -b 1
 
 `-o` indicates the operationMode: - 0 run analysis - 1 check batch output and errs - 2
 merge root files
 
-For the provided example (2016Real) it's estimated an execution time of ~ 10 mins
+For the provided example (Full2018_v9) it's estimated an execution time of ~ 10 mins
 running on lxbatch (condor on lxplus) @ CERN when disabling nuisances.
 
 It's highly recommended to limit input ROOT files at the first run to check for errors.
@@ -124,15 +130,15 @@ The following command will only take 1 event for each sample type:
 
 .. code:: bash
 
-   mkShapesRDF -o 0 -f . -l 1
+   mkShapesRDF -o 0 -l 1
 
 Check for errors
 ~~~~~~~~~~~~~~~~
 
-After all the jobs finished (or most of them did) you can run ``mkShapesRDF -o 1 -f .``
+After all the jobs finished (or most of them did) you can run ``mkShapesRDF -o 1``
 to know which jobs failed and why.
 
-One can resubmit failed jobs with ``mkShapesRDF -o 1 -f . -r 1``.
+One can resubmit failed jobs with ``mkShapesRDF -o 1 -r 1``.
 
 While if one wants to resubmit jobs that are still running, the option ``-r 2`` should
 be used.
@@ -144,7 +150,7 @@ If all the jobs succeeded run the merger with the option:
 
 .. code:: bash
 
-   mkShapesRDF -o 2 -f .
+   mkShapesRDF -o 2
 
 Plots
 ~~~~~
@@ -161,4 +167,4 @@ which will create the plots to the specified paths provided in ``configuration.p
 Processor: run the post processing
 ----------------------------------
 
-Coming soon
+See the dedicated section

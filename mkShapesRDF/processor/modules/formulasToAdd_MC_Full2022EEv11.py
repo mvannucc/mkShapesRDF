@@ -83,8 +83,8 @@ class formulasToAdd_MC_Full2022EEv11(Module):
             : 0.0",
         )
 
-        muWPlist = [wp for wp in MuonWP["Full2022EEv11"]["TightObjWP"]]
-        eleWPlist = [wp for wp in ElectronWP["Full2022EEv11"]["TightObjWP"]]
+        muWPlist = [wp for wp in MuonWP["Full2022EEv12"]["TightObjWP"]]
+        eleWPlist = [wp for wp in ElectronWP["Full2022EEv12"]["TightObjWP"]]
 
         for eleWP in eleWPlist:
             for muWP in muWPlist:

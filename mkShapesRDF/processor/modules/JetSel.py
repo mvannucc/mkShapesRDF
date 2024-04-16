@@ -32,19 +32,9 @@ class JetSel(Module):
 
         df = df.Define(
             "CleanJetMask",
-            "(CleanJet_pt <= 50 \
-                && (Take(Jet_puId, CleanJet_jetIdx) \
-                && ROOT::RVecI (CleanJet_pt.size(), {})) \
-                ) || (CleanJet_pt > 50)".format(
-                wp_dict[self.puJetId]
-            ),
+            f"CleanJet_pt >= {self.minPt} && CleanJet_eta <= {self.maxEta} && Take(Jet_jetId, CleanJet_jetIdx) >= {self.jetId}",
         )
-
-        df = df.Define(
-            "CleanJetMask",
-            f"CleanJetMask && CleanJet_pt >= {self.minPt} && CleanJet_eta <= {self.maxEta} && Take(Jet_jetId, CleanJet_jetIdx) >= {self.jetId}",
-        )
-
+        
         values.append(
             [
                 df.Define("test", "CleanJet_pt.size()").Sum("test"),

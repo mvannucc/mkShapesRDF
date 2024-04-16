@@ -9,6 +9,7 @@ The analysis can be run in batch mode or locally.
 
 If run in batch mode it gives the ability to merge the output root files.
 """
+
 import sys
 from pathlib import Path
 import argparse
@@ -16,6 +17,8 @@ import os
 import glob
 import subprocess
 import ROOT
+from copy import deepcopy
+from mkShapesRDF.shapeAnalysis.histo_utils import postProcessNuisances
 
 ROOT.gROOT.SetBatch(True)
 
@@ -92,7 +95,7 @@ def defaultParser():
         required=False,
         default=-1,
     )
-
+    
     parser.add_argument(
         "-r",
         "--resubmit",
@@ -105,7 +108,14 @@ def defaultParser():
     parser.add_argument(
         "-q",
         "--queue",
-        choices=['espresso', 'microcentury', 'longlunch', 'workday', 'tomorrow', 'testmatch'],
+        choices=[
+            "espresso",
+            "microcentury",
+            "longlunch",
+            "workday",
+            "tomorrow",
+            "testmatch",
+        ],
         help="Condor queue",
         required=False,
         default="workday",
@@ -128,6 +138,9 @@ def main():
     configFile = args.configFile
     resubmit = int(args.resubmit)
 
+    global jdlconfigfile
+    jdlconfigfile = ""  # give a default value since it might be not included in a configuration folder
+    
     global batchFolder
     global outputFolder
 
@@ -183,6 +196,12 @@ def main():
         else:
             d = ConfigLib.loadLatestPickle(configsFolder, globals())
 
+    samples = globals()["samples"]
+    aliases = globals()["aliases"]
+    variables = globals()["variables"]
+    cuts = globals()["cuts"]
+    nuisances = globals()["nuisances"]
+    lumi = globals()["lumi"]
     print(samples.keys())
     print(d.keys())
 
@@ -191,17 +210,21 @@ def main():
     batchFolder = f"{folder}/{batchFolder}"
 
     Path(f"{folder}/{outputFolder}").mkdir(parents=True, exist_ok=True)
+    outputPath = os.path.abspath(f"{folder}/{outputFolder}")
+    outputFileMap = f"{outputPath}/{outputFile}"
 
-    if operationMode == 2 and os.path.exists(f"{folder}/{outputFolder}/{outputFile}"):
+    if operationMode == 2 and os.path.exists(outputFileMap):
         print("Can't merge files, output already exists")
-        print(f"You can run: rm {folder}/{outputFolder}/{outputFile}")
+        print(f"You can run: \nrm {outputFileMap}")
         sys.exit()
 
     limit = int(args.limitEvents)
 
     # PROCESSING
+    runnerFile = globals()["runnerFile"]
     if runnerFile == "default":
         runnerPath = os.path.realpath(os.path.dirname(__file__)) + "/runner.py"
+        runnerFile = "runner.py"
     else:
         runnerPath = f"{folder}/{runnerFile}"
     print("\n\nRunner path: ", runnerPath, "\n\n")
@@ -210,8 +233,13 @@ def main():
         sys.exit()
 
     _results = {}
-    sys.path.append(os.path.dirname(runnerPath))
-    from runner import RunAnalysis
+    sys.path.insert(0, os.path.dirname(runnerPath))
+    runnerModule = __import__(runnerFile.strip(".py"))
+    if not hasattr(runnerModule, "RunAnalysis"):
+        raise AttributeError(
+            f"Runner module {runnerFile} from {runnerPath} has no attribute RunAnalysis"
+        )
+    RunAnalysis = runnerModule.RunAnalysis
 
     if operationMode == 0:
         print("#" * 20, "\n\n", "   Doing analysis", "\n\n", "#" * 20)
@@ -223,9 +251,8 @@ def main():
 
             from mkShapesRDF.shapeAnalysis.BatchSubmission import BatchSubmission
 
-            outputPath = os.path.abspath(outputFolder)
-
             batch = BatchSubmission(
+                folder,
                 outputPath,
                 batchFolder,
                 headersPath,
@@ -234,6 +261,7 @@ def main():
                 _samples,
                 d,
                 batchVars,
+                globals().get("jdlconfigfile", ""),
             )
             batch.createBatches()
             batch.submit(dryRun, queue)
@@ -241,22 +269,23 @@ def main():
         else:
             print("#" * 20, "\n\n", " Running on local machine  ", "\n\n", "#" * 20)
 
-            outputFileMap = f"{folder}/{outputFolder}/{outputFile}"
-
             _samples = RunAnalysis.splitSamples(samples, False)
-            print(len(_samples))
 
             runner = RunAnalysis(
                 _samples,
                 aliases,
-                variables,
-                cuts,
+                deepcopy(variables),
+                deepcopy(cuts),
                 nuisances,
                 lumi,
                 limit,
                 outputFileMap,
             )
             runner.run()
+            cuts = cuts["cuts"]
+            postProcessNuisances(
+                outputFileMap, samples, aliases, variables, cuts, nuisances
+            )
 
     elif operationMode == 1:
         errs = glob.glob("{}/{}/*/err.txt".format(batchFolder, tag))
@@ -266,13 +295,54 @@ def main():
         filesD = list(map(lambda k: "/".join(k.split("/")[:-1]), files))
         # print(files)
         notFinished = list(set(filesD).difference(set(errsD)))
-        print(notFinished)
-        tabulated = []
-        tabulated.append(["Total jobs", "Finished jobs", "Running jobs"])
-        tabulated.append([len(files), len(errs), len(notFinished)])
+        sort_key = lambda k: (k.split("_")[0], int(k.split("_")[-1]))
+        notFinishedShort = sorted(
+            list(map(lambda k: k.split("/")[-1], notFinished)), key=sort_key
+        )
+        finishedShort = sorted(
+            list(map(lambda k: k.split("/")[-2], errs)), key=sort_key
+        )
+        allSamples = {}
+        for file in finishedShort:
+            sample = "_".join(file.split("_")[:-1])
+            if sample not in allSamples:
+                allSamples[sample] = {"done": 1, "running": 0}
+            else:
+                allSamples[sample]["done"] += 1
+        for file in notFinishedShort:
+            sample = "_".join(file.split("_")[:-1])
+            if sample not in allSamples:
+                allSamples[sample] = {"done": 0, "running": 1}
+            else:
+                allSamples[sample]["running"] += 1
+
+
         import tabulate
 
-        print(tabulate.tabulate(tabulated))
+        tabulated = [["Sample", "Total", "Finished", "Running"]]
+        for sample in allSamples:
+            tot = allSamples[sample]["done"] + allSamples[sample]["running"]
+            tabulated.append(
+                [
+                    sample,
+                    str(tot),
+                    "\033[92m " + str(allSamples[sample]["done"]) + "\033[00m",
+                    "\033[93m " + str(allSamples[sample]["running"]) + "\033[00m",
+                ]
+            )
+        print(tabulate.tabulate(tabulated, headers="firstrow", tablefmt="fancy_grid"))
+
+        tabulated = []
+        tabulated.append(["Total jobs", "Finished jobs", "Running jobs"])
+        tabulated.append(
+            [
+                len(files),
+                "\033[92m " + str(len(errs)) + "\033[00m",
+                "\033[93m " + str(len(notFinished)) + "\033[00m",
+            ]
+        )
+
+        print(tabulate.tabulate(tabulated, headers="firstrow", tablefmt="fancy_grid"))
         # print('queue 1 Folder in ' + ' '.join(list(map(lambda k: k.split('/')[-1], notFinished))))
         normalErrs = """Warning in <TClass::Init>: no dictionary for class edm::ProcessHistory is available
         Warning in <TClass::Init>: no dictionary for class edm::ProcessConfiguration is available
@@ -333,7 +403,9 @@ def main():
             if resubmit == 1:
                 from mkShapesRDF.shapeAnalysis.BatchSubmission import BatchSubmission
 
-                BatchSubmission.resubmitJobs(batchFolder, tag, toResubmit, dryRun, queue)
+                BatchSubmission.resubmitJobs(
+                    batchFolder, tag, toResubmit, dryRun, queue
+                )
 
         if resubmit == 2:
             # resubmit all the jobs that are not finished
@@ -373,7 +445,17 @@ def main():
             rm filesToMerge_{outputFile}.txt',
             shell=True,
         )
-        process.wait()
+        process.communicate()
+
+        if process.returncode == 0:
+            print("Hadd was successful")
+            cuts = cuts["cuts"]
+            postProcessNuisances(
+                outputFileMap, samples, aliases, variables, cuts, nuisances
+            )
+        else:
+            print("mkShapesRDF: Hadd failed!", file=sys.stderr)
+            sys.exit(1)
 
     else:
         print("Operating mode was set to -1, nothing was done")

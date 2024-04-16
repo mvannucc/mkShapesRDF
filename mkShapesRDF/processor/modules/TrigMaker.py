@@ -20,6 +20,7 @@ class TrigMaker(Module):
         cfg_path="processor/data/TrigMaker_cfg.py",
         seeded=False,
         branch_map="",
+        computeSF=True
     ):
         super().__init__("TrigMaker")
 
@@ -28,8 +29,9 @@ class TrigMaker(Module):
         self.keepRunP = keepRunP
         self.seeded = seeded
         self.firstEvent = True
-
-        self.mu_maxPt = 199.9
+        self.computeSF = computeSF
+        
+        self.mu_maxPt = 149.9
         self.mu_minPt = 9.999
         self.mu_maxEta = 2.3999
         self.mu_minEta = -2.3999
@@ -359,7 +361,7 @@ class TrigMaker(Module):
                     }
                     """
                 )
-
+                
                 df = df.Define("run_p", "run_p(event)")
 
         ########################################################################
@@ -404,11 +406,11 @@ class TrigMaker(Module):
             else:
                 if "run_period" in name and not self.keepRunP:
                     df = df.Define(name, "run_p")
-
-        if self.isData:
+        
+        if self.isData or (self.computeSF==False):
             df = df.DropColumns("run_p")
             return df
-
+        
         ########################################################################
         #                                                                      #
         #                                                                      #

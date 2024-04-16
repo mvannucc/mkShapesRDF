@@ -62,11 +62,13 @@ def run(production, step, initialStep="", submit=False):
     prePath = os.path.abspath(os.path.dirname(__file__))
 
     if "Tools" in prePath:
-        prePath = prePath.split("Tools/")[0]   ## Assume you work in processor folder
-    
+        prePath = prePath.split("Tool")[0]   ## Assume you work in processor folder
+
     path = prePath + "/condor/" + production + "/" + step + "/"
     output_path = Sites["eosDir"] + production + "/" + initialStep + step
     jobDir = path
+    print(output_path)
+
 
     cmd = "find {} -type d -name '*'".format(path)
     
@@ -129,7 +131,7 @@ executable = run.sh
 arguments = $(Folder)
 
 should_transfer_files = YES
-transfer_input_files = $(Folder)/script.py
+transfer_input_files = $(Folder)/script.py,$(Proxy_path)
 max_transfer_input_mb = 4000
 max_transfer_output_mb = 4000
 
@@ -138,13 +140,14 @@ error  = $(Folder)/err.txt
 log    = $(Folder)/log.txt
 
 request_cpus   = 1
-request_memory = 4500
-request_disk = 10000000
-+JobFlavour = "workday"
+request_memory = 12GB
+request_disk   = 8GB
+requirements = (OpSysAndVer =?= "AlmaLinux9")
++JobFlavour = "testmatch"
 
 queue 1 Folder in RPLME_ALLSAMPLES"""
         
-        resubmit = resubmit.replace("RPLME_ALLSAMPLES", " ".join(failed_jobs[0:300]))
+        resubmit = resubmit.replace("RPLME_ALLSAMPLES", " ".join(failed_jobs))
         
         with open(jobDir + "submit_failed.jdl", "w") as f:
             f.write(resubmit)

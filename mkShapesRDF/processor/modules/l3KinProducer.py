@@ -346,6 +346,7 @@ class l3KinProducer(Module):
             excludeVariations=["JES*","MET*"]
         )
 
+        '''
         ### AZH variables
         #################
 
@@ -634,6 +635,7 @@ class l3KinProducer(Module):
             prefix + "AZH_mA_minus_mH_onebjet",
             "_ZH3l_isOk && {}ZH3l_njet >= 4 && nbJet == 1 ? (ZH3l_XLepton + AZH_Neutrino_best_onebjet + bJetLeptonic_best_onebjet + bJetHadronic_best_onebjet + WJet1_best_onebjet + WJet2_best_onebjet + ZLepton1 + ZLepton2).M() - (ZH3l_XLepton + AZH_Neutrino_best_onebjet + bJetLeptonic_best_onebjet + bJetHadronic_best_onebjet + WJet1_best_onebjet + WJet2_best_onebjet).M() : -9999.0".format(prefix),
         )
+        
 
         df = df.DropColumns("_WH3l_isOk")
         df = df.DropColumns("_ZH3l_isOk")
@@ -672,5 +674,7 @@ class l3KinProducer(Module):
         df = df.DropColumns("bJetHadronic_best_onebjet")
         df = df.DropColumns("WJet1_best_onebjet")
         df = df.DropColumns("WJet2_best_onebjet")
+        '''
+
 
         return df

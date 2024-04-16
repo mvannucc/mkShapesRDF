@@ -21,8 +21,8 @@ class formulasToAdd_DATA_Full2022EEv11(Module):
 
         df = df.Define("METFilter_DATA", "METFilter_Common * Flag_eeBadScFilter")
 
-        muWPlist = [wp for wp in MuonWP["Full2022EEv11"]["TightObjWP"]]
-        eleWPlist = [wp for wp in ElectronWP["Full2022EEv11"]["TightObjWP"]]
+        muWPlist = [wp for wp in MuonWP["Full2022EEv12"]["TightObjWP"]]
+        eleWPlist = [wp for wp in ElectronWP["Full2022EEv12"]["TightObjWP"]]
 
         df = df.Define("_2lepOk", "Lepton_pt.size() > 1")
         df = df.Define("_3lepOk", "Lepton_pt.size() > 2")
