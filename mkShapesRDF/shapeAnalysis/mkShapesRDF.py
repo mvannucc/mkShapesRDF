@@ -95,7 +95,7 @@ def defaultParser():
         required=False,
         default=-1,
     )
-
+    
     parser.add_argument(
         "-r",
         "--resubmit",
@@ -132,15 +132,17 @@ def main():
     doBatch = int(args.doBatch)
     dryRun = int(args.dryRun)
     queue = args.queue
-
     global folder
-    global batchFolder
-    global outputFolder
-
     folder = os.path.abspath(args.folder)
     configsFolder = os.path.abspath(args.folder + "/" + args.configsFolder)
     configFile = args.configFile
     resubmit = int(args.resubmit)
+
+    global jdlconfigfile
+    jdlconfigfile = ""  # give a default value since it might be not included in a configuration folder
+    
+    global batchFolder
+    global outputFolder
 
     if compileFolder == 1:
         print(os.getcwd())
@@ -435,12 +437,12 @@ def main():
         print("\n\nMerging files\n\n")
         print("\n\n", filesToMerge, "\n\n")
 
-        print(f"Hadding files into {outputFileMap}")
+        print(f"Hadding files into {folder}/{outputFolder}/{outputFile}")
         for fileToMerge in filesToMerge:
-            os.system(f"echo {fileToMerge} >> filesToMerge_{outputFile}.txt")
+          os.system(f'echo {fileToMerge} >> filesToMerge_{outputFile}.txt')
         process = subprocess.Popen(
-            f"hadd2 -j 10 {outputFileMap} @filesToMerge_{outputFile}.txt; \
-            rm filesToMerge_{outputFile}.txt",
+            f'hadd -j 10 {folder}/{outputFolder}/{outputFile} @filesToMerge_{outputFile}.txt; \
+            rm filesToMerge_{outputFile}.txt',
             shell=True,
         )
         process.communicate()
