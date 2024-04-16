@@ -222,38 +222,6 @@ Steps = {
             "finalSnapshot_JES",
         ]
     },
-    ###
-    ### Full set of corrections for Run2022BCD ReReco : Summer22 campaing
-    ###
-    "MCl1loose2022v12__MCCorr2022v12_NoJER": {
-        "isChain": True,
-        "do4MC": True,
-        "do4Data": False,
-        "selection": '"((nElectron+nMuon)>0)"',
-        "subTargets": [
-            "leptonMaker",
-            "lepSel_Summer22BCD",
-            "jetSelMask_2022BCD",
-            "PromptParticlesGenVars",
-            "GenVar",
-            "GenLeptonMatch",
-            "HiggsGenVars",
-            "TopGenVars",
-            "WGammaStar",
-            "DressedLeptons",
-            "baseW",
-            "btagPerJet_Summer22_DeepJet_shape",
-            "btagPerJet_Summer22_PNet_shape",
-            "btagPerJet_Summer22_PTransformer_shape",
-            "trigMC_2022",
-            "leptonSF_22BCD",
-            "puW_2022",
-            "JES_modules_Summer22_NoJER",
-            "l2Kin",
-            "formulasMC_2022",
-            "finalSnapshot_JESnoJER",
-        ]
-    },
     ### 
     ### Full set of corrections for Run2022BCD ReReco : Summer22 campaing     
     ###
@@ -283,7 +251,7 @@ Steps = {
             "JES_modules_Summer22",
             "l2Kin",
             "formulasMC_2022",
-            "finalSnapshot_JESnoJER",
+            "finalSnapshot_JES",
         ]
     },
     ###
@@ -653,7 +621,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.JMECalculator",
-        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "JR_Winter22Run3_V1_MC",jet_object="AK4PFPuppi", \
+        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "Summer22_22Sep2023_JRV1_MC",jet_object="AK4PFPuppi", \
             do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],do_JER=False, store_nominal=True, store_variations=True)',
         "module": "jmeCalculator()",
     },
@@ -662,7 +630,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.JMECalculator",
-        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "JR_Winter22Run3_V1_MC",jet_object="AK4PFPuppi",\
+        "declare": 'jmeCalculator = lambda : JMECalculator("Summer22_22Sep2023_V2_MC", "Summer22_22Sep2023_JRV1_MC",jet_object="AK4PFPuppi",\
             do_Jets=True, do_MET=True, do_Unclustered=True, met_collections = ["PuppiMET", "MET", "RawMET"],do_JER=True, store_nominal=True, store_variations=True)',
         "module": "jmeCalculator()",
     },
@@ -843,14 +811,14 @@ Steps = {
         "declare": 'btagPerJet_DeepJet_2018UL = lambda : btagSFProducerLatinos(2018, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/jsonpog-integration/POG/BTV/2018_UL/btagging.json.gz", ["jes","jesAbsolute","jesAbsolute_2018","jesBBEC1","jesBBEC1_2018","jesEC2","jesEC2_2018","jesFlavorQCD","jesHF","jesHF_2018","jesRelativeBal","jesRelativeSample_2018"])',
         "module": "btagPerJet_DeepJet_2018UL()",
     },
-    ######## Full2022EE Prompt btagging
+    ######## 2022 btagging SF
     ## Shape
     "btagPerJet_Summer22_DeepJet_shape": {
         "isChain": False,
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_DeepJet_shape = lambda : btagSFProducerLatinos(2022, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_DeepJet_shape = lambda : btagSFProducerLatinos(2022, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_Summer22.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_DeepJet_shape()",
     },
     "btagPerJet_Summer22_PNet_shape": {
@@ -858,7 +826,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PNet_shape = lambda : btagSFProducerLatinos(2022, "particleNet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_PNet_shape = lambda : btagSFProducerLatinos(2022, "particleNet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_Summer22.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_PNet_shape()",
     },
     "btagPerJet_Summer22_PTransformer_shape": {
@@ -866,7 +834,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PTransformer_shape = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_PTransformer_shape = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022v12/btagging_Summer22.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_PTransformer_shape()",
     },
     "btagPerJet_Summer22EE_DeepJet_shape": {
@@ -874,7 +842,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_DeepJet_shape = lambda : btagSFProducerLatinos(2022, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_DeepJet_shape = lambda : btagSFProducerLatinos(2022, "deepJet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_DeepJet_shape()",
     },
     "btagPerJet_Summer22EE_PNet_shape": {
@@ -882,7 +850,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PNet_shape = lambda : btagSFProducerLatinos(2022, "particleNet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_PNet_shape = lambda : btagSFProducerLatinos(2022, "particleNet", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_PNet_shape()",
     },
     "btagPerJet_Summer22EE_PTransformer_shape": {
@@ -890,7 +858,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PTransformer_shape = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
+        "declare": 'btagPerJet_PTransformer_shape = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["shape"], "shape", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", ["jes","jesAbsoluteStat","jesAbsoluteScale","jesAbsoluteMPFBias","jesFragmentation","jesSinglePionECAL","jesSinglePionHCAL","jesFlavorQCD","jesRelativeJEREC1","jesRelativeJEREC2","jesRelativeJERHF","jesRelativePtBB","jesRelativePtEC1","jesRelativePtEC2","jesRelativePtHF","jesRelativeBal","jesRelativeSample","jesRelativeFSR","jesRelativeStatFSR","jesRelativeStatEC","jesRelativeStatHF","jesPileUpDataMC","jesPileUpPtRef","jesPileUpPtBB","jesPileUpPtEC1","jesPileUpPtEC2","jesPileUpPtHF"])',
         "module": "btagPerJet_PTransformer_shape()",
     },
     ### Fixed WP
@@ -899,7 +867,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_DeepJet_light = lambda : btagSFProducerLatinos(2022, "deepJet", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", [])',
+        "declare": 'btagPerJet_DeepJet_light = lambda : btagSFProducerLatinos(2022, "deepJet", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", [])',
         "module": "btagPerJet_DeepJet_light()",
     },
     "btagPerJet_Summer22EE_PNet_light": {
@@ -907,7 +875,7 @@ Steps = {
 	"do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PNet_light = lambda : btagSFProducerLatinos(2022, "particleNet", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", [])',
+        "declare": 'btagPerJet_PNet_light = lambda : btagSFProducerLatinos(2022, "particleNet", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", [])',
         "module": "btagPerJet_PNet_light()",
     },
     "btagPerJet_Summer22EE_PTransformer_light": {
@@ -915,7 +883,7 @@ Steps = {
         "do4MC": True,
         "do4Data": False,
         "import": "mkShapesRDF.processor.modules.btagSFProducerLatinos",
-        "declare": 'btagPerJet_PTransformer_light = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_v0.json", [])',
+        "declare": 'btagPerJet_PTransformer_light = lambda : btagSFProducerLatinos(2022, "robustParticleTransformer", ["L", "M", "T"], "light", "RPLME_FW/processor/data/scale_factors_BTV/Full2022EEv12/btagging_Summer22EE.json", [])',
         "module": "btagPerJet_PTransformer_light()",
     },
     "trigMC": {
