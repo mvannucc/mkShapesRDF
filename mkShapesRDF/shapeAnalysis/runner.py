@@ -2,6 +2,7 @@ from copy import deepcopy
 import sys
 import subprocess
 import os
+import math
 import ROOT
 from array import array
 from mkShapesRDF.lib.parse_cpp import ParseCpp
@@ -15,7 +16,7 @@ class RunAnalysis:
     r"""Class athat craeates ``dfs`` and runs the analysiss"""
 
     @staticmethod
-    def splitSamples(samples, useFilesPerJob=True):
+    def splitSamples(samples, useFilesPerJob=True, useEventsPerJob=True):
         r"""static methods, takes a dictionary of samples and split them based on their weights and max num. of files
 
         Parameters
@@ -69,36 +70,75 @@ class RunAnalysis:
                 __files = list(map(lambda k: k[1], types[_type]))
                 # flatted list of files
                 __files = [item for sublist in __files for item in sublist]
+                            
                 if useFilesPerJob:
                     dim = samples[sampleName].get("FilesPerJob", len(__files))
                 else:
                     dim = len(__files)
                 __files = [__files[j : j + dim] for j in range(0, len(__files), dim)]
+                    
                 for ___files in __files:
                     # the weights for these files will be the product of the weight inside this sample (i.e. samples[sampleName]['weight'])
                     # and the product of the special weights that is in common to all of those files (i.e. sampleType[0])
                     # the common special weight can be retrived from the first of the list of files with this weight
                     # remember that the tuple has always size 3 now, the last position is for the special weight
-                    weight = (
-                        "( "
-                        + samples[sampleName]["weight"]
-                        + " ) * ( "
-                        + types[_type][0][2]
-                        + " )"
-                    )
-                    isData = samples[sampleName].get("isData", False)
-                    sampleType = (
-                        sampleName,
-                        ___files,
-                        weight,
-                        i,
-                        isData,
-                        deepcopy(samples[sampleName]),
-                    )
-                    if "subsamples" in list(samples[sampleName].keys()):
-                        sampleType += (samples[sampleName]["subsamples"],)
-                    splittedSamples.append(sampleType)
-                    i += 1
+
+                    # split jobs per events
+                    if useEventsPerJob and "EventsPerJob" in samples[sampleName]:
+                        tmp = ROOT.RDataFrame("Events", ___files)
+                        nevents = tmp.Count().GetValue()
+                        step = samples[sampleName].get("EventsPerJob")
+                        dimEv = math.ceil(nevents / step)
+                    else:
+                        dimEv = -1
+                        
+                    if dimEv>0:
+                        for k in range(dimEv):
+                            weight = (
+                                "( "
+                                + samples[sampleName]["weight"]
+                                + " ) * ( "
+                                + types[_type][0][2]
+                                + " )"
+                            )
+                            isData = samples[sampleName].get("isData", False)
+                            __range = [k*step, (k+1)*step]
+                            sampleType = (
+                                sampleName,
+                                ___files,
+                                weight,
+                                i,
+                                isData,
+                                deepcopy(samples[sampleName],),
+                                __range,
+                            )                            
+                            if "subsamples" in list(samples[sampleName].keys()):
+                                sampleType += (samples[sampleName]["subsamples"],)
+                            splittedSamples.append(sampleType)
+                            i += 1
+                    else:
+                        weight = (
+                            "( "
+                            + samples[sampleName]["weight"]
+                            + " ) * ( "
+                            + types[_type][0][2]
+                            + " )"
+                        )
+                        isData = samples[sampleName].get("isData", False)
+                        sampleType = (
+                            sampleName,
+                            ___files,
+                            weight,
+                            i,
+                            isData,
+                            deepcopy(samples[sampleName]),
+                            -1,
+                        )
+                        if "subsamples" in list(samples[sampleName].keys()):
+                            sampleType += (samples[sampleName]["subsamples"],)
+                        splittedSamples.append(sampleType)
+                        i += 1
+                        
         return splittedSamples
 
     @staticmethod
@@ -259,6 +299,7 @@ class RunAnalysis:
         # sample here is a tuple, first el is the sampleName, second list of files,
         # third the special weight, forth is the index of tuple for the same sample,
         # fifth if present the dict of subsamples
+        # sixth range for EventPerJob
         for sample in samples:
             files = sample[1]
             sampleName = sample[0]
@@ -277,39 +318,7 @@ class RunAnalysis:
                             friendsFiles += RunAnalysis.getNuisanceFiles(
                                 nuisance, files
                             )
-
-            print("\n")
-            print(files)
-            print(friendsFiles)
-
-            # Trick!
-            rediretor = "root://eoscms.cern.ch/"            
-            for i in range(len(files)):
-                proc = subprocess.Popen(
-                    "xrdcp " + rediretor + files[i] + " " + os.environ["TMPDIR"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True
-                )
-                out, err = proc.communicate()
-                files[i] = os.environ["TMPDIR"] + "/" + files[i].split("/")[-1]
-
-
-            for i in range(len(friendsFiles)):
-                for j in range(len(friendsFiles[i])):
-                    fileName = friendsFiles[i][j]
-                    length = len(fileName.split("/"))
-                    tag = fileName.split("/")[length-2].split("__")[-1]
-
-                    proc = subprocess.Popen(
-                        "xrdcp " + rediretor + fileName + " " + os.environ["TMPDIR"] + "/" + fileName.split("/")[-1].split(".root")[0] + "__" + tag + ".root",
-                        stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True
-                    )
-                    out, err = proc.communicate()
-                    friendsFiles[i][j] = os.environ["TMPDIR"] + "/" + fileName.split("/")[-1].split(".root")[0] + "__" + tag + ".root"
-
-
-            print("\n")
-            print(files)
-            print(friendsFiles)
-                            
+            
             tnom = RunAnalysis.getTTreeNomAndFriends(files, friendsFiles)
 
             if limit != -1:
@@ -317,8 +326,12 @@ class RunAnalysis:
                 df = df.Range(limit)
             else:
                 # ROOT.EnableImplicitMT()
-
                 df = ROOT.RDataFrame(tnom)
+            
+            # EventsPerJob
+            if isinstance(sample[6], list):
+                df = df.Range(sample[6][0], sample[6][1])
+                
             if sampleName not in self.dfs.keys():
                 self.dfs[sample[0]] = {}
             self.dfs[sampleName][sample[3]] = {
@@ -329,7 +342,7 @@ class RunAnalysis:
             self.dfs[sampleName][sample[3]]["columnNames"] = list(
                 map(lambda k: str(k), df.GetColumnNames())
             )
-
+            
         self.definedAliases = {}
 
         print("\n\nLoaded dataframes\n\n")
@@ -892,12 +905,12 @@ class RunAnalysis:
         After this method the ``dfs`` attribute will be modified to contain the subsamples names instead of the original sample name
         """
         sampleNames = set(
-            list(map(lambda k: k[0], list(filter(lambda k: len(k) == 7, self.samples))))
+            list(map(lambda k: k[0], list(filter(lambda k: len(k) == 8, self.samples))))
         )
         for sampleName in sampleNames:
             # select in the samples list only the one with this sampleName
             _sample = list(filter(lambda k: k[0] == sampleName, self.samples))[0]
-            for subsample in list(_sample[6].keys()):
+            for subsample in list(_sample[7].keys()):
                 # _sample[5] is the original dict, i.e. samples[sampleName]
                 flatten_samples_map = _sample[5].get(
                     "flatten_samples_map", lambda sname, sub: "%s_%s" % (sname, sub)
@@ -906,13 +919,13 @@ class RunAnalysis:
                 self.dfs[new_subsample_name] = {}
                 for index in self.dfs[sampleName].keys():
                     self.dfs[new_subsample_name][index] = {"parent": sampleName}
-                    subsampleCut = _sample[6][subsample]
+                    subsampleCut = _sample[7][subsample]
                     subsampleWeight = "1.0"
                     if isinstance(subsampleCut, tuple) or isinstance(
                         subsampleCut, list
                     ):
-                        subsampleCut = _sample[6][subsample][0]
-                        subsampleWeight = _sample[6][subsample][1]
+                        subsampleCut = _sample[7][subsample][0]
+                        subsampleWeight = _sample[7][subsample][1]
 
                     self.dfs[new_subsample_name][index]["df"] = (
                         self.dfs[sampleName][index]["df"]
