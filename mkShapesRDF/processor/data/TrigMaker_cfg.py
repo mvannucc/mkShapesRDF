@@ -1064,18 +1064,18 @@ Trigger = {
                           } ,
                 'EMTFBug':  False ,
                 'DATA'   :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'], #'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                 'MC'     :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'], #'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                },
     },
@@ -1131,18 +1131,18 @@ Trigger = {
                           } ,
                 'EMTFBug':  False ,
                 'DATA'   :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'], #'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                 'MC'     :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'], #'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                },
         # Run2022FG
@@ -1198,18 +1198,18 @@ Trigger = {
                 'EMTFBug':  False ,
                 #'trkSFMu':  [ 1.00 , 1.00 , 1.00 ] , # tracker SF_muons [ cent , up , down ] --> Moved to ID/Iso code
                 'DATA'   :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'], # 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                 'MC'     :  {
-                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] ,
+                    'EleMu'     : [ 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'] , # HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
                     'DoubleMu'  : [ 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'] ,
                     'SingleMu'  : [ 'HLT_IsoMu24'] ,
                     'DoubleEle' : [ 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'] ,
-                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] ,
+                    'SingleEle' : [ 'HLT_Ele35_WPTight_Gsf'] , # HLT_Ele30_WPTight_Gsf
                 } ,
                },
     },

@@ -129,44 +129,6 @@ Samples['ggWW_TL'] = {
     'nanoAOD' :'/ggWWto2L2Nu_OS_PolarizationTL_TuneCP5_13p6TeV_madgraph-pythia8/Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2/NANOAODSIM'
 }
 
-'''
-Samples['GluGluToWWToENEN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToENMN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToENTN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToMNEN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToMNMN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToMNTN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToTNEN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToTNMN'] = {
-    'nanoAOD' :''
-}
-
-Samples['GluGluToWWToTNTN'] = {
-    'nanoAOD' :''
-}
-'''
-
 ##### ZGamma !!!!!
 
 Samples['ZG2JtoG2L2J'] = {  
@@ -328,9 +290,9 @@ Samples['ZZZ'] = {
 
 #### ZG !!!
 
-#Samples['ZGToLLG'] = {
-#    'nanoAOD' :''
-#}
+Samples['ZGToLLG'] = {
+    'nanoAOD' :'/ZGto2LG-1Jets_ntgc_5f_TuneCP5_13p6TeV_madgraphMLM-pythia8/Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2/NANOAODSIM'
+}
 
 ##### Top !!!!
 
@@ -397,78 +359,10 @@ Samples['ST_tW_antitop'] = {
     'nanoAOD' :'/TbarWplustoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8/Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2/NANOAODSIM'
 }
 
-#Samples['ST_s-channel'] = {
-#    'nanoAOD' :''
-#}
-
-#### QCD !!!!
-'''
-Samples['QCD_HT70to100'] = {
-    'nanoAOD' :'/QCD-4Jets_HT-70to100_TuneCP5_13p6TeV_madgraphMLM-pythia8/Run3Summer22EENanoAODv11-126X_mcRun3_2022_realistic_postEE_v1-v2/NANOAODSIM'
+Samples['ST_s-channel_plus'] = {
+    'nanoAOD' :'/TBbartoLplusNuBbar-s-channel-4FS_TuneCP5_13p6TeV_amcatnlo-pythia8/Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2/NANOAODSIM'
 }
 
-Samples['QCD_HT1200to1500'] = {
-    'nanoAOD' :'/QCD-4Jets_HT-1200to1500_TuneCP5_13p6TeV_madgraphMLM-pythia8/Run3Summer22EENanoAODv11-126X_mcRun3_2022_realistic_postEE_v1-v2/NANOAODSIM'
+Samples['ST_s-channel_minus'] = {
+    'nanoAOD' :'/TbarBtoLminusNuB-s-channel-4FS_TuneCP5_13p6TeV_amcatnlo-pythia8/Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2/NANOAODSIM'
 }
-
-Samples['QCD_HTto2000'] = {
-    'nanoAOD' :'/QCDB-4Jets_HT-2000_TuneCP5_13p6TeV_madgraphMLM-pythia8/Run3Summer22EENanoAODv11-126X_mcRun3_2022_realistic_postEE_v1-v2/NANOAODSIM'
-}
-
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-
-Samples[''] = {
-    'nanoAOD' :''
-}
-'''
