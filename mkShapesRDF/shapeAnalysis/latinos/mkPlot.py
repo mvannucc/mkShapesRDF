@@ -378,7 +378,7 @@ def main():
 
     if opt.onlyVariable is not None:
         list_to_remove = []
-        for variableName, variable in variables.iteritems():
+        for variableName, variable in variables.items():
             if variableName != opt.onlyVariable:
                 list_to_remove.append(variableName)
         for toRemove in list_to_remove:
@@ -388,7 +388,7 @@ def main():
 
     if opt.onlyCut is not None:
         list_to_remove = []
-        for cutName, cutExtended in cuts.iteritems():
+        for cutName, cutExtended in cuts.items():
             if cutName not in opt.onlyCut:
                 list_to_remove.append(cutName)
         for toRemove in list_to_remove:
