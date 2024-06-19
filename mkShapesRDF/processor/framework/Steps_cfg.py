@@ -538,8 +538,9 @@ Steps = {
         "do4MC": False,
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LumiMask",
-        "declare": "lumiMask = lambda : LumiMask('/afs/cern.ch/work/s/sblancof/private/Run3Analysis/mkShapesRDF/mkShapesRDF/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
-        "module": "lumiMask()",
+        # "declare": "lumiMask = lambda : LumiMask('/afs/cern.ch/work/s/sblancof/private/Run3Analysis/mkShapesRDF/mkShapesRDF/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
+        "declare": "lumiMask = lambda : LumiMask('../data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
+	"module": "lumiMask()",
     },
     "PromptParticlesGenVars": {
         "isChain": False,
