@@ -233,13 +233,13 @@ class Processor:
         self.fPy += dedent(
             """
         files = []
-        eosTmpPath = '"""+eosTmpPath+"""'        
+        eosTmpPath = '"""+eosTmpPath+"""'
         for f in _files:
-            if eosTmpPath=="USEDAS":
-                files.append(f)
-                continue
             filename = f.split('/')[-1]
-            filename = eosTmpPath + 'input__' + filename
+            if eosTmpPath=="USEDAS":
+                filename = os.environ['TMPDIR'] + '/input__' + filename
+            else:
+                filename = eosTmpPath + 'input__' + filename
             files.append(filename)
             proc = 0
             if "root://" in f:
