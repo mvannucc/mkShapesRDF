@@ -92,7 +92,7 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
-    "DATAl1loose2022EFGv12__fakeW": {
+    "DATAl1loose2022EEv12__fakeW": {
         "isChain": True,
         "do4MC": False,
         "do4Data": True,
