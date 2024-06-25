@@ -27,8 +27,8 @@ Steps = {
         "subTargets": [
             "lumiMask22",
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel2022",
             "jetSel2022",
             "l2Kin",
@@ -62,8 +62,8 @@ Steps = {
         "subTargets": [
             "lumiMask22",
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22",
             "jetSelMask2022EE",
             "l2Kin",
@@ -81,8 +81,8 @@ Steps = {
         "subTargets": [
             "lumiMask22",
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22BCD",
             "jetSelMask_2022BCD",
             "l2Kin",
@@ -92,6 +92,7 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
+
     "DATAl1loose2022EEv12__fakeW": {
         "isChain": True,
         "do4MC": False,
@@ -100,8 +101,8 @@ Steps = {
         "subTargets": [
             "lumiMask22",
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22",
             "jetSelMask2022EE",
             "l2Kin",
@@ -112,6 +113,29 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
+
+    "DATAl2loose2022EEv12__l2tight": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((nElectron+nMuon)>1)"',
+        "subTargets": [
+            "lumiMask22",
+            "leptonMaker",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
+            "lepSel_Summer22",
+            "jetSelMask2022EE",
+            "l2Kin",
+            "trigData2022EE",
+            "formulasDATA_2022EE",
+            # "fakeW_2022EE",
+            # "formulasFAKE_2022EE",
+            "l2tight",
+            "finalSnapshot_DATA",
+        ],
+    },
+    
     "DATAl1loose2022v12__fakeW": {
         "isChain": True,
         "do4MC": False,
@@ -120,8 +144,8 @@ Steps = {
         "subTargets": [
             "lumiMask22",
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22BCD",
             "jetSelMask_2022BCD",
             "l2Kin",
@@ -132,6 +156,29 @@ Steps = {
             "finalSnapshot_DATA",
         ],
     },
+
+    "DATAl2loose2022v12__l2tight": {
+        "isChain": True,
+        "do4MC": False,
+        "do4Data": True,
+        "selection": '"((nElectron+nMuon)>1)"',
+        "subTargets": [
+            "lumiMask22",
+            "leptonMaker",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
+            "lepSel_Summer22BCD",
+            "jetSelMask_2022BCD",
+            "l2Kin",
+            "trigData2022",
+            "formulasDATA_2022",
+            # "fakeW_2022",
+            # "formulasFAKE_2022",
+            "l2tight",
+            "finalSnapshot_DATA",
+        ],
+    },
+    
     "fakeSel": {
         "isChain": True,
         "do4MC": False,
@@ -214,8 +261,8 @@ Steps = {
         "selection": '"((nElectron+nMuon)>0)"',
         "subTargets": [
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22BCD",
             "jetSelMask_2022BCD",
             "PromptParticlesGenVars",
@@ -239,6 +286,7 @@ Steps = {
             "finalSnapshot_JES",
         ]
     },
+
     ###
     ### Full set of corrections for Run2022E+FG Prompt : Summer22EE MC campaign
     ###
@@ -249,8 +297,8 @@ Steps = {
         "selection": '"((nElectron+nMuon)>0)"',
         "subTargets": [
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
             "lepSel_Summer22",
             "jetSelMask2022EE",
             "PromptParticlesGenVars",
@@ -274,6 +322,40 @@ Steps = {
             "finalSnapshot_JES",
         ]
     },
+
+    "MCl2loose2022EEv12__MCCorr2022EEv12__l2tight": {
+        "isChain": True,
+        "do4MC": True,
+        "do4Data": False,
+        "selection": '"((nElectron+nMuon)>1)"',
+        "subTargets": [
+            "leptonMaker",
+            # "lepFiller_hwwMVA",
+            # "lepFiller_tthMVA",
+            "lepSel_Summer22",
+            "jetSelMask2022EE",
+            "PromptParticlesGenVars",
+            "GenVar",
+            "GenLeptonMatch",
+            "HiggsGenVars",
+            "TopGenVars",
+            "WGammaStar",
+            "DressedLeptons",
+            "baseW",
+            "btagPerJet_Summer22EE_DeepJet_shape",
+            "btagPerJet_Summer22EE_PNet_shape",
+            "btagPerJet_Summer22EE_PTransformer_shape",
+            "trigMC_2022EE",
+            "leptonSF_Summer22",
+            "puW_Summer22",
+            "JES_modules_Summer22EE",
+            "l2Kin",
+            "formulasMC",
+            "l2tight",
+            "finalSnapshot_JES",
+        ]
+    },
+
     "MCl1loose2022v12__fakeSelKinMC": {
         "isChain": True,
         "do4MC": True,
@@ -281,8 +363,8 @@ Steps = {
         "selection": '"((nElectron+nMuon)>0)"',
         "subTargets": [
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            #"lepFiller_hwwMVA",
+            #"lepFiller_tthMVA",
             "lepSel_Summer22BCD",
             "jetSelMask_2022BCD",
             "PromptParticlesGenVars",
@@ -308,8 +390,8 @@ Steps = {
         "selection": '"((nElectron+nMuon)>0)"',
         "subTargets": [
             "leptonMaker",
-            "lepFiller_hwwMVA",
-            "lepFiller_tthMVA",
+            #"lepFiller_hwwMVA",
+            #"lepFiller_tthMVA",
             "lepSel_Summer22",
             "jetSelMask2022EE",
             "PromptParticlesGenVars",
@@ -539,9 +621,8 @@ Steps = {
         "do4Data": True,
         "import": "mkShapesRDF.processor.modules.LumiMask",
         # "declare": "lumiMask = lambda : LumiMask('/afs/cern.ch/work/s/sblancof/private/Run3Analysis/mkShapesRDF/mkShapesRDF/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
-        # "declare": "lumiMask = lambda : LumiMask('../data/certification/Cert_Collisions2022_355100_362760_Golden.json')",
-	"declare": 'lumiMask = lambda : LumiMask("RPLME_FW/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json")',
-	"module": "lumiMask()",
+        "declare": 'lumiMask = lambda : LumiMask("RPLME_FW/processor/data/certification/Cert_Collisions2022_355100_362760_Golden.json")',
+        "module": "lumiMask()",
     },
     "PromptParticlesGenVars": {
         "isChain": False,
