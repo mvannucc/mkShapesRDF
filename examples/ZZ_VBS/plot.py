@@ -3,25 +3,31 @@
 groupPlot = {}
 
 
-groupPlot['DY']  = {  
-    'nameHR' : "DY",
-    'isSignal' : 0,
-    'color'    : 418,    # kGreen+2
-    'samples'  : ['dyll']
-}
-
+#groupPlot['DY']  = {  
+#    'nameHR' : "DY",
+#    'isSignal' : 0,
+#    'color'    : 418,    # kGreen+2
+#    'samples'  : ['dyll']
+#}
 
 plot = {}
 # keys here must match keys in samples.py    
                     
-plot['dyll']  = {  
-    'nameHR'   : 'DY',
+#plot['dyll']  = {  
+#    'nameHR'   : 'DY',
+#    'color'    : 418,    # kGreen+2
+#    'isSignal' : 0,
+#    'isData'   : 0, 
+#    'scale'    : 1.0,
+#}
+
+plot['ZZjj4l']  = {
+    'nameHR'   : 'ZZjj4l',
     'color'    : 418,    # kGreen+2
     'isSignal' : 0,
-    'isData'   : 0, 
+    'isData'   : 0,
     'scale'    : 1.0,
 }
-
 
 # data
 

@@ -4,7 +4,7 @@ from mkShapesRDF.lib.search_files import SearchFiles
 mcProduction = "Summer20UL18_106x_nAODv9_Full2018v9"
 dataReco = "Run2018_UL2018_nAODv9_Full2018v9"
 mcSteps = "MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-fakeSteps = "DATAl1loose2018v9__l2loose__fakeW"
+#fakeSteps = "DATAl1loose2018v9__l2loose__fakeW"
 dataSteps = "DATAl1loose2018v9__l2loose__l2tightOR2018v9"
 
 ##############################################
@@ -33,8 +33,9 @@ def makeMCDirectory(var=""):
         return "/".join([_treeBaseDir, mcProduction, mcSteps + "__" + var])
 
 
-mcDirectory = makeMCDirectory()
-fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/private_sample//Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+#mcDirectory = makeMCDirectory()
+#fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
 dataDirectory = os.path.join(treeBaseDir, dataReco, dataSteps)
 
 samples = {}
@@ -122,17 +123,26 @@ mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch2l*SFweight"
 
 ###### DY #######
 
-files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
-    mcDirectory, "DYJetsToLL_M-10to50-LO"
-)
+#files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
+#    mcDirectory, "DYJetsToLL_M-10to50-LO"
+#)
 
-samples["dyll"] = {
+#samples["dyll"] = {
+#    "name": files,
+#    "weight": mcCommonWeight
+#    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
+#    "FilesPerJob": 2,
+#}
+
+###########################################
+
+files = nanoGetSampleFiles(mcDirectory, "ZZjjTo4l") 
+
+samples["ZZjj4l"] = {
     "name": files,
-    "weight": mcCommonWeight
-    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
+    "weight": mcCommonWeight,
     "FilesPerJob": 2,
 }
-
 
 ###########################################
 ################## DATA ###################
