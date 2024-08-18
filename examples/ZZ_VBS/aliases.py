@@ -208,10 +208,42 @@ aliases['Rpt'] = {
     'expr': 'Lepton_pt[0]*Lepton_pt[1]/(CleanJet_pt[0]*CleanJet_pt[1])'
 }
 
-# Delta R
+# Delta R jet-lepton
 
-aliases['dR_l1l2'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-Lepton_eta[1]),2) + TMath::Power((Lepton_phi[0] - Lepton_phi[1]),2)))'
+aliases['dR_l1j1'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[0] - CleanJet_phi[0]),2)))'
+}
+
+aliases['dR_l1j2'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[0] - CleanJet_phi[1]),2)))'
+}
+
+aliases['dR_l2j1'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[1]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[1] - CleanJet_phi[0]),2)))'
+}
+
+aliases['dR_l2j2'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[1]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[1] - CleanJet_phi[1]),2)))'
+}
+
+aliases['dR_l3j1'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[2]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[2] - CleanJet_phi[0]),2)))'
+}
+
+aliases['dR_l3j2'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[2]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[2] - CleanJet_phi[1]),2)))'
+}
+
+aliases['dR_l4j1'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[3]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[3] - CleanJet_phi[0]),2)))'
+}
+
+aliases['dR_l4j2'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[3]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[3] - CleanJet_phi[1]),2)))'
+}
+
+aliases['Detajj'] = {
+        'expr': 'abs(Alt(CleanJet_eta, 0, -1000) - Alt(CleanJet_eta, 1, 1000))',
 }
 
 # data/MC scale factors
