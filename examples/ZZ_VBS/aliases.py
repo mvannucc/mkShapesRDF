@@ -207,6 +207,13 @@ aliases['Zepp_ll'] = {
 aliases['Rpt'] = {
     'expr': 'Lepton_pt[0]*Lepton_pt[1]/(CleanJet_pt[0]*CleanJet_pt[1])'
 }
+
+# Delta R
+
+aliases['dR_l1l2'] = {
+        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-Lepton_eta[1]),2) + TMath::Power((Lepton_phi[0] - Lepton_phi[1]),2)))'
+}
+
 # data/MC scale factors
 aliases['SFweight'] = {
     #'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
