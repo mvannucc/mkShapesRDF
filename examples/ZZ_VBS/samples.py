@@ -33,7 +33,7 @@ def makeMCDirectory(var=""):
         return "/".join([_treeBaseDir, mcProduction, mcSteps + "__" + var])
 
 
-mcDirectory = "/eos/user/m/mvannucc/nanoAOD/private_sample//Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
 #mcDirectory = makeMCDirectory()
 #fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
 dataDirectory = os.path.join(treeBaseDir, dataReco, dataSteps)
@@ -136,7 +136,7 @@ mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch2l*SFweight"
 
 ###########################################
 
-files = nanoGetSampleFiles(mcDirectory, "ZZjjTo4l") 
+files = nanoGetSampleFiles(mcDirectory, "ZZjj_4l") 
 
 samples["ZZjj4l"] = {
     "name": files,

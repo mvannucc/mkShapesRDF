@@ -11,7 +11,7 @@ lepton_id = '((abs(Alt(Lepton_pdgId,0,0))==11 && Alt(Electron_tightCharge,Lepton
              ((abs(Alt(Lepton_pdgId,3,0))==11 && Alt(Electron_tightCharge,Lepton_electronIdx[3],0)==2) || abs(Alt(Lepton_pdgId,3,0))==13)'
 
 Z_tag = 'mll > 60 && mll < 120'
-#ZZ_tag = 'm4l > 180'
+ZZ_tag = 'm4l > 180'
 
 deltaR = 'dR_l1j1 > 0.4 && dR_l1j2 > 0.4 && dR_l2j1 > 0.4 && dR_l2j2 > 0.4 && \
           dR_l3j1 > 0.4 && dR_l3j2 > 0.4 && dR_l4j1 > 0.4 && dR_l4j2 > 0.4'
@@ -26,31 +26,12 @@ cuts['ZZ'] = {
         'VBS_tight': VBS_tight,
     }
 }
-#cuts['Z']  = {
-#   'expr' : 'true',
-#   'categories' : {
-#      'ee_inclusive' : '(Lepton_pdgId[0] * Lepton_pdgId[1] == -11*11)',
-#      'mm_inclusive' : '(Lepton_pdgId[0] * Lepton_pdgId[1] == -13*13)',
-#   }
-#}
 
-#cuts['Zee']  = {
-#   'expr' : '(Lepton_pdgId[0] * Lepton_pdgId[1] == -11*11)',
-#   'categories' : {
-#      '0j' : 'zeroJet',
-#      '1j' : 'oneJet && Alt(CleanJet_pt,1,0)<30',
-#      '2j' : 'multiJet',
-#   }
-#}
 
-#cuts['Zmm']  = {
-#   'expr' : '(Lepton_pdgId[0] * Lepton_pdgId[1] == -13*13)',
-#   'categories' : {
-#      '0j' : 'zeroJet',
-#      '1j' : 'oneJet && Alt(CleanJet_pt,1,0)<30',
-#      '2j' : 'multiJet',
-#   }
-#}
+
+
+
+
 
 
 
