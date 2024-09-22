@@ -33,8 +33,7 @@ def makeMCDirectory(var=""):
         return "/".join([_treeBaseDir, mcProduction, mcSteps + "__" + var])
 
 
-mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-#mcDirectory = makeMCDirectory()
+mcDirectory = makeMCDirectory()
 #fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
 dataDirectory = os.path.join(treeBaseDir, dataReco, dataSteps)
 
@@ -123,19 +122,79 @@ mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch2l*SFweight"
 
 ###### DY #######
 
-#files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
-#    mcDirectory, "DYJetsToLL_M-10to50-LO"
-#)
+files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
+    mcDirectory, "DYJetsToLL_M-10to50-LO"
+)
 
-#samples["dyll"] = {
-#    "name": files,
-#    "weight": mcCommonWeight
-#    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
-#    "FilesPerJob": 2,
-#}
+samples["dyll"] = {
+    "name": files,
+    "weight": mcCommonWeight
+    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
+    "FilesPerJob": 2,
+}
+
+###### VVV ######
+
+files = nanoGetSampleFiles(mcDirectory, "ZZZ") 
+
+samples["ZZZ"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+files = nanoGetSampleFiles(mcDirectory, "WZZ") 
+
+samples["WZZ"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+files = nanoGetSampleFiles(mcDirectory, "WWZ") 
+
+samples["WWZ"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+files = nanoGetSampleFiles(mcDirectory, "TTZToLLNuNu_M-10") 
+
+samples["ttZ_LLNuNu"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+###### ggZZ ######
+
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+
+files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo4e")
+samples["ggZZ4e"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo4mu")
+samples["ggZZ4mu"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
+files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo2e2mu")
+samples["ggZZ2e2mu"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
 
 ###########################################
 
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
 files = nanoGetSampleFiles(mcDirectory, "ZZjj_4l") 
 
 samples["ZZjj4l"] = {

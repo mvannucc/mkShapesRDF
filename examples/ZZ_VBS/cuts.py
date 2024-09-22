@@ -20,7 +20,7 @@ VBS_loose = 'Detajj > 2.4 && mjj > 400'
 VBS_tight = 'Detajj > 2.4 && mjj > 1000'
 
 cuts['ZZ'] = {
-    'expr': lepton_id+'&&'+Z_tag+'&&'+deltaR,
+    'expr': Z_tag+'&&'+ZZ_tag+'&&'+deltaR,
     'categories': {
         'VBS_loose': VBS_loose,
         'VBS_tight': VBS_tight,
