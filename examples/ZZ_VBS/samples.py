@@ -122,16 +122,16 @@ mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch2l*SFweight"
 
 ###### DY #######
 
-files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
-    mcDirectory, "DYJetsToLL_M-10to50-LO"
-)
+#files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
+#    mcDirectory, "DYJetsToLL_M-10to50-LO"
+#)
 
-samples["dyll"] = {
-    "name": files,
-    "weight": mcCommonWeight
-    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
-    "FilesPerJob": 2,
-}
+#samples["dyll"] = {
+#    "name": files,
+#    "weight": mcCommonWeight
+#    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
+#    "FilesPerJob": 2,
+#}
 
 ###### VVV ######
 
@@ -167,6 +167,16 @@ samples["ttZ_LLNuNu"] = {
     "FilesPerJob": 2,
 }
 
+###### ZZTo4l ####
+
+files = nanoGetSampleFiles(mcDirectory, "ZZTo4L")
+
+samples["ZZ4l"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
+
 ###### ggZZ ######
 
 mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
@@ -194,14 +204,14 @@ samples["ggZZ2e2mu"] = {
 
 ###########################################
 
-mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-files = nanoGetSampleFiles(mcDirectory, "ZZjj_4l") 
+#mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+#files = nanoGetSampleFiles(mcDirectory, "ZZjj_4l") 
 
-samples["ZZjj4l"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
+#samples["ZZjj4l"] = {
+#    "name": files,
+#    "weight": mcCommonWeight,
+#    "FilesPerJob": 2,
+#}
 
 ###########################################
 ################## DATA ###################

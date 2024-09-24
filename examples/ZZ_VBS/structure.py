@@ -3,9 +3,29 @@
 structure = {}
 
 # keys here must match keys in samples.py    
-#                    
+#                   
+
+structure['ZZjj_4l']  = {
+                  'isSignal' : 1,
+                  'isData'   : 0
+              }
 
 structure['dyll']  = {  
+                  'isSignal' : 0,
+                  'isData'   : 0
+              }
+
+structure['ggZZ4e']  = {
+                  'isSignal' : 0,
+                  'isData'   : 0
+              }
+
+structure['ggZZ4mu']  = {
+                  'isSignal' : 0,
+                  'isData'   : 0
+              }
+
+structure['ggZZ2e2mu']  = {
                   'isSignal' : 0,
                   'isData'   : 0
               }

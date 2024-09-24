@@ -13,17 +13,17 @@ groupPlot = {}
 plot = {}
 # keys here must match keys in samples.py    
                     
-plot['dyll']  = {  
-    'nameHR'   : 'DY',
-    'color'    : 418,    # kGreen+2
-    'isSignal' : 0,
-    'isData'   : 0, 
-    'scale'    : 1.0,
-}
+#plot['dyll']  = {  
+#    'nameHR'   : 'DY',
+#    'color'    : 418,    # kGreen+2
+#    'isSignal' : 0,
+#    'isData'   : 0, 
+#    'scale'    : 1.0,
+#}
 
 plot['ZZZ']  = {
     'nameHR'   : 'ZZZ',
-    'color'    : 218,    
+    'color'    : 416,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -31,7 +31,7 @@ plot['ZZZ']  = {
 
 plot['WZZ']  = {
     'nameHR'   : 'WZZ',
-    'color'    : 218,  
+    'color'    : 416,  
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -39,7 +39,7 @@ plot['WZZ']  = {
 
 plot['WWZ']  = {
     'nameHR'   : 'WWZ',
-    'color'    : 218,  
+    'color'    : 416,  
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -47,7 +47,7 @@ plot['WWZ']  = {
 
 plot['TTZToLLNuNu_M-10']  = {
     'nameHR'   : 'ttZ',
-    'color'    : 118,   
+    'color'    : 400,   
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -55,7 +55,7 @@ plot['TTZToLLNuNu_M-10']  = {
 
 plot['ggZZ4e']  = {
     'nameHR'   : 'ggZZ4e',
-    'color'    : 518,    
+    'color'    : 600,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -63,7 +63,7 @@ plot['ggZZ4e']  = {
 
 plot['ggZZ4mu']  = {
     'nameHR'   : 'ggZZ4mu',
-    'color'    : 518,    
+    'color'    : 600,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -71,15 +71,15 @@ plot['ggZZ4mu']  = {
 
 plot['ggZZ2e2mu']  = {
     'nameHR'   : 'ggZZ2e2mu',
-    'color'    : 518,    
+    'color'    : 600,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['ZZjj4l']  = {
-    'nameHR'   : 'ZZjj4l',
-    'color'    : 318,    # kGreen+2
+plot['ZZ4l']  = {
+    'nameHR'   : 'ZZ4l',
+    'color'    : 880,    
     'isSignal' : 1,
     'isData'   : 0,
     'scale'    : 1.0,
