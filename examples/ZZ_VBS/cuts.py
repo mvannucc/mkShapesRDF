@@ -13,6 +13,8 @@ preselections = 'multiJet && abs(Alt(CleanJet_eta,0,-9999))<4.7 && abs(Alt(Clean
 Z_tag = 'mll > 60 && mll < 120'
 ZZ_tag = 'm4l > 180'
 
+new_mll = 'mll1 > 0 && mll2 > 0'
+
 #deltaR = 'dR_l1j1 > 0.4 && dR_l1j2 > 0.4 && dR_l2j1 > 0.4 && dR_l2j2 > 0.4 && \
 #          dR_l3j1 > 0.4 && dR_l3j2 > 0.4 && dR_l4j1 > 0.4 && dR_l4j2 > 0.4'
 
@@ -21,7 +23,7 @@ VBS_loose = 'Detajj > 2.4 && mjj > 400'
 #VBS_tight = 'Detajj > 2.4 && mjj > 1000'
 
 cuts['ZZ'] = {
-    'expr': Z_tag,#+'&&'+ZZ_tag,#+'&&'+deltaR,
+    'expr': new_mll,#Z_tag,#+'&&'+ZZ_tag,#+'&&'+deltaR,
     'categories': {
         'Baseline': baseline,
         'VBS_loose': VBS_loose,

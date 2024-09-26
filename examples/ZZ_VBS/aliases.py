@@ -3,7 +3,8 @@ import copy
 import inspect
 
 
-configurations = os.path.realpath(inspect.getfile(inspect.currentframe())) # this file
+#configurations = os.path.realpath(inspect.getfile(inspect.currentframe())) # this file
+configurations = '/afs/cern.ch/user/m/mvannucc/workspace/mkShapesRDF/examples/ZZ_VBS'
 
 aliases = {}
 aliases = OrderedDict()
@@ -258,6 +259,18 @@ aliases['lhe_mjj'] = {
 ##################
 # custom aliases #
 ##################
+
+aliases['mll1'] = {
+  'linesToAdd': ['#include "%s/mll1.cc"' % configurations],  
+  'class': 'mll1',
+  'args': 'Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
+}
+
+aliases['mll2'] = {
+  'linesToAdd': ['#include "%s/mll2.cc"' % configurations],
+  'class': 'mll2',
+  'args': 'Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
+}
 
 aliases['m4l'] = {
     'expr': '\

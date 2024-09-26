@@ -9,6 +9,20 @@ variables["mll"] = {
     "fold": 0,
 }
 
+variables["mll1"] = {
+    "name": "mll1",
+    "range": (25, 0, 200),
+    "xaxis": "m_{ll1} [GeV]",
+    "fold": 0,
+}
+
+variables["mll2"] = {
+    "name": "mll2",
+    "range": (25, 0, 200),
+    "xaxis": "m_{ll2} [GeV]",
+    "fold": 0,
+}
+
 variables["m4l"] = {
     "name": "m4l",  
     "range": (25, 180, 1400), 
