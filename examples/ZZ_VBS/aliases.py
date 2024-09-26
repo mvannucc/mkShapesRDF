@@ -263,13 +263,13 @@ aliases['lhe_mjj'] = {
 aliases['mll1'] = {
   'linesToAdd': ['#include "%s/mll1.cc"' % configurations],  
   'class': 'mll1',
-  'args': 'Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
+  'args': 'nLepton, Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
 }
 
 aliases['mll2'] = {
   'linesToAdd': ['#include "%s/mll2.cc"' % configurations],
   'class': 'mll2',
-  'args': 'Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
+  'args': 'nLepton, Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
 }
 
 aliases['m4l'] = {
