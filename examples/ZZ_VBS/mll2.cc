@@ -17,7 +17,7 @@ double mll2(
     double result_mll2 = -1.0;
     int foundPairs = 0;
     
-    if (nLepton >= 4){
+    if (nLepton == 4){
         for (unsigned int i = 0; i < nLepton; ++i) {
             int charge1 = (Lepton_pdgId[i] > 0) ? -1 : 1;
             double mass1 = (abs(Lepton_pdgId[i]) == 13) ? muon_mass : electron_mass;

@@ -4,21 +4,21 @@ variables = {}
 
 variables["mll"] = {
     "name": "mll",  #   variable name
-    "range": (20, 0, 200),  #   variable range
+    "range": (20, 50, 130),  #   variable range
     "xaxis": "m_{ll} [GeV]",  #   x axis name
     "fold": 0,
 }
 
 variables["mll1"] = {
     "name": "mll1",
-    "range": (25, 0, 200),
+    "range": (25, 50, 130),
     "xaxis": "m_{ll1} [GeV]",
     "fold": 0,
 }
 
 variables["mll2"] = {
     "name": "mll2",
-    "range": (25, 0, 200),
+    "range": (25, 50, 130),
     "xaxis": "m_{ll2} [GeV]",
     "fold": 0,
 }

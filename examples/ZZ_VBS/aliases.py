@@ -273,11 +273,9 @@ aliases['mll2'] = {
 }
 
 aliases['m4l'] = {
-    'expr': '\
-    (ROOT::Math::PtEtaPhiMVector(Lepton_pt[0], Lepton_eta[0], Lepton_phi[0], 0) \
-    + ROOT::Math::PtEtaPhiMVector(Lepton_pt[1], Lepton_eta[1], Lepton_phi[1], 0) \
-    + ROOT::Math::PtEtaPhiMVector(Lepton_pt[2], Lepton_eta[2], Lepton_phi[2], 0) \
-    + ROOT::Math::PtEtaPhiMVector(Lepton_pt[3], Lepton_eta[3], Lepton_phi[3], 0)).M()'
+  'linesToAdd': ['#include "%s/m4l.cc"' % configurations],
+  'class': 'm4l',
+  'args': 'nLepton, Lepton_pt, Lepton_eta, Lepton_phi, Lepton_pdgId',
 }
 
 aliases['Detajj'] = {

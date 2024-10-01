@@ -161,7 +161,7 @@ samples["WWZ"] = {
 
 files = nanoGetSampleFiles(mcDirectory, "TTZToLLNuNu_M-10") 
 
-samples["ttZ_LLNuNu"] = {
+samples["ttbarZ"] = {
     "name": files,
     "weight": mcCommonWeight,
     "FilesPerJob": 2,
@@ -179,23 +179,21 @@ samples["ZZ4l"] = {
 
 ###### ggZZ ######
 
-mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-
-files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo4e")
+files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo4e")
 samples["ggZZ4e"] = {
     "name": files,
     "weight": mcCommonWeight,
     "FilesPerJob": 2,
 }
 
-files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo4mu")
+files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo4mu")
 samples["ggZZ4mu"] = {
     "name": files,
     "weight": mcCommonWeight,
     "FilesPerJob": 2,
 }
 
-files = nanoGetSampleFiles(mcDirectory, "GluGluToZZTo2e2mu")
+files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo2e2mu")
 samples["ggZZ2e2mu"] = {
     "name": files,
     "weight": mcCommonWeight,
@@ -204,14 +202,15 @@ samples["ggZZ2e2mu"] = {
 
 ###########################################
 
-#mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-#files = nanoGetSampleFiles(mcDirectory, "ZZjj_4l") 
+##### Signal #####
 
-#samples["ZZjj4l"] = {
-#    "name": files,
-#    "weight": mcCommonWeight,
-#    "FilesPerJob": 2,
-#}
+files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZjj_4l") 
+
+samples["ZZjj4l"] = {
+    "name": files,
+    "weight": mcCommonWeight,
+    "FilesPerJob": 2,
+}
 
 ###########################################
 ################## DATA ###################

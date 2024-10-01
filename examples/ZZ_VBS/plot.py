@@ -2,6 +2,19 @@
 
 groupPlot = {}
 
+#groupPlot['Multiboson']  = {
+#                  'nameHR' : 'Z+X',
+#                  'isSignal' : 0,
+#                  'color': 416, 
+#                  'samples'  : ['WWZ','WZZ','ZZZ']
+#}
+
+#groupPlot['ZZ_QCD']  = {
+#                  'nameHR' : 'gg->ZZ',
+#                  'isSignal' : 0,
+#                  'color': 600,
+#                  'samples'  : ['ggZZ4e','ggZZ4mu','ggZZ2e2mu']
+#}
 
 #groupPlot['DY']  = {  
 #    'nameHR' : "DY",
@@ -80,6 +93,14 @@ plot['ggZZ2e2mu']  = {
 plot['ZZ4l']  = {
     'nameHR'   : 'ZZ4l',
     'color'    : 880,    
+    'isSignal' : 0,
+    'isData'   : 0,
+    'scale'    : 1.0,
+}
+
+plot['ZZjj4l']  = {
+    'nameHR'   : 'ZZjj4l',
+    'color'    : 800,
     'isSignal' : 1,
     'isData'   : 0,
     'scale'    : 1.0,
