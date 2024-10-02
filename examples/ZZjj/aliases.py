@@ -17,7 +17,7 @@ eleWP = 'mvaFall17V2Iso_WP90'
 muWP  = 'cut_Tight_HWWW_tthmva_80'
 
 aliases['LepWPCut'] = {
-    'expr': 'LepCut2l__ele_'+eleWP+'__mu_'+muWP,
+    'expr': 'LepCut4l__ele_'+eleWP+'__mu_'+muWP,
     'samples': mc_emb + ['DATA']
 }
 
@@ -84,6 +84,11 @@ aliases['PromptGenLepMatch2l'] = {
             'expr': 'Alt(Lepton_promptgenmatched, 0, 0) * Alt(Lepton_promptgenmatched, 1, 0)',
             'samples': mc
             }
+
+aliases['PromptGenLepMatch4l'] = {
+    'expr': 'Alt(Lepton_promptgenmatched,0,0)*Alt(Lepton_promptgenmatched,1,0)*Alt(Lepton_promptgenmatched,2,0)*Alt(Lepton_promptgenmatched,3,0)',
+    'samples': mc
+}
 
 aliases['Top_pTrw'] = {
     'expr': '(topGenPt * antitopGenPt > 0.) * (TMath::Sqrt(TMath::Exp(0.0615 - 0.0005 * topGenPt) * TMath::Exp(0.0615 - 0.0005 * antitopGenPt))) + (topGenPt * antitopGenPt <= 0.)',
@@ -212,7 +217,7 @@ aliases['Rpt'] = {
 # data/MC scale factors
 aliases['SFweight'] = {
     #'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
-    'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF', 'btagSF']),
+    'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF', 'btagSF']),
     'samples': mc
 }
 
