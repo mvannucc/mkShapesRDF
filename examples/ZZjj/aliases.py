@@ -22,7 +22,7 @@ aliases['LepWPCut'] = {
 }
 
 aliases['LepWPSF'] = {
-    'expr': 'LepSF2l__ele_'+eleWP+'__mu_'+muWP,
+    'expr': 'LepSF4l__ele_'+eleWP+'__mu_'+muWP,
     'samples': mc_emb
 }
 
