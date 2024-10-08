@@ -1,69 +1,35 @@
-
-
 groupPlot = {}
 
 plot = {}
 
 # keys here must match keys in samples.py                        
 
-plot['ZZZ']  = {
-    'nameHR'   : 'ZZZ',
+plot['VVZ']  = {
+    'nameHR'   : 'VVZ',
     'color'    : 416,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['WZZ']  = {
-    'nameHR'   : 'WZZ',
-    'color'    : 416,  
-    'isSignal' : 0,
-    'isData'   : 0,
-    'scale'    : 1.0,
-}
-
-plot['WWZ']  = {
-    'nameHR'   : 'WWZ',
-    'color'    : 416,  
-    'isSignal' : 0,
-    'isData'   : 0,
-    'scale'    : 1.0,
-}
-
-plot['TTZToLLNuNu_M-10']  = {
-    'nameHR'   : 'ttZ',
+plot['ttZ']  = {
+    'nameHR'   : 't#bar{t}Z',
     'color'    : 400,   
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['ggZZ4e']  = {
-    'nameHR'   : 'ggZZ4e',
+plot['ggZZ']  = {
+    'nameHR'   : 'gg #rightarrow ZZ',
     'color'    : 600,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['ggZZ4mu']  = {
-    'nameHR'   : 'ggZZ4mu',
-    'color'    : 600,    
-    'isSignal' : 0,
-    'isData'   : 0,
-    'scale'    : 1.0,
-}
-
-plot['ggZZ2e2mu']  = {
-    'nameHR'   : 'ggZZ2e2mu',
-    'color'    : 600,    
-    'isSignal' : 0,
-    'isData'   : 0,
-    'scale'    : 1.0,
-}
-
-plot['ZZ4l']  = {
-    'nameHR'   : 'ZZ4l',
+plot['ZZ4L']  = {
+    'nameHR'   : 'q#bar{q} #rightarrow ZZ',
     'color'    : 880,    
     'isSignal' : 0,
     'isData'   : 0,

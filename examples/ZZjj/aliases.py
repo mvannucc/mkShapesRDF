@@ -10,22 +10,23 @@ aliases = {}
 aliases = OrderedDict()
 
 mc     = [skey for skey in samples if skey not in ('Fake', 'DATA', 'Dyemb')]
-mc_emb = [skey for skey in samples if skey not in ('Fake', 'DATA')]
+#mc_emb = [skey for skey in samples if skey not in ('Fake', 'DATA')]
 
-# LepCut2l__ele_mvaFall17V2Iso_WP90__mu_cut_Tight_HWWW_tthmva_80
+#mc        = [skey for skey in samples if skey not in ('DATA', 'Fake_lep') and skey not in mcEFT]
+mcALL     = [skey for skey in samples if skey not in ('DATA', 'Fake_lep')]
+
 eleWP = 'mvaFall17V2Iso_WP90'
 muWP  = 'cut_Tight_HWWW_tthmva_80'
 
 aliases['LepWPCut'] = {
     'expr': 'LepCut4l__ele_'+eleWP+'__mu_'+muWP,
-    'samples': mc_emb + ['DATA']
+    'samples': mcALL + ['DATA']
 }
 
 aliases['LepWPSF'] = {
     'expr': 'LepSF4l__ele_'+eleWP+'__mu_'+muWP,
-    'samples': mc_emb
+    'samples': mcALL
 }
-
 
 aliases['gstarLow'] = {
     'expr': 'Gen_ZGstar_mass > 0 && Gen_ZGstar_mass < 4',
@@ -37,9 +38,7 @@ aliases['gstarHigh'] = {
     'samples': 'VgS'
 }
 
-
-
-# # Fake leptons transfer factor
+# Fake leptons transfer factor
 aliases['fakeW'] = {
     'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP,
     'samples': ['Fake']
@@ -82,18 +81,19 @@ aliases['fakeWStatMuDown'] = {
 # gen-matching to prompt only (GenLepMatch2l matches to *any* gen lepton)
 aliases['PromptGenLepMatch2l'] = {
             'expr': 'Alt(Lepton_promptgenmatched, 0, 0) * Alt(Lepton_promptgenmatched, 1, 0)',
-            'samples': mc
-            }
+            'samples': mcALL
+}
 
 aliases['PromptGenLepMatch4l'] = {
     'expr': 'Alt(Lepton_promptgenmatched,0,0)*Alt(Lepton_promptgenmatched,1,0)*Alt(Lepton_promptgenmatched,2,0)*Alt(Lepton_promptgenmatched,3,0)',
-    'samples': mc
+    'samples': mcALL
 }
 
 aliases['Top_pTrw'] = {
     'expr': '(topGenPt * antitopGenPt > 0.) * (TMath::Sqrt(TMath::Exp(0.0615 - 0.0005 * topGenPt) * TMath::Exp(0.0615 - 0.0005 * antitopGenPt))) + (topGenPt * antitopGenPt <= 0.)',
     'samples': ['top']
 }
+
 
 # # my macro
 # print('\n\n\n')
@@ -182,11 +182,10 @@ for shift in ['jes','lf','hf','lfstats1','lfstats2','hfstats1','hfstats2','cferr
         'samples': mc
     }
 
-
-# aliases['Jet_PUIDSF'] = { 
-#          'expr' : 'TMath::Exp(Sum(LogVec(Jet_PUIDSF_loose)))',
-#          'samples': mc
-#          }
+aliases['Jet_PUIDSF'] = { 
+          'expr' : 'TMath::Exp(Sum(LogVec(Jet_PUIDSF_loose)))',
+          'samples': mc
+}
 # aliases['Jet_PUIDSF_up'] = {
 #  'expr' : 'TMath::Exp(Sum(LogVec(Jet_PUIDSF_loose_up)))',
 #  'samples': mc
@@ -215,28 +214,42 @@ aliases['Rpt'] = {
 }
 
 # data/MC scale factors
-aliases['SFweight'] = {
-    #'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
-    'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF', 'btagSF']),
-    'samples': mc
+#aliases['SFweight'] = {
+#    #'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
+#    'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF', 'btagSF']),
+#    'samples': mc
+#}
+
+aliases['SFweight_mod'] = {
+    'expr': ' * '.join(['XSWeight',
+                        'SFweight4l',
+                        'LepSF4l__ele_' + eleWP + '__mu_' + muWP,
+                        'LepWPCut',
+                        'METFilter_MC']),
+    'samples': mcALL
 }
 
 # variations
+
+aliases['SFweight'] = {
+    'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
+    'samples': mc
+}
 aliases['SFweightEleUp'] = {
     'expr': 'LepSF2l__ele_'+eleWP+'__Up',
-    'samples': mc_emb
+    'samples': mcALL
 }
 aliases['SFweightEleDown'] = {
     'expr': 'LepSF2l__ele_'+eleWP+'__Do',
-    'samples': mc_emb
+    'samples': mcALL
 }
 aliases['SFweightMuUp'] = {
     'expr': 'LepSF2l__mu_'+muWP+'__Up',
-    'samples': mc_emb
+    'samples': mcALL
 }
 aliases['SFweightMuDown'] = {
     'expr': 'LepSF2l__mu_'+muWP+'__Do',
-    'samples': mc_emb
+    'samples': mcALL
 }
 
 # Two leading jets matched to gen-level jets with pT > 25 GeV 
@@ -287,37 +300,25 @@ aliases['Detajj'] = {
         'expr': 'abs(Alt(CleanJet_eta, 0, -1000) - Alt(CleanJet_eta, 1, 1000))',
 }
 
-# Delta R jet-lepton
 
-aliases['dR_l1j1'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[0] - CleanJet_phi[0]),2)))'
-}
+# Define the alias using the l4kin_patch function
+#aliases['mllll_ZZ'] = {
+#    'class': 'l4kin_patch',
+#    'args': "mllll_zh4l",  # The variable you want to calculate
+#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],  
+#}
 
-aliases['dR_l1j2'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[0]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[0] - CleanJet_phi[1]),2)))'
-}
+#aliases['Z0Mass'] = {
+#    'class': 'l4kin_patch',
+#    'args': "z0Mass_zh4l",
+#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],
+#}
 
-aliases['dR_l2j1'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[1]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[1] - CleanJet_phi[0]),2)))'
-}
+#aliases['Z1Mass'] = {
+#    'class': 'l4kin_patch',
+#    'args': "z1Mass_zh4l",
+#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],
+#}
 
-aliases['dR_l2j2'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[1]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[1] - CleanJet_phi[1]),2)))'
-}
-
-aliases['dR_l3j1'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[2]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[2] - CleanJet_phi[0]),2)))'
-}
-
-aliases['dR_l3j2'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[2]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[2] - CleanJet_phi[1]),2)))'
-}
-
-aliases['dR_l4j1'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[3]-CleanJet_eta[0]),2) + TMath::Power((Lepton_phi[3] - CleanJet_phi[0]),2)))'
-}
-
-aliases['dR_l4j2'] = {
-        'expr': 'TMath::Sqrt((TMath::Power((Lepton_eta[3]-CleanJet_eta[1]),2) + TMath::Power((Lepton_phi[3] - CleanJet_phi[1]),2)))'
-}
+# Add any other variables you need (e.g., lep1Mt_zh4l, z1Mt_zh4l, etc.)
 

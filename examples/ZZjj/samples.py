@@ -112,9 +112,12 @@ DataTrig = {
 ############ MC COMMON ##################
 #########################################
 
+METFilter_MC = 'METFilter_MC'
+METFilter_DATA = 'METFilter_DATA'
+
 # SFweight does not include btag weights
-mcCommonWeightNoMatch = "XSWeight*METFilter_MC*SFweight"
-mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch4l*SFweight"
+#mcCommonWeightNoMatch = "XSWeight*METFilter_MC*SFweight"
+mcCommonWeight = "XSWeight * METFilter_MC * PromptGenLepMatch4l * SFweight"
 
 ###########################################
 #############  BACKGROUNDS  ###############
@@ -135,74 +138,47 @@ mcCommonWeight = "XSWeight*METFilter_MC*PromptGenLepMatch4l*SFweight"
 
 ###### VVV ######
 
-files = nanoGetSampleFiles(mcDirectory, "ZZZ") 
-
-samples["ZZZ"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
-
-files = nanoGetSampleFiles(mcDirectory, "WZZ") 
-
-samples["WZZ"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
-
-files = nanoGetSampleFiles(mcDirectory, "WWZ") 
-
-samples["WWZ"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
+samples['VVZ'] = { 'name' : nanoGetSampleFiles(mcDirectory, "WWZ")
+                           +nanoGetSampleFiles(mcDirectory, "WZZ")
+                           +nanoGetSampleFiles(mcDirectory, "ZZZ"),
+                   'weight' : mcCommonWeight,
+                   'FilesPerJob' : 5,
 }
 
 files = nanoGetSampleFiles(mcDirectory, "TTZToLLNuNu_M-10") 
 
-samples["ttbarZ"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
+###### ttZ ######
+
+samples['ttZ'] = {
+    'name': files,
+    'weight' : mcCommonWeight,
+    'FilesPerJob': 2,
 }
 
 ###### ZZTo4l ####
 
 files = nanoGetSampleFiles(mcDirectory, "ZZTo4L")
 
-samples["ZZ4l"] = {
+samples["ZZ4L"] = {
     "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
+    'weight' : mcCommonWeight+'*1.07',  # The NNLO/NLO k-factor, cited from https://arxiv.org/abs/1405.2219v1
+    "FilesPerJob": 5,
 }
 
 ###### ggZZ ######
 
-files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo4e")
-samples["ggZZ4e"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+
+samples['ggZZ'] = { 'name' : nanoGetSampleFiles(mcDirectory, 'GluGluToZZTo4e')
+                            +nanoGetSampleFiles(mcDirectory, 'GluGluToZZTo4mu')
+                            +nanoGetSampleFiles(mcDirectory, 'GluGluToZZTo2e2mu'),
+                    'weight' : mcCommonWeight+'*1.68', # The NLO/LO k-factor, cited from https://arxiv.org/abs/1509.06734v1
+                    'FilesPerJob' : 5,
 }
 
-files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo4mu")
-samples["ggZZ4mu"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
-
-files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "GluGluToZZTo2e2mu")
-samples["ggZZ2e2mu"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
-
-###########################################
-
+##################
 ##### Signal #####
+##################
 
 files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZjj_4l") 
 
