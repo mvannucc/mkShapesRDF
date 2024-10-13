@@ -1,7 +1,7 @@
 # Configuration file to produce initial root files -- has both merged and binned ggH samples
 
 treeName = 'Events'
-tag = 'ZH4l_conf_2018_v9_RDF'
+tag = 'bkg_2018_v9_RDF'
 runnerFile = 'default'
 
 # used by mkShape to define output directory for root files

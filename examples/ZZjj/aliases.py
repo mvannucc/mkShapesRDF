@@ -9,23 +9,23 @@ configurations = '/afs/cern.ch/user/m/mvannucc/workspace/mkShapesRDF/examples/ZZ
 aliases = {}
 aliases = OrderedDict()
 
-mc     = [skey for skey in samples if skey not in ('Fake', 'DATA', 'Dyemb')]
+#mc     = [skey for skey in samples if skey not in ('Fake', 'DATA', 'Dyemb')]
 #mc_emb = [skey for skey in samples if skey not in ('Fake', 'DATA')]
 
 #mc        = [skey for skey in samples if skey not in ('DATA', 'Fake_lep') and skey not in mcEFT]
-mcALL     = [skey for skey in samples if skey not in ('DATA', 'Fake_lep')]
+mc     = [skey for skey in samples if skey not in ('DATA', 'Fake_lep')]
 
 eleWP = 'mvaFall17V2Iso_WP90'
-muWP  = 'cut_Tight_HWWW_tthmva_80'
+muWP  = 'cut_Tight_HWWW'
 
 aliases['LepWPCut'] = {
     'expr': 'LepCut4l__ele_'+eleWP+'__mu_'+muWP,
-    'samples': mcALL + ['DATA']
+    'samples': mc + ['DATA']
 }
 
 aliases['LepWPSF'] = {
     'expr': 'LepSF4l__ele_'+eleWP+'__mu_'+muWP,
-    'samples': mcALL
+    'samples': mc
 }
 
 aliases['gstarLow'] = {
@@ -40,53 +40,19 @@ aliases['gstarHigh'] = {
 
 # Fake leptons transfer factor
 aliases['fakeW'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP,
-    'samples': ['Fake']
-}
-
-# And variations - already divided by central values in formulas !
-aliases['fakeWEleUp'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_EleUp',
-    'samples': ['Fake']
-}
-aliases['fakeWEleDown'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_EleDown',
-    'samples': ['Fake']
-}
-aliases['fakeWMuUp'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_MuUp',
-    'samples': ['Fake']
-}
-aliases['fakeWMuDown'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_MuDown',
-    'samples': ['Fake']
-}
-aliases['fakeWStatEleUp'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_statEleUp',
-    'samples': ['Fake']
-}
-aliases['fakeWStatEleDown'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_statEleDown',
-    'samples': ['Fake']
-}
-aliases['fakeWStatMuUp'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_statMuUp',
-    'samples': ['Fake']
-}
-aliases['fakeWStatMuDown'] = {
-    'expr': 'fakeW2l_ele_'+eleWP+'_mu_'+muWP+'_statMuDown',
-    'samples': ['Fake']
+    'expr': 'fakeW_ele_'+eleWP+'_mu_'+muWP+'_4l',
+    'samples': ['Fake_lep']
 }
 
 # gen-matching to prompt only (GenLepMatch2l matches to *any* gen lepton)
 aliases['PromptGenLepMatch2l'] = {
             'expr': 'Alt(Lepton_promptgenmatched, 0, 0) * Alt(Lepton_promptgenmatched, 1, 0)',
-            'samples': mcALL
+            'samples': mc
 }
 
 aliases['PromptGenLepMatch4l'] = {
     'expr': 'Alt(Lepton_promptgenmatched,0,0)*Alt(Lepton_promptgenmatched,1,0)*Alt(Lepton_promptgenmatched,2,0)*Alt(Lepton_promptgenmatched,3,0)',
-    'samples': mcALL
+    'samples': mc
 }
 
 aliases['Top_pTrw'] = {
@@ -214,22 +180,6 @@ aliases['Rpt'] = {
 }
 
 # data/MC scale factors
-#aliases['SFweight'] = {
-#    #'expr': ' * '.join(['SFweight2l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
-#    'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF', 'btagSF']),
-#    'samples': mc
-#}
-
-aliases['SFweight_mod'] = {
-    'expr': ' * '.join(['XSWeight',
-                        'SFweight4l',
-                        'LepSF4l__ele_' + eleWP + '__mu_' + muWP,
-                        'LepWPCut',
-                        'METFilter_MC']),
-    'samples': mcALL
-}
-
-# variations
 
 aliases['SFweight'] = {
     'expr': ' * '.join(['SFweight4l', 'LepWPCut', 'LepWPSF','Jet_PUIDSF', 'btagSF']),
@@ -237,19 +187,19 @@ aliases['SFweight'] = {
 }
 aliases['SFweightEleUp'] = {
     'expr': 'LepSF2l__ele_'+eleWP+'__Up',
-    'samples': mcALL
+    'samples': mc
 }
 aliases['SFweightEleDown'] = {
     'expr': 'LepSF2l__ele_'+eleWP+'__Do',
-    'samples': mcALL
+    'samples': mc
 }
 aliases['SFweightMuUp'] = {
     'expr': 'LepSF2l__mu_'+muWP+'__Up',
-    'samples': mcALL
+    'samples': mc
 }
 aliases['SFweightMuDown'] = {
     'expr': 'LepSF2l__mu_'+muWP+'__Do',
-    'samples': mcALL
+    'samples': mc
 }
 
 # Two leading jets matched to gen-level jets with pT > 25 GeV 
@@ -300,25 +250,4 @@ aliases['Detajj'] = {
         'expr': 'abs(Alt(CleanJet_eta, 0, -1000) - Alt(CleanJet_eta, 1, 1000))',
 }
 
-
-# Define the alias using the l4kin_patch function
-#aliases['mllll_ZZ'] = {
-#    'class': 'l4kin_patch',
-#    'args': "mllll_zh4l",  # The variable you want to calculate
-#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],  
-#}
-
-#aliases['Z0Mass'] = {
-#    'class': 'l4kin_patch',
-#    'args': "z0Mass_zh4l",
-#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],
-#}
-
-#aliases['Z1Mass'] = {
-#    'class': 'l4kin_patch',
-#    'args': "z1Mass_zh4l",
-#    'linesToAdd': ['#include "%s/l4kin_patch.cc"' % configurations],
-#}
-
-# Add any other variables you need (e.g., lep1Mt_zh4l, z1Mt_zh4l, etc.)
 

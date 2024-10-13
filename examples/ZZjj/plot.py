@@ -1,12 +1,21 @@
+Cyan=432; Red=632; Violet=880; Green=416; Orange=800; Yellow=400; Azure=860
+
 groupPlot = {}
 
 plot = {}
 
 # keys here must match keys in samples.py                        
 
+plot['Fake_lep']  = {
+    'color'    : Red,
+    'isSignal' : 0,
+    'isData'   : 0,
+    'scale'    : 1.0
+}
+
 plot['VVZ']  = {
     'nameHR'   : 'VVZ',
-    'color'    : 416,    
+    'color'    : Azure,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -14,7 +23,7 @@ plot['VVZ']  = {
 
 plot['ttZ']  = {
     'nameHR'   : 't#bar{t}Z',
-    'color'    : 400,   
+    'color'    : Yellow,   
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -22,7 +31,15 @@ plot['ttZ']  = {
 
 plot['ggZZ']  = {
     'nameHR'   : 'gg #rightarrow ZZ',
-    'color'    : 600,    
+    'color'    : Green,    
+    'isSignal' : 0,
+    'isData'   : 0,
+    'scale'    : 1.0,
+}
+
+plot['ZZTo2Q2L']  = {
+    'nameHR'   : 'ZZ #rightarrow 2l2q',
+    'color'    : Cyan,
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -30,7 +47,7 @@ plot['ggZZ']  = {
 
 plot['ZZ4L']  = {
     'nameHR'   : 'q#bar{q} #rightarrow ZZ',
-    'color'    : 880,    
+    'color'    : Violet,    
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
@@ -38,7 +55,7 @@ plot['ZZ4L']  = {
 
 plot['ZZjj4l']  = {
     'nameHR'   : 'ZZjj4l',
-    'color'    : 800,
+    'color'    : Orange,
     'isSignal' : 1,
     'isData'   : 0,
     'scale'    : 1.0,

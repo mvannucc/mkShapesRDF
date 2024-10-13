@@ -4,12 +4,9 @@ from mkShapesRDF.lib.search_files import SearchFiles
 mcProduction = "Summer20UL18_106x_nAODv9_Full2018v9"
 dataReco = "Run2018_UL2018_nAODv9_Full2018v9"
 mcSteps = "MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
-#fakeSteps = "DATAl1loose2018v9__l2loose__fakeW"
+fakeSteps = "DATAl1loose2018v9__l2loose__fakeW"
 dataSteps = "DATAl1loose2018v9__l2loose__l2tightOR2018v9"
 
-##############################################
-###### Tree base directory for the site ######
-##############################################
 treeBaseDir = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano"
 limitFiles = -1
 
@@ -32,9 +29,8 @@ def makeMCDirectory(var=""):
     else:
         return "/".join([_treeBaseDir, mcProduction, mcSteps + "__" + var])
 
-
 mcDirectory = makeMCDirectory()
-#fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
+fakeDirectory = os.path.join(treeBaseDir, dataReco, fakeSteps)
 dataDirectory = os.path.join(treeBaseDir, dataReco, dataSteps)
 
 samples = {}
@@ -117,24 +113,12 @@ METFilter_DATA = 'METFilter_DATA'
 
 # SFweight does not include btag weights
 #mcCommonWeightNoMatch = "XSWeight*METFilter_MC*SFweight"
-mcCommonWeight = "XSWeight * METFilter_MC * PromptGenLepMatch4l * SFweight"
+#mcCommonWeight = "XSWeight * METFilter_MC * PromptGenLepMatch4l * SFweight"
+mcCommonWeight = "XSWeight"
 
 ###########################################
 #############  BACKGROUNDS  ###############
 ###########################################
-
-###### DY #######
-
-#files = nanoGetSampleFiles(mcDirectory, "DYJetsToLL_M-50") + nanoGetSampleFiles(
-#    mcDirectory, "DYJetsToLL_M-10to50-LO"
-#)
-
-#samples["dyll"] = {
-#    "name": files,
-#    "weight": mcCommonWeight
-#    + "*( !(Sum(PhotonGen_isPrompt==1 && PhotonGen_pt>15 && abs(PhotonGen_eta)<2.6) > 0))",
-#    "FilesPerJob": 2,
-#}
 
 ###### VVV ######
 
@@ -165,6 +149,14 @@ samples["ZZ4L"] = {
     "FilesPerJob": 5,
 }
 
+files = nanoGetSampleFiles(mcDirectory, "ZZTo2Q2L_mllmin4p0")
+
+samples["ZZTo2Q2L"] = {
+    "name": files,
+    'weight' : mcCommonWeight+'*1.07',  
+    "FilesPerJob": 5,
+}
+
 ###### ggZZ ######
 
 mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ggZZ4l/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
@@ -187,6 +179,42 @@ samples["ZZjj4l"] = {
     "weight": mcCommonWeight,
     "FilesPerJob": 2,
 }
+
+###########################################
+################## FAKE ###################
+###########################################
+
+samples['Fake_lep'] = {
+  'name': [],
+  'weight': 'METFilter_DATA*fakeW',
+  'weights': [],
+  'isData': ['all'],
+  'FilesPerJob': 20
+}
+for _, sd in DataRun:
+  for pd in DataSets:
+    datatag = pd + '_' + sd
+
+    if (   ('DoubleMuon' in pd and 'Run2018B' in sd)
+        or ('DoubleMuon' in pd and 'Run2018D' in sd)
+        or ('SingleMuon' in pd and 'Run2018A' in sd)
+        or ('SingleMuon' in pd and 'Run2018B' in sd)
+        or ('SingleMuon' in pd and 'Run2018C' in sd)):
+        print("sd      = {}".format(sd))
+        print("pd      = {}".format(pd))
+        print("Old datatag = {}".format(datatag))
+        datatag = datatag.replace('v1','v2')
+        print("New datatag = {}".format(datatag))
+    files = nanoGetSampleFiles(fakeDirectory, datatag)
+
+    samples['Fake_lep']['name'].extend(files)
+    addSampleWeight(samples, 'Fake_lep', datatag, DataTrig[pd])
+
+#samples['Fake_lep']['subsamples'] = {
+#  'em': 'abs(Lepton_pdgId[0]) == 11',
+#  'me': 'abs(Lepton_pdgId[0]) == 13'
+#}
+
 
 ###########################################
 ################## DATA ###################
