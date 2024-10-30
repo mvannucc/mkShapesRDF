@@ -37,29 +37,37 @@ plot['ggZZ']  = {
     'scale'    : 1.0,
 }
 
-plot['ZZTo2Q2L']  = {
-    'nameHR'   : 'ZZ #rightarrow 2l2q',
+plot['ZZ4L']  = {
+    'nameHR'   : 'q#bar{q} #rightarrow ZZ',
+    'color'    : Violet,
+    'isSignal' : 0,
+    'isData'   : 0,
+    'scale'    : 1.0,
+}
+
+plot['ZZJJTo4L_QCD']  = {
+    'nameHR'   : 'ZZ VBS QCD',
     'color'    : Cyan,
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['ZZ4L']  = {
-    'nameHR'   : 'q#bar{q} #rightarrow ZZ',
-    'color'    : Violet,    
+plot['ZZJJTo4L_EWK']  = {
+    'nameHR'   : 'ZZ VBS EWK',
+    'color'    : Orange,
     'isSignal' : 0,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-plot['ZZjj4l']  = {
-    'nameHR'   : 'ZZjj4l',
-    'color'    : Orange,
-    'isSignal' : 1,
-    'isData'   : 0,
-    'scale'    : 1.0,
-}
+#plot['ZZjj4l']  = {
+#    'nameHR'   : 'ZZjj4l',
+#    'color'    : Orange,
+#    'isSignal' : 1,
+#    'isData'   : 0,
+#    'scale'    : 1.0,
+#}
 
 # data
 

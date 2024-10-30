@@ -2,12 +2,12 @@
 
 variables = {}
 
-variables["m4l"] = {
-    "name": "mllll_zh4l",  
-    "range": (25, 160, 1400), 
-    "xaxis": "M_{4l} [GeV]",  
-    "fold": 0,
-}
+#variables["m4l"] = {
+#    "name": "mllll_zh4l",  
+#    "range": (25, 160, 1400), 
+#    "xaxis": "M_{4l} [GeV]",  
+#    "fold": 0,
+#}
 
 variables["mjj"] = {
     "name": "mjj",
@@ -16,12 +16,12 @@ variables["mjj"] = {
     "fold": 0,
 }
 
-variables["delta_eta_jets"] = {
-    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 0, 0) - Alt(CleanJet_eta, 1, 0)) - (Sum(CleanJet_pt>30)<=1)*99",
-    "range": (20, 0, 8),
-    "xaxis": "#Delta#eta_{jj}",
-    "fold": 0,
-}
+#variables["delta_eta_jets"] = {
+#    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 0, 0) - Alt(CleanJet_eta, 1, 0)) - (Sum(CleanJet_pt>30)<=1)*99",
+#    "range": (20, 0, 8),
+#    "xaxis": "#Delta#eta_{jj}",
+#    "fold": 0,
+#}
 
 
 variables["jet_pt"] = {
@@ -42,6 +42,13 @@ variables["nlep"] = {
     "name": "nLepton",
     "range": (8, 0, 8),
     "xaxis": "nlep",
+    "fold": 0,
+}
+
+variables["njet"] = {
+    "name": "nJet",
+    "range": (8, 0, 8),
+    "xaxis": "njet",
     "fold": 0,
 }
 
@@ -66,19 +73,19 @@ variables['pt4']  = {
         'fold' : 0
 }
 
-variables['Z0mass']  = {
-        'name': 'z0Mass_zh4l',            #   variable name
-        'range' : (30,50,130),    #   variable range
-        'xaxis' : 'M_{Z_0} [GeV]',  #   x axis name
-        'fold' : 0
-}
+#variables['Z0mass']  = {
+#        'name': 'z0Mass_zh4l',            #   variable name
+#        'range' : (30,50,130),    #   variable range
+#        'xaxis' : 'M_{Z_0} [GeV]',  #   x axis name
+#        'fold' : 0
+#}
 
-variables['Z1mass']  = {
-        'name': 'z1Mass_zh4l',            #   variable name
-        'range' : (30,50,130),    #   variable range
-        'xaxis' : 'M_{Z_1} [GeV]',  #   x axis name
-        'fold' : 0
-}
+#variables['Z1mass']  = {
+#        'name': 'z1Mass_zh4l',            #   variable name
+#        'range' : (30,50,130),    #   variable range
+#        'xaxis' : 'M_{Z_1} [GeV]',  #   x axis name
+#        'fold' : 0
+#}
 
 
 

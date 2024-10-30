@@ -113,8 +113,8 @@ METFilter_DATA = 'METFilter_DATA'
 
 # SFweight does not include btag weights
 #mcCommonWeightNoMatch = "XSWeight*METFilter_MC*SFweight"
-#mcCommonWeight = "XSWeight * METFilter_MC * PromptGenLepMatch4l * SFweight"
-mcCommonWeight = "XSWeight"
+mcCommonWeight = "XSWeight * METFilter_MC * PromptGenLepMatch4l * SFweight"
+#mcCommonWeight = "XSWeight"
 
 ###########################################
 #############  BACKGROUNDS  ###############
@@ -145,16 +145,20 @@ files = nanoGetSampleFiles(mcDirectory, "ZZTo4L")
 
 samples["ZZ4L"] = {
     "name": files,
-    'weight' : mcCommonWeight+'*1.07',  # The NNLO/NLO k-factor, cited from https://arxiv.org/abs/1405.2219v1
+    'weight' : mcCommonWeight+'*1.165',  # The NNLO/NLO k-factor, cited from https://arxiv.org/abs/1405.2219v1
     "FilesPerJob": 5,
 }
 
-files = nanoGetSampleFiles(mcDirectory, "ZZTo2Q2L_mllmin4p0")
+###### ZZTo4l QCD VBS ####
 
-samples["ZZTo2Q2L"] = {
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZJJTo4L_QCD_1/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+
+files = nanoGetSampleFiles(mcDirectory, "ZZJJTo4L_QCD_1")
+
+samples["ZZJJTo4L_QCD"] = {
     "name": files,
-    'weight' : mcCommonWeight+'*1.07',  
-    "FilesPerJob": 5,
+    'weight' : mcCommonWeight,
+    "FilesPerJob": 2,
 }
 
 ###### ggZZ ######
@@ -168,17 +172,27 @@ samples['ggZZ'] = { 'name' : nanoGetSampleFiles(mcDirectory, 'GluGluToZZTo4e')
                     'FilesPerJob' : 5,
 }
 
+###### EWK ZZ VBS #####
+
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZJJTo4L/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+
+samples['ZZJJTo4L_EWK'] = { 
+        'name' : nanoGetSampleFiles(mcDirectory, 'ZZJJTo4L'),
+        'weight' : mcCommonWeight, 
+        'FilesPerJob' : 5,
+}
+
 ##################
 ##### Signal #####
 ##################
 
-files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZjj_4l") 
+#files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZjj_4l") 
 
-samples["ZZjj4l"] = {
-    "name": files,
-    "weight": mcCommonWeight,
-    "FilesPerJob": 2,
-}
+#samples["ZZjj4l"] = {
+#    "name": files,
+#    "weight": mcCommonWeight,
+#    "FilesPerJob": 2,
+#}
 
 ###########################################
 ################## FAKE ###################
