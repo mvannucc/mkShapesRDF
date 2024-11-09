@@ -2,12 +2,26 @@
 
 variables = {}
 
-#variables["m4l"] = {
-#    "name": "mllll_zh4l",  
-#    "range": (25, 160, 1400), 
-#    "xaxis": "M_{4l} [GeV]",  
-#    "fold": 0,
-#}
+variables["nLepton"] = {
+    "name": "nLepton",
+    "range": (8, 0, 8),
+    "xaxis": "nLep",
+    "fold": 0,
+}
+
+variables["nJet"] = {
+    "name": "nJet",
+    "range": (8, 0, 8),
+    "xaxis": "nJet",
+    "fold": 0,
+}
+
+variables["m4l"] = {
+    "name": "mllll_zh4l",  
+    "range": (25, 160, 1400), 
+    "xaxis": "M_{4l} [GeV]",  
+    "fold": 0,
+}
 
 variables["mjj"] = {
     "name": "mjj",
@@ -16,12 +30,12 @@ variables["mjj"] = {
     "fold": 0,
 }
 
-#variables["delta_eta_jets"] = {
-#    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 0, 0) - Alt(CleanJet_eta, 1, 0)) - (Sum(CleanJet_pt>30)<=1)*99",
-#    "range": (20, 0, 8),
-#    "xaxis": "#Delta#eta_{jj}",
-#    "fold": 0,
-#}
+variables["delta_eta_jets"] = {
+    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 0, 0) - Alt(CleanJet_eta, 1, 0)) - (Sum(CleanJet_pt>30)<=1)*99",
+    "range": (20, 0, 8),
+    "xaxis": "#Delta#eta_{jj}",
+    "fold": 0,
+}
 
 
 variables["jet_pt"] = {
@@ -31,24 +45,10 @@ variables["jet_pt"] = {
     "fold": 0,
 }
 
-#variables["jet_eta"] = {
-#    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 1, 0)) + (Sum(CleanJet_pt>30)>0)*(Alt(CleanJet_eta, 0, 0)) - (Sum(CleanJet_pt>30)==0)*99",
-#    "range": (40, -5, 5),
-#    "xaxis": "#eta_{j}",
-#    "fold": 0,
-#}
-
-variables["nlep"] = {
-    "name": "nLepton",
-    "range": (8, 0, 8),
-    "xaxis": "nlep",
-    "fold": 0,
-}
-
-variables["njet"] = {
-    "name": "nJet",
-    "range": (8, 0, 8),
-    "xaxis": "njet",
+variables["jet_eta"] = {
+    "name": "(Sum(CleanJet_pt>30)>1)*(Alt(CleanJet_eta, 1, 0)) + (Sum(CleanJet_pt>30)>0)*(Alt(CleanJet_eta, 0, 0)) - (Sum(CleanJet_pt>30)==0)*99",
+    "range": (40, -5, 5),
+    "xaxis": "#eta_{j}",
     "fold": 0,
 }
 

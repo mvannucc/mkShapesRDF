@@ -1,4 +1,4 @@
-Cyan=432; Red=632; Violet=880; Green=416; Orange=800; Yellow=400; Azure=860
+Red=625; Cyan=432; Red=632; Violet=880; Green=416; Orange=800; Yellow=400; Azure=860
 
 groupPlot = {}
 
@@ -6,12 +6,12 @@ plot = {}
 
 # keys here must match keys in samples.py                        
 
-plot['Fake_lep']  = {
-    'color'    : Red,
-    'isSignal' : 0,
-    'isData'   : 0,
-    'scale'    : 1.0
-}
+#plot['Fake_lep']  = {
+#    'color'    : Red,
+#    'isSignal' : 0,
+#    'isData'   : 0,
+#    'scale'    : 1.0
+#}
 
 plot['VVZ']  = {
     'nameHR'   : 'VVZ',
@@ -56,18 +56,20 @@ plot['ZZJJTo4L_QCD']  = {
 plot['ZZJJTo4L_EWK']  = {
     'nameHR'   : 'ZZ VBS EWK',
     'color'    : Orange,
-    'isSignal' : 0,
+    'isSignal' : 1,
     'isData'   : 0,
     'scale'    : 1.0,
 }
 
-#plot['ZZjj4l']  = {
-#    'nameHR'   : 'ZZjj4l',
-#    'color'    : Orange,
-#    'isSignal' : 1,
-#    'isData'   : 0,
-#    'scale'    : 1.0,
-#}
+# signal
+
+plot['ZZJJTo4L_EFT']  = {
+    'nameHR'   : 'ZZ VBS EFT',
+    'color'    : Red,
+    'isSignal' : 1,
+    'isData'   : 0,
+    'scale'    : 1.0,
+}
 
 # data
 

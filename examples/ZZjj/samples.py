@@ -174,10 +174,12 @@ samples['ggZZ'] = { 'name' : nanoGetSampleFiles(mcDirectory, 'GluGluToZZTo4e')
 
 ###### EWK ZZ VBS #####
 
-mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZJJTo4L/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+mcDirectory = "/eos/user/m/mvannucc/nanoAOD/PostProc/ZZJJTo4L_EWK/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9"
+
+files = nanoGetSampleFiles(mcDirectory, 'ZZJJTo4L_EWK')
 
 samples['ZZJJTo4L_EWK'] = { 
-        'name' : nanoGetSampleFiles(mcDirectory, 'ZZJJTo4L'),
+        'name' : files,
         'weight' : mcCommonWeight, 
         'FilesPerJob' : 5,
 }
@@ -186,43 +188,43 @@ samples['ZZJJTo4L_EWK'] = {
 ##### Signal #####
 ##################
 
-#files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZjj_SM/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZjj_4l") 
+files = nanoGetSampleFiles("/eos/user/m/mvannucc/nanoAOD/PostProc/ZZJJTo4L_EFT/Summer20UL18_106x_nAODv9_Full2018v9/MCl1loose2018v9__MCCorr2018v9NoJERInHorn__l2tightOR2018v9", "ZZJJTo4L_EFT") 
 
-#samples["ZZjj4l"] = {
-#    "name": files,
-#    "weight": mcCommonWeight,
-#    "FilesPerJob": 2,
-#}
+samples['ZZJJTo4L_EFT'] = {
+    'name': files,
+    'weight': mcCommonWeight,
+    'FilesPerJob': 4,
+}
 
 ###########################################
 ################## FAKE ###################
 ###########################################
 
-samples['Fake_lep'] = {
-  'name': [],
-  'weight': 'METFilter_DATA*fakeW',
-  'weights': [],
-  'isData': ['all'],
-  'FilesPerJob': 20
-}
-for _, sd in DataRun:
-  for pd in DataSets:
-    datatag = pd + '_' + sd
-
-    if (   ('DoubleMuon' in pd and 'Run2018B' in sd)
-        or ('DoubleMuon' in pd and 'Run2018D' in sd)
-        or ('SingleMuon' in pd and 'Run2018A' in sd)
-        or ('SingleMuon' in pd and 'Run2018B' in sd)
-        or ('SingleMuon' in pd and 'Run2018C' in sd)):
-        print("sd      = {}".format(sd))
-        print("pd      = {}".format(pd))
-        print("Old datatag = {}".format(datatag))
-        datatag = datatag.replace('v1','v2')
-        print("New datatag = {}".format(datatag))
-    files = nanoGetSampleFiles(fakeDirectory, datatag)
-
-    samples['Fake_lep']['name'].extend(files)
-    addSampleWeight(samples, 'Fake_lep', datatag, DataTrig[pd])
+#samples['Fake_lep'] = {
+#  'name': [],
+#  'weight': 'METFilter_DATA*fakeW',
+#  'weights': [],
+#  'isData': ['all'],
+#  'FilesPerJob': 20
+#}
+#for _, sd in DataRun:
+#  for pd in DataSets:
+#    datatag = pd + '_' + sd
+#
+#    if (   ('DoubleMuon' in pd and 'Run2018B' in sd)
+#        or ('DoubleMuon' in pd and 'Run2018D' in sd)
+#        or ('SingleMuon' in pd and 'Run2018A' in sd)
+#        or ('SingleMuon' in pd and 'Run2018B' in sd)
+#        or ('SingleMuon' in pd and 'Run2018C' in sd)):
+#        print("sd      = {}".format(sd))
+#        print("pd      = {}".format(pd))
+#        print("Old datatag = {}".format(datatag))
+#        datatag = datatag.replace('v1','v2')
+#        print("New datatag = {}".format(datatag))
+#    files = nanoGetSampleFiles(fakeDirectory, datatag)
+#
+#    samples['Fake_lep']['name'].extend(files)
+#    addSampleWeight(samples, 'Fake_lep', datatag, DataTrig[pd])
 
 #samples['Fake_lep']['subsamples'] = {
 #  'em': 'abs(Lepton_pdgId[0]) == 11',
