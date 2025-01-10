@@ -23,7 +23,7 @@ cutsFile = 'cuts.py'
 
 # file with list of samples
 #samplesFile = 'samples.py'
-samplesFile = 'samples.py' 
+samplesFile = 'samples_dim6.py' 
 
 # file with list of samples
 #plotFile = 'plot_DYonly.py' 
